@@ -95,7 +95,7 @@ public class WorldTp extends JavaPlugin {
                 return false;
             }
         }
-		//Um hilfe von WorldTp zu bekommen/Getting help from WorldTP
+		//Um hilfe von WorldTp zu bekommen / Getting help from WorldTP
 		if(cmd.getName().equalsIgnoreCase("wt")) {
 			if(args.length == 0) {
 				p.sendMessage(ChatColor.RED + "/setspawnpoint: " + ChatColor.AQUA + sprache5);
