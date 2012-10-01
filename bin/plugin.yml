@@ -8,14 +8,14 @@ commands:
           description: Bringt dich in eine andere Welt
           usage: /<command>
      setspawnpoint:
-          description: setzt den spawnpoint in der Welt
+          description: Setzt den Spawnpoint in der Welt
           usage: /<command>
      leave:
           description: Um aus der Welt raus zu kommen
           usage: /<command>
      worldtp:
-          description: Um hilfe zu bekommen
+          description: Um Hilfe zu bekommen
           usage: /<command>
      wt:
-          description: Um hilfe zu bekommen
+          description: Um Hilfe zu bekommen
           usage: /<command>

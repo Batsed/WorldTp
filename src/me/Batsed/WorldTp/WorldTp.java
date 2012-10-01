@@ -37,12 +37,14 @@ public class WorldTp extends JavaPlugin {
 				double locX = this.getConfig().getDouble("Config.World.spawn.X");
 				double locZ = this.getConfig().getDouble("Config.World.spawn.Z");
 				
+				String sprache1 = this.getConfig().getString("Config.Sprache.kreativ");
+				
 				Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
 				p.getInventory().clear();
 				p.setGameMode(GameMode.CREATIVE);
 				p.teleport(loc);
 				
-				p.sendMessage(ChatColor.RED + "[WorldTp] Du wurdest Teleportiert");
+				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache1);
 				
 				return true;
 			}else {
@@ -121,13 +123,15 @@ public class WorldTp extends JavaPlugin {
 	
 	public HashMap<Player, Location> oldLocationList = new HashMap<Player, Location>();
 
-		private void loadConfig(){
+		public void loadConfig(){
 		String patchY = "Config.World.spawn.Y";
 		this.getConfig().addDefault(patchY, 0);
 		String patchX = "Config.World.spawn.X";
 		this.getConfig().addDefault(patchX, 0);
 		String patchZ = "Config.World.spawn.Z";
 		this.getConfig().addDefault(patchZ, 0);
+		String path1 = "Config.Sprache.kreativ";
+		this.getConfig().addDefault(path1, "Du wurdest Teleportiert");
 		
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
