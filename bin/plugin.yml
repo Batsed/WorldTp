@@ -4,7 +4,7 @@ main: me.Batsed.WorldTp.WorldTp
 author: Batsed
 website: http://Batsed.de
 commands:
-     creativ:
+     creative:
           description: Bringt dich in eine andere Welt
           usage: /<command>
      setspawnpoint:

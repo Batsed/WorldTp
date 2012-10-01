@@ -17,13 +17,11 @@ public class WorldTp extends JavaPlugin {
 	public void onEnable() {
 		loadConfig();
 		System.out.println("[WorldTp] Plugin by Batsed");
-		//activate plugin
-		System.out.println("[WorldTp] Plugin aktiviert");
+		System.out.println("[WorldTp] activate plugin");
 	
 	}
 	public void onDisable() {
-		//deactivate plugin
-		System.out.println("[WorldTp] Plugin deaktiviert");
+		System.out.println("[WorldTp] deactivate plugin");
 		}
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		
@@ -52,7 +50,7 @@ public class WorldTp extends JavaPlugin {
 				
 				Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
 				p.getInventory().clear();
-				p.setGameMode(GameMode.creative);
+				p.setGameMode(GameMode.CREATIVE);
 				p.teleport(loc);
 				
 				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache1);
@@ -88,8 +86,8 @@ public class WorldTp extends JavaPlugin {
 			if(args.length == 0) {
 				p.sendMessage(ChatColor.RED + "/setspawnpoint: " + ChatColor.AQUA + sprache5);
 				p.sendMessage(ChatColor.RED + "/creative: " + ChatColor.AQUA + sprache6);
-				p.sendMessage(ChatColor.RED + "/worldtp or /wt: " + ChatColor.AQUA + sprache7);
-				p.sendMessage(ChatColor.RED + "/leave: " + ChatColor.AQUA + sprache8);
+				p.sendMessage(ChatColor.RED + "/worldtp or /wt: " + ChatColor.AQUA + sprache8);
+				p.sendMessage(ChatColor.RED + "/leave: " + ChatColor.AQUA + sprache7);
                 
                 return true;
             }
@@ -102,8 +100,8 @@ public class WorldTp extends JavaPlugin {
 			if(args.length == 0) {
 				p.sendMessage(ChatColor.RED + "/setspawnpoint: " + ChatColor.AQUA + sprache5);
 				p.sendMessage(ChatColor.RED + "/creative: " + ChatColor.AQUA + sprache6);
-				p.sendMessage(ChatColor.RED + "/worldtp or /wt: " + ChatColor.AQUA + sprache7);
-				p.sendMessage(ChatColor.RED + "/leave: " + ChatColor.AQUA + sprache8);
+				p.sendMessage(ChatColor.RED + "/worldtp or /wt: " + ChatColor.AQUA + sprache8);
+				p.sendMessage(ChatColor.RED + "/leave: " + ChatColor.AQUA + sprache7);
 				
 				return true;
 			}
@@ -142,29 +140,21 @@ public class WorldTp extends JavaPlugin {
 		String patchZ = "Config.World.spawn.Z";
 		this.getConfig().addDefault(patchZ, 0);
 		String path1 = "Config.Sprache.kreativ";
-		//You have been teleported
-		this.getConfig().addDefault(path1, "Du wurdest Teleportiert");
+		this.getConfig().addDefault(path1, "You have been teleported");
 		String path2 = "Config.Sprache.leave";
-		//Yo have been teleported back to your old position
-		this.getConfig().addDefault(path2, "Du wurdest zu deiner alten Position geported");
+		this.getConfig().addDefault(path2, "You have been teleported back to your old position");
 		String path3 = "Config.Sprache.setspawnpoint";
-		//You have defined the spawnpoint
-		this.getConfig().addDefault(path3, "Du hast den spawnpoint gesetzt.");
+		this.getConfig().addDefault(path3, "You have defined the spawnpoint");
 		String path4 = "Config.Sprache.setspawnpoint2";
-		//Saved
-		this.getConfig().addDefault(path4, "Gespeichert");
+		this.getConfig().addDefault(path4, "Saved");
 		String path5 = "Config.Sprache.help.setspawnpoint";
-		//Sets the spawn point you reach with /creative
-		this.getConfig().addDefault(path5, "Setzt den Spawn wo du mit /creative hinkommst");
+		this.getConfig().addDefault(path5, "Sets the spawn point you reach with /creative");
 		String path6 = "Config.Sprache.help.creative";
-		//You go to the spawn point you set
-		this.getConfig().addDefault(path6, "Du kommst da hin wo du den spawn gesetzt hast");
+		this.getConfig().addDefault(path6, "You go to the spawn point you set");
 		String path7 = "Config.Sprache.help.leave";
-		//You leave the creative world
-		this.getConfig().addDefault(path7, "Du verlässt die 'Kreativ' Welt");
+		this.getConfig().addDefault(path7, "You leave the creative world");
 		String path8 = "Config.Sprache.help.wt/worldTp";
-		//Read the help for WorldTP
-		this.getConfig().addDefault(path8, "Du bekommst hilfe über WorldTp");
+		this.getConfig().addDefault(path8, "Read the help for WorldTP");
 		
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
