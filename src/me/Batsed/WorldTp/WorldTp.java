@@ -4,7 +4,6 @@ import java.util.HashMap;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.ChatColor;
@@ -12,8 +11,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 
 public class WorldTp extends JavaPlugin {
-	
-	ItemStack item;
 	
 	PluginDescriptionFile descFile = this.getDescription();
 
@@ -48,9 +45,9 @@ public class WorldTp extends JavaPlugin {
 				p.sendMessage(ChatColor.RED + "[WorldTp] Du wurdest Teleportiert");
 				
 				return true;
-		}else {
+			}else {
 			return false;
-		}
+			}
 		}
 		
 		//Spawnpoint von der Welt setzen
