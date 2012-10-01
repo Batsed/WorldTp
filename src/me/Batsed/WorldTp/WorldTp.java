@@ -25,10 +25,19 @@ public class WorldTp extends JavaPlugin {
 		}
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		
+		String sprache1 = this.getConfig().getString("Config.Sprache.kreativ");
+		String sprache2 = this.getConfig().getString("Config.Sprache.leave");
+		String sprache3 = this.getConfig().getString("Config.Sprache.setspawnpoint");
+		String sprache4 = this.getConfig().getString("Config.Sprache.setspawnpoint2");
+		String sprache5 = this.getConfig().getString("Config.Sprache.help.setspawnpoint");
+		String sprache6 = this.getConfig().getString("Config.Sprache.help.creativ");
+		String sprache7 = this.getConfig().getString("Config.Sprache.help.leave");
+		String sprache8 = this.getConfig().getString("Config.Sprache.help.wt/worldTp");
+		
 		Player p = (Player)sender;
 		
 		//Zum Spawnpoint teleportieren
-		if(cmd.getName().equalsIgnoreCase("kreativ")) {
+		if(cmd.getName().equalsIgnoreCase("creativ")) {
 			if(args.length == 0) {
 				
 				oldLocationList.put(p, p.getLocation());
@@ -37,7 +46,7 @@ public class WorldTp extends JavaPlugin {
 				double locX = this.getConfig().getDouble("Config.World.spawn.X");
 				double locZ = this.getConfig().getDouble("Config.World.spawn.Z");
 				
-				String sprache1 = this.getConfig().getString("Config.Sprache.kreativ");
+				
 				
 				Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
 				p.getInventory().clear();
@@ -59,8 +68,8 @@ public class WorldTp extends JavaPlugin {
                 getConfig().set("Config.World.spawn.Y", p.getLocation().getY());
             	getConfig().set("Config.World.spawn.Z", p.getLocation().getZ());
                 
-            	p.sendMessage(ChatColor.RED + "[WorldTp] Du hast den spawnpoint gesetzt.");
-                p.sendMessage(ChatColor.RED + "[WorldTp] Gespeichert!");
+            	p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
+                p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4);
                 
         		this.getConfig().options().copyDefaults(true);
         		this.saveConfig();
@@ -75,10 +84,10 @@ public class WorldTp extends JavaPlugin {
 		//Um hilfe von WolrTp zu bekommen
 		if(cmd.getName().equalsIgnoreCase("worldtp")) {
 			if(args.length == 0) {
-				p.sendMessage(ChatColor.RED + "/setspawnpoint:" + ChatColor.AQUA + " Setzt den Spawn auf den du mit /kreativ kommst.");
-				p.sendMessage(ChatColor.RED + "/kreativ:" + ChatColor.AQUA + " Du kommst da hin wo du den Spawn gesetzt hast.");
-				p.sendMessage(ChatColor.RED + "/worldtp or /wt:" + ChatColor.AQUA + " Du bekommst Hilfe ueber WorldTp");
-				p.sendMessage(ChatColor.RED + "/leave:" + ChatColor.AQUA + " Du verlaesst die 'Kreativ' Welt");
+				p.sendMessage(ChatColor.RED + "/setspawnpoint: " + ChatColor.AQUA + sprache5);
+				p.sendMessage(ChatColor.RED + "/creativ: " + ChatColor.AQUA + sprache6);
+				p.sendMessage(ChatColor.RED + "/worldtp or /wt: " + ChatColor.AQUA + sprache7);
+				p.sendMessage(ChatColor.RED + "/leave: " + ChatColor.AQUA + sprache8);
                 
                 return true;
             }
@@ -89,10 +98,10 @@ public class WorldTp extends JavaPlugin {
 		//Um hilfe von WolrTp zu bekommen
 		if(cmd.getName().equalsIgnoreCase("wt")) {
 			if(args.length == 0) {
-				p.sendMessage(ChatColor.RED + "/setspawnpoint:" + ChatColor.AQUA + " Setzt den Spawn wo du mit /kreativ hinkommst");
-				p.sendMessage(ChatColor.RED + "/kreativ:" + ChatColor.AQUA + " Du kommst da hin wo du den spawn gesetzt hast");
-				p.sendMessage(ChatColor.RED + "/worldtp or /wt:" + ChatColor.AQUA + " Du bekommst hilfe über WorldTp");
-				p.sendMessage(ChatColor.RED + "/leave:" + ChatColor.AQUA + " Du verlässt die 'Kreativ' Welt");
+				p.sendMessage(ChatColor.RED + "/setspawnpoint: " + ChatColor.AQUA + sprache5);
+				p.sendMessage(ChatColor.RED + "/creativ: " + ChatColor.AQUA + sprache6);
+				p.sendMessage(ChatColor.RED + "/worldtp or /wt: " + ChatColor.AQUA + sprache7);
+				p.sendMessage(ChatColor.RED + "/leave: " + ChatColor.AQUA + sprache8);
 				
 				return true;
 			}
@@ -109,7 +118,7 @@ public class WorldTp extends JavaPlugin {
 					p.teleport(oldLocationList.get(p));
 					p.setGameMode(GameMode.SURVIVAL);	
 					
-					p.sendMessage(ChatColor.RED + "[WorldTp] Du bist zu deiner alten Position geported worden");
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache2);
 
 					return true;
 				}
@@ -132,6 +141,20 @@ public class WorldTp extends JavaPlugin {
 		this.getConfig().addDefault(patchZ, 0);
 		String path1 = "Config.Sprache.kreativ";
 		this.getConfig().addDefault(path1, "Du wurdest Teleportiert");
+		String path2 = "Config.Sprache.leave";
+		this.getConfig().addDefault(path2, "Du wurdest zu deiner alten Position geported");
+		String path3 = "Config.Sprache.setspawnpoint";
+		this.getConfig().addDefault(path3, "Du hast den spawnpoint gesetzt.");
+		String path4 = "Config.Sprache.setspawnpoint2";
+		this.getConfig().addDefault(path4, "Gespeichert");
+		String path5 = "Config.Sprache.help.setspawnpoint";
+		this.getConfig().addDefault(path5, "Setzt den Spawn wo du mit /creativ hinkommst");
+		String path6 = "Config.Sprache.help.creativ";
+		this.getConfig().addDefault(path6, "Du kommst da hin wo du den spawn gesetzt hast");
+		String path7 = "Config.Sprache.help.leave";
+		this.getConfig().addDefault(path7, "Du verlässt die 'Kreativ' Welt");
+		String path8 = "Config.Sprache.help.wt/worldTp";
+		this.getConfig().addDefault(path8, "Du bekommst hilfe über WorldTp");
 		
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();

@@ -1,10 +1,10 @@
 name: WorldTp
-version: 1.2
+version: 1.25
 main: me.Batsed.WorldTp.WorldTp
 author: Batsed
 website: http://Batsed.de
 commands:
-     kreativ:
+     creativ:
           description: Bringt dich in eine andere Welt
           usage: /<command>
      setspawnpoint:
