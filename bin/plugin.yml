@@ -1,0 +1,21 @@
+name: WorldTp
+version: 1.2
+main: me.Batsed.WorldTp.WorldTp
+author: Batsed
+website: http://Batsed.de
+commands:
+     kreativ:
+          description: Bringt dich in eine andere Welt
+          usage: /<command>
+     setspawnpoint:
+          description: setzt den spawnpoint in der Welt
+          usage: /<command>
+     leave:
+          description: Um aus der Welt raus zu kommen
+          usage: /<command>
+     worldtp:
+          description: Um hilfe zu bekommen
+          usage: /<command>
+     wt:
+          description: Um hilfe zu bekommen
+          usage: /<command>
