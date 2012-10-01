@@ -46,7 +46,42 @@ public class WorldTp extends JavaPlugin {
 				double locX = this.getConfig().getDouble("Config.World.spawn.X");
 				double locZ = this.getConfig().getDouble("Config.World.spawn.Z");
 				
-				
+				 public void savePlayerInv(Player p, World w){
+				        File playerInvConfigFile = new File(plugin.getDataFolder() + File.separator + "players" + File.separator + p.getName(), "inventory.yml");
+				        FileConfiguration pInv = YamlConfiguration.loadConfiguration(playerInvConfigFile);
+				        PlayerInventory inv = p.getInventory();
+				        int i = 0;
+
+				        for (ItemStack stack : inv.getContents()) {
+				            //increment integer
+				            i++;
+				            String startInventory = w.getName() + ".inv." + Integer.toString(i);
+
+				            //save inv
+				            pInv.set(startInventory + ".amount", stack.getAmount());
+				            pInv.set(startInventory + ".durability", Short.toString(stack.getDurability()));
+				            pInv.set(startInventory + ".type", stack.getTypeId());
+				            //pInv.set(startInventory + ".enchantment", stack.getEnchantments());
+				            //TODO add enchant saveing
+				        }
+
+				        i = 0;
+				        for (ItemStack armor : inv.getArmorContents()){
+				                i++;
+				                String startArmor = w.getName() + ".armor." + Integer.toString(i);
+
+				                //save armor
+				                pInv.set(startArmor + ".amount", armor.getAmount());
+				                pInv.set(startArmor + ".durability", armor.getDurability());
+				                pInv.set(startArmor + ".type", armor.getTypeId());
+				                //pInv.set(startArmor + ".enchantment", armor.getEnchantments());
+				        }
+
+				        //save exp
+				        if (p.getExp() != 0) {
+				                pInv.set(w.getName() + ".exp", p.getExp());
+				        }
+				    }
 				
 				Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
 				p.getInventory().clear();
