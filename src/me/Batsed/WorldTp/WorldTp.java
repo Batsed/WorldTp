@@ -75,10 +75,10 @@ public class WorldTp extends JavaPlugin {
 		//Um hilfe von WolrTp zu bekommen
 		if(cmd.getName().equalsIgnoreCase("worldtp")) {
 			if(args.length == 0) {
-				p.sendMessage(ChatColor.RED + "/setspawnpoint:" + ChatColor.AQUA + " Setzt den Spawn wo du mit /kreativ hinkommst");
-				p.sendMessage(ChatColor.RED + "/kreativ:" + ChatColor.AQUA + " Du kommst da hin wo du den spawn gesetzt hast");
-				p.sendMessage(ChatColor.RED + "/worldtp or /wt:" + ChatColor.AQUA + " Du bekommst hilfe über WorldTp");
-				p.sendMessage(ChatColor.RED + "/leave:" + ChatColor.AQUA + " Du verlässt die 'Kreativ' Welt");
+				p.sendMessage(ChatColor.RED + "/setspawnpoint:" + ChatColor.AQUA + " Setzt den Spawn auf den du mit /kreativ kommst.");
+				p.sendMessage(ChatColor.RED + "/kreativ:" + ChatColor.AQUA + " Du kommst da hin wo du den Spawn gesetzt hast.");
+				p.sendMessage(ChatColor.RED + "/worldtp or /wt:" + ChatColor.AQUA + " Du bekommst Hilfe ueber WorldTp");
+				p.sendMessage(ChatColor.RED + "/leave:" + ChatColor.AQUA + " Du verlaesst die 'Kreativ' Welt");
                 
                 return true;
             }
