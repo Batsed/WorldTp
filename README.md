@@ -1,4 +1,0 @@
-WorldTp
-=======
-
-WorldTp Bukkit Plugin
