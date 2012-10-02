@@ -1,14 +1,24 @@
 package me.Batsed.WorldTp;
 
+import java.io.File;
 import java.util.HashMap;
+
+
+
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 public class WorldTp extends JavaPlugin {
 	
@@ -23,6 +33,7 @@ public class WorldTp extends JavaPlugin {
 	public void onDisable() {
 		System.out.println("[WorldTp] deactivate plugin");
 		}
+	@SuppressWarnings("null")
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		
 		String sprache1 = this.getConfig().getString("Config.Sprache.kreativ");
@@ -34,8 +45,9 @@ public class WorldTp extends JavaPlugin {
 		String sprache7 = this.getConfig().getString("Config.Sprache.help.leave");
 		String sprache8 = this.getConfig().getString("Config.Sprache.help.wt/worldTp");
 		
+		JavaPlugin plugin = null;
+		World World = null;
 		Player p = (Player)sender;
-		
 		//Zum Spawnpoint teleportieren/Teleporting to the spawn point
 		if(cmd.getName().equalsIgnoreCase("creative")) {
 			if(args.length == 0) {
@@ -46,42 +58,43 @@ public class WorldTp extends JavaPlugin {
 				double locX = this.getConfig().getDouble("Config.World.spawn.X");
 				double locZ = this.getConfig().getDouble("Config.World.spawn.Z");
 				
-				 public void savePlayerInv(Player p, World w){
-				        File playerInvConfigFile = new File(plugin.getDataFolder() + File.separator + "players" + File.separator + p.getName(), "inventory.yml");
-				        FileConfiguration pInv = YamlConfiguration.loadConfiguration(playerInvConfigFile);
-				        PlayerInventory inv = p.getInventory();
-				        int i = 0;
-
-				        for (ItemStack stack : inv.getContents()) {
-				            //increment integer
-				            i++;
-				            String startInventory = w.getName() + ".inv." + Integer.toString(i);
-
-				            //save inv
-				            pInv.set(startInventory + ".amount", stack.getAmount());
-				            pInv.set(startInventory + ".durability", Short.toString(stack.getDurability()));
-				            pInv.set(startInventory + ".type", stack.getTypeId());
-				            //pInv.set(startInventory + ".enchantment", stack.getEnchantments());
-				            //TODO add enchant saveing
+				savePlayerInv();
+					
+					File playerInvConfigFile = new File(plugin.getDataFolder() + File.separator + "players" + File.separator + p.getName(), "inventory.yml");
+					FileConfiguration pInv = YamlConfiguration.loadConfiguration(playerInvConfigFile);
+					PlayerInventory inv = p.getInventory();
+					int i = 0;
+					
+					for (ItemStack stack : inv.getContents()) {
+						//increment integer
+						i++;
+						String startInventory = World.getName() + ".inv." + Integer.toString(i);
+						
+						//save inv
+						pInv.set(startInventory + ".amount", stack.getAmount());
+						pInv.set(startInventory + ".durability", Short.toString(stack.getDurability()));
+						pInv.set(startInventory + ".type", stack.getTypeId());
+						//pInv.set(startInventory + ".enchantment", stack.getEnchantments());
+						//TODO add enchant saveing 
 				        }
 
-				        i = 0;
-				        for (ItemStack armor : inv.getArmorContents()){
-				                i++;
-				                String startArmor = w.getName() + ".armor." + Integer.toString(i);
+					i = 0;
+					for (ItemStack armor : inv.getArmorContents()){
+						i++;
+						String startArmor = World.getName() + ".armor." + Integer.toString(i);
 
-				                //save armor
-				                pInv.set(startArmor + ".amount", armor.getAmount());
-				                pInv.set(startArmor + ".durability", armor.getDurability());
-				                pInv.set(startArmor + ".type", armor.getTypeId());
-				                //pInv.set(startArmor + ".enchantment", armor.getEnchantments());
-				        }
+						//save armor
+						pInv.set(startArmor + ".amount", armor.getAmount());
+						pInv.set(startArmor + ".durability", armor.getDurability());
+						pInv.set(startArmor + ".type", armor.getTypeId());
+						//pInv.set(startArmor + ".enchantment", armor.getEnchantments());
+					}
 
-				        //save exp
-				        if (p.getExp() != 0) {
-				                pInv.set(w.getName() + ".exp", p.getExp());
-				        }
-				    }
+					//save exp
+					if (p.getExp() != 0) {
+						pInv.set(World.getName() + ".exp", p.getExp());
+					}
+				
 				
 				Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
 				p.getInventory().clear();
@@ -163,8 +176,16 @@ public class WorldTp extends JavaPlugin {
 			}
 		}
 		return false;
-	}
 	
+	
+		
+	}
+
+	private void savePlayerInv() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public HashMap<Player, Location> oldLocationList = new HashMap<Player, Location>();
 
 		public void loadConfig(){
