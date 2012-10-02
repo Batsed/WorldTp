@@ -67,8 +67,9 @@ public class WorldTp extends JavaPlugin {
 				p.teleport(loc);
 				
 				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache1);
-				
-				for (ItemStack stack : ((Inventory) p).getContents()) {
+				Player player = (Player)sender;
+				Inventory inv2 = (Inventory) player;
+				for (ItemStack stack : inv2.getContents()) {
 				    if (stack == null) continue;
 				
 				    
