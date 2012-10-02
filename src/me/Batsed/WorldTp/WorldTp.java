@@ -54,19 +54,16 @@ public class WorldTp extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("creative")) {
 			if(args.length == 0) {
 				
-				oldLocationList.put(p, p.getLocation());
-				
-				double locY = this.getConfig().getDouble("Config.World.spawn.Y");
-				double locX = this.getConfig().getDouble("Config.World.spawn.X");
-				double locZ = this.getConfig().getDouble("Config.World.spawn.Z");
-				
-				
 				for (ItemStack stack : inv2.getContents()) {
 				    if (stack == null) continue;
-				}
-				savePlayerInv();
-					
-					File playerInvConfigFile = new File(plugin.getDataFolder() + File.separator + "players" + File.separator + p.getName(), "inventory.yml");
+				
+				    oldLocationList.put(p, p.getLocation());
+				
+				    double locY = this.getConfig().getDouble("Config.World.spawn.Y");
+				    double locX = this.getConfig().getDouble("Config.World.spawn.X");
+				    double locZ = this.getConfig().getDouble("Config.World.spawn.Z");
+				    
+				    File playerInvConfigFile = new File(plugin.getDataFolder() + File.separator + "players" + File.separator + p.getName(), "inventory.yml");
 					FileConfiguration pInv = YamlConfiguration.loadConfiguration(playerInvConfigFile);
 					PlayerInventory inv = p.getInventory();
 					int i = 0;
@@ -108,11 +105,11 @@ public class WorldTp extends JavaPlugin {
 				p.teleport(loc);
 				
 				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache1);
-				
+					
 				return true;
-				
-				} else{ 
-					return false;	
+				}
+			}else{ 
+				return false;	
 				
 			}
 		}
@@ -185,11 +182,6 @@ public class WorldTp extends JavaPlugin {
 		return false;
 	
 	
-		
-	}
-
-	private void savePlayerInv() {
-		// TODO Auto-generated method stub
 		
 	}
 
