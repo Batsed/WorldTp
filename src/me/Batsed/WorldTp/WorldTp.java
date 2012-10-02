@@ -23,6 +23,7 @@ import org.bukkit.World;
 
 public class WorldTp extends JavaPlugin {
 	
+	
 	PluginDescriptionFile descFile = this.getDescription();
 
 	public void onEnable() {
@@ -34,7 +35,7 @@ public class WorldTp extends JavaPlugin {
 	public void onDisable() {
 		System.out.println("[WorldTp] deactivate plugin");
 		}
-	@SuppressWarnings("null")
+
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		
 		String sprache1 = this.getConfig().getString("Config.Sprache.kreativ");
@@ -46,24 +47,32 @@ public class WorldTp extends JavaPlugin {
 		String sprache7 = this.getConfig().getString("Config.Sprache.help.leave");
 		String sprache8 = this.getConfig().getString("Config.Sprache.help.wt/worldTp");
 		
-		Inventory inv2 = null;
-		JavaPlugin plugin = null;
-		World World = null;
 		Player p = (Player)sender;
+		World World = p.getWorld();
+		JavaPlugin plugin = this;
+		
+		
 		//Zum Spawnpoint teleportieren/Teleporting to the spawn point
 		if(cmd.getName().equalsIgnoreCase("creative")) {
 			if(args.length == 0) {
+				oldLocationList.put(p, p.getLocation());
 				
-				for (ItemStack stack : inv2.getContents()) {
+			    double locY = this.getConfig().getDouble("Config.World.spawn.Y");
+			    double locX = this.getConfig().getDouble("Config.World.spawn.X");
+			    double locZ = this.getConfig().getDouble("Config.World.spawn.Z");
+			    
+			    Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
+				
+				p.setGameMode(GameMode.CREATIVE);
+				p.teleport(loc);
+				
+				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache1);
+				
+				for (ItemStack stack : ((Inventory) p).getContents()) {
 				    if (stack == null) continue;
 				
-				    oldLocationList.put(p, p.getLocation());
-				
-				    double locY = this.getConfig().getDouble("Config.World.spawn.Y");
-				    double locX = this.getConfig().getDouble("Config.World.spawn.X");
-				    double locZ = this.getConfig().getDouble("Config.World.spawn.Z");
 				    
-				    File playerInvConfigFile = new File(plugin.getDataFolder() + File.separator + "players" + File.separator + p.getName(), "inventory.yml");
+					File playerInvConfigFile = new File(plugin.getDataFolder() + File.separator + "players" + File.separator + p.getName(), "inventory.yml");
 					FileConfiguration pInv = YamlConfiguration.loadConfiguration(playerInvConfigFile);
 					PlayerInventory inv = p.getInventory();
 					int i = 0;
@@ -74,11 +83,10 @@ public class WorldTp extends JavaPlugin {
 						String startInventory = World.getName() + ".inv." + Integer.toString(i);
 						
 						//save inv
-						pInv.set(startInventory + ".amount", stack1.getAmount());
+						pInv.set(startInventory + ".amount", stack.getAmount());
 						pInv.set(startInventory + ".durability", Short.toString(stack1.getDurability()));
 						pInv.set(startInventory + ".type", stack1.getTypeId());
-						//pInv.set(startInventory + ".enchantment", stack.getEnchantments());
-						//TODO add enchant saveing 
+						//pInv.set(startInventory + ".enchantment", stack.getEnchantments());	
 				        }
 
 					i = 0;
@@ -97,20 +105,12 @@ public class WorldTp extends JavaPlugin {
 					if (p.getExp() != 0) {
 						pInv.set(World.getName() + ".exp", p.getExp());
 					}
-				
-				
-				Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
-				p.getInventory().clear();
-				p.setGameMode(GameMode.CREATIVE);
-				p.teleport(loc);
-				
-				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache1);
-					
-				return true;
 				}
-			}else{ 
-				return false;	
+				p.getInventory().clear();	
 				
+				return true;
+			}else{
+				return false;
 			}
 		}
 		//Spawnpoint von der Welt setzen/Defining the spawn point for the creative world
@@ -131,7 +131,7 @@ public class WorldTp extends JavaPlugin {
             else {
                 return false;
             }
-        }	
+		}	
 		
 		//Um hilfe von WorldTp zu bekommen/Getting help from WorldTP
 		if(cmd.getName().equalsIgnoreCase("worldtp")) {
@@ -177,14 +177,13 @@ public class WorldTp extends JavaPlugin {
 				else {
 					return false;
 				}
+				
 			}
+			return false;
 		}
 		return false;
-	
-	
-		
 	}
-
+	
 	public HashMap<Player, Location> oldLocationList = new HashMap<Player, Location>();
 
 		public void loadConfig(){
