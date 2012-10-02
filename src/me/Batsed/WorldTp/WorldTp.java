@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -45,6 +46,7 @@ public class WorldTp extends JavaPlugin {
 		String sprache7 = this.getConfig().getString("Config.Sprache.help.leave");
 		String sprache8 = this.getConfig().getString("Config.Sprache.help.wt/worldTp");
 		
+		Inventory inv2 = null;
 		JavaPlugin plugin = null;
 		World World = null;
 		Player p = (Player)sender;
@@ -58,6 +60,10 @@ public class WorldTp extends JavaPlugin {
 				double locX = this.getConfig().getDouble("Config.World.spawn.X");
 				double locZ = this.getConfig().getDouble("Config.World.spawn.Z");
 				
+				
+				for (ItemStack stack : inv2.getContents()) {
+				    if (stack == null) continue;
+				}
 				savePlayerInv();
 					
 					File playerInvConfigFile = new File(plugin.getDataFolder() + File.separator + "players" + File.separator + p.getName(), "inventory.yml");
@@ -65,15 +71,15 @@ public class WorldTp extends JavaPlugin {
 					PlayerInventory inv = p.getInventory();
 					int i = 0;
 					
-					for (ItemStack stack : inv.getContents()) {
+					for (ItemStack stack1 : inv.getContents()) {
 						//increment integer
 						i++;
 						String startInventory = World.getName() + ".inv." + Integer.toString(i);
 						
 						//save inv
-						pInv.set(startInventory + ".amount", stack.getAmount());
-						pInv.set(startInventory + ".durability", Short.toString(stack.getDurability()));
-						pInv.set(startInventory + ".type", stack.getTypeId());
+						pInv.set(startInventory + ".amount", stack1.getAmount());
+						pInv.set(startInventory + ".durability", Short.toString(stack1.getDurability()));
+						pInv.set(startInventory + ".type", stack1.getTypeId());
 						//pInv.set(startInventory + ".enchantment", stack.getEnchantments());
 						//TODO add enchant saveing 
 				        }
@@ -104,11 +110,12 @@ public class WorldTp extends JavaPlugin {
 				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache1);
 				
 				return true;
-			}else {
-			return false;
+				
+				} else{ 
+					return false;	
+				
 			}
 		}
-		
 		//Spawnpoint von der Welt setzen/Defining the spawn point for the creative world
 		if(cmd.getName().equalsIgnoreCase("setspawnpoint")) {
 			if(args.length == 0) {
