@@ -14,4 +14,26 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/me/Batsed/WorldTp/InventoryManager.class</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/bin/me/Batsed/WorldTp/InventoryManager.class</locationURI>
+		</link>
+		<link>
+			<name>src/me/Batsed/WorldTp/InventoryUtils.class</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/bin/me/Batsed/WorldTp/InventoryUtils.class</locationURI>
+		</link>
+		<link>
+			<name>src/me/Batsed/WorldTp/SerializableInventory.class</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/bin/me/Batsed/WorldTp/SerializableInventory.class</locationURI>
+		</link>
+		<link>
+			<name>src/me/Batsed/WorldTp/SerializableItem.class</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/bin/me/Batsed/WorldTp/SerializableItem.class</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

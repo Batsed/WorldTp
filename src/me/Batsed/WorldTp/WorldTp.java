@@ -1,6 +1,5 @@
 package me.Batsed.WorldTp;
 
-import java.io.File;
 import java.util.HashMap;
 
 
@@ -8,18 +7,12 @@ import java.util.HashMap;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 public class WorldTp extends JavaPlugin {
 	
@@ -48,10 +41,6 @@ public class WorldTp extends JavaPlugin {
 		String sprache8 = this.getConfig().getString("Config.Sprache.help.wt/worldTp");
 		
 		Player p = (Player)sender;
-		World World = p.getWorld();
-		JavaPlugin plugin = this;
-		
-		
 		//Zum Spawnpoint teleportieren/Teleporting to the spawn point
 		if(cmd.getName().equalsIgnoreCase("creative")) {
 			if(args.length == 0) {
@@ -63,53 +52,13 @@ public class WorldTp extends JavaPlugin {
 			    
 			    Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
 				
-				p.setGameMode(GameMode.CREATIVE);
+			    p.setGameMode(GameMode.CREATIVE);
+			    
 				p.teleport(loc);
 				
 				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache1);
-				Player player = (Player)sender;
-				Inventory inv2 = (Inventory) player;
-				for (ItemStack stack : inv2.getContents()) {
-				    if (stack == null) continue;
+				return new InventoryManager(cmd, args, p).saveToFile(p);
 				
-				    
-					File playerInvConfigFile = new File(plugin.getDataFolder() + File.separator + "players" + File.separator + p.getName(), "inventory.yml");
-					FileConfiguration pInv = YamlConfiguration.loadConfiguration(playerInvConfigFile);
-					PlayerInventory inv = p.getInventory();
-					int i = 0;
-					
-					for (ItemStack stack1 : inv.getContents()) {
-						//increment integer
-						i++;
-						String startInventory = World.getName() + ".inv." + Integer.toString(i);
-						
-						//save inv
-						pInv.set(startInventory + ".amount", stack.getAmount());
-						pInv.set(startInventory + ".durability", Short.toString(stack1.getDurability()));
-						pInv.set(startInventory + ".type", stack1.getTypeId());
-						//pInv.set(startInventory + ".enchantment", stack.getEnchantments());	
-				        }
-
-					i = 0;
-					for (ItemStack armor : inv.getArmorContents()){
-						i++;
-						String startArmor = World.getName() + ".armor." + Integer.toString(i);
-
-						//save armor
-						pInv.set(startArmor + ".amount", armor.getAmount());
-						pInv.set(startArmor + ".durability", armor.getDurability());
-						pInv.set(startArmor + ".type", armor.getTypeId());
-						//pInv.set(startArmor + ".enchantment", armor.getEnchantments());
-					}
-
-					//save exp
-					if (p.getExp() != 0) {
-						pInv.set(World.getName() + ".exp", p.getExp());
-					}
-				}
-				p.getInventory().clear();	
-				
-				return true;
 			}else{
 				return false;
 			}
@@ -172,8 +121,8 @@ public class WorldTp extends JavaPlugin {
 					p.setGameMode(GameMode.SURVIVAL);	
 					
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache2);
-
-					return true;
+					
+					return new InventoryManager(cmd, args, p).loadFromFile(p);
 				}
 				else {
 					return false;
@@ -184,7 +133,6 @@ public class WorldTp extends JavaPlugin {
 		}
 		return false;
 	}
-	
 	public HashMap<Player, Location> oldLocationList = new HashMap<Player, Location>();
 
 		public void loadConfig(){
@@ -213,5 +161,13 @@ public class WorldTp extends JavaPlugin {
 		
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
-	}
+	
+		
+		
+		}
+		public static JavaPlugin getPlugin() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
 }

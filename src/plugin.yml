@@ -1,21 +1,21 @@
 name: WorldTp
-version: 0.25
+version: 0.5
 main: me.Batsed.WorldTp.WorldTp
 author: Batsed
 website: http://Batsed.de
 commands:
      creative:
-          description: Bringt dich in eine andere Welt
+          description: You go to the spawn point you set
           usage: /<command>
      setspawnpoint:
-          description: Setzt den Spawnpoint in der Welt
+          description: Sets the spawn point you reach with /creative
           usage: /<command>
      leave:
-          description: Um aus der Welt raus zu kommen
+          description: You leave the creative world
           usage: /<command>
      worldtp:
-          description: Um Hilfe zu bekommen
+          description: Read the help for WorldTP
           usage: /<command>
      wt:
-          description: Um Hilfe zu bekommen
+          description: Read the help for WorldTP
           usage: /<command>
