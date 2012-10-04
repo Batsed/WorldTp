@@ -1,10 +1,6 @@
 package me.Batsed.WorldTp;
 
 import java.util.HashMap;
-
-
-
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -23,11 +19,11 @@ public class WorldTp extends JavaPlugin {
 		loadConfig();
 		System.out.println("[WorldTp] Plugin by Batsed");
 		System.out.println("[WorldTp] activate plugin");
-	
 	}
+	
 	public void onDisable() {
 		System.out.println("[WorldTp] deactivate plugin");
-		}
+	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		
@@ -41,7 +37,9 @@ public class WorldTp extends JavaPlugin {
 		String sprache8 = this.getConfig().getString("Config.Sprache.help.wt/worldTp");
 		
 		Player p = (Player)sender;
-		//Zum Spawnpoint teleportieren/Teleporting to the spawn point
+		
+		//Zum Spawnpoint teleportieren
+		//Teleporting to the spawn point
 		if(cmd.getName().equalsIgnoreCase("creative")) {
 			if(args.length == 0) {
 				oldLocationList.put(p, p.getLocation());
@@ -63,7 +61,9 @@ public class WorldTp extends JavaPlugin {
 				return false;
 			}
 		}
-		//Spawnpoint von der Welt setzen/Defining the spawn point for the creative world
+	
+		//Spawnpoint von der Welt setzen
+		//Defining the spawn point for the creative world
 		if(cmd.getName().equalsIgnoreCase("setspawnpoint")) {
 			if(args.length == 0) {
                 getConfig().set("Config.World.spawn.X", p.getLocation().getX());
@@ -73,17 +73,17 @@ public class WorldTp extends JavaPlugin {
             	p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
                 p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4);
                 
-        		this.getConfig().options().copyDefaults(true);
+                this.getConfig().options().copyDefaults(true);
         		this.saveConfig();
                 
-                return true;
-            }
-            else {
-                return false;
-            }
+        		return true;
+			}else {
+				return false;
+			}
 		}	
 		
-		//Um hilfe von WorldTp zu bekommen/Getting help from WorldTP
+		//Um hilfe von WorldTp zu bekommen
+		//Getting help from WorldTP
 		if(cmd.getName().equalsIgnoreCase("worldtp")) {
 			if(args.length == 0) {
 				p.sendMessage(ChatColor.RED + "/setspawnpoint: " + ChatColor.AQUA + sprache5);
@@ -91,13 +91,14 @@ public class WorldTp extends JavaPlugin {
 				p.sendMessage(ChatColor.RED + "/worldtp or /wt: " + ChatColor.AQUA + sprache8);
 				p.sendMessage(ChatColor.RED + "/leave: " + ChatColor.AQUA + sprache7);
                 
-                return true;
+				return true;
+			}else {
+				return false;
             }
-            else {
-                return false;
-            }
-        }
-		//Um hilfe von WorldTp zu bekommen / Getting help from WorldTP
+		}
+		
+		//Um hilfe von WorldTp zu bekommen
+		//Getting help from WorldTP
 		if(cmd.getName().equalsIgnoreCase("wt")) {
 			if(args.length == 0) {
 				p.sendMessage(ChatColor.RED + "/setspawnpoint: " + ChatColor.AQUA + sprache5);
@@ -106,25 +107,23 @@ public class WorldTp extends JavaPlugin {
 				p.sendMessage(ChatColor.RED + "/leave: " + ChatColor.AQUA + sprache7);
 				
 				return true;
-			}
-			else {
+			}else {
 				return false;
 			}
 		}
-		//Aus der Welt zum alten Standpunkt teleportieren/Teleporting from the world to the old place
+		
+		//Aus der Welt zum alten Standpunkt teleportieren
+		//Teleporting from the world to the old place
 		if(cmd.getName().equalsIgnoreCase("leave")) {
 			if(args.length == 0) {
-				
 				if(oldLocationList.containsKey(p)) {
 					
 					p.teleport(oldLocationList.get(p));
 					p.setGameMode(GameMode.SURVIVAL);	
-					
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache2);
 					
 					return new InventoryManager(cmd, args, p).loadFromFile(p);
-				}
-				else {
+				}else {
 					return false;
 				}
 				
@@ -135,7 +134,7 @@ public class WorldTp extends JavaPlugin {
 	}
 	public HashMap<Player, Location> oldLocationList = new HashMap<Player, Location>();
 
-		public void loadConfig(){
+	public void loadConfig(){
 		String patchY = "Config.World.spawn.Y";
 		this.getConfig().addDefault(patchY, 0);
 		String patchX = "Config.World.spawn.X";
@@ -164,10 +163,10 @@ public class WorldTp extends JavaPlugin {
 	
 		
 		
-		}
-		public static JavaPlugin getPlugin() {
-			// TODO Auto-generated method stub
-			return null;
-		}
+	}
+	public static JavaPlugin getPlugin() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 		
 }
