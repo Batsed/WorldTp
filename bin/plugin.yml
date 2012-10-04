@@ -4,18 +4,15 @@ main: me.Batsed.WorldTp.WorldTp
 author: Batsed
 website: http://Batsed.de
 commands:
-     creative:
+     wt:
           description: You go to the spawn point you set
-          usage: /<command>
+          usage: /<command> <name>
      setspawnpoint:
           description: Sets the spawn point you reach with /creative
-          usage: /<command>
+          usage: /<command> <name>
      leave:
           description: You leave the creative world
           usage: /<command>
      worldtp:
-          description: Read the help for WorldTP
-          usage: /<command>
-     wt:
           description: Read the help for WorldTP
           usage: /<command>

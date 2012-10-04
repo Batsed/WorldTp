@@ -27,7 +27,7 @@ public class WorldTp extends JavaPlugin {
 
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		
-		String sprache1 = this.getConfig().getString("Config.Sprache.kreativ");
+		String sprache1 = this.getConfig().getString("Config.Sprache.creative");
 		String sprache2 = this.getConfig().getString("Config.Sprache.leave");
 		String sprache3 = this.getConfig().getString("Config.Sprache.setspawnpoint");
 		String sprache4 = this.getConfig().getString("Config.Sprache.setspawnpoint2");
@@ -40,13 +40,23 @@ public class WorldTp extends JavaPlugin {
 		
 		//Zum Spawnpoint teleportieren
 		//Teleporting to the spawn point
-		if(cmd.getName().equalsIgnoreCase("creative")) {
+		if(cmd.getName().equalsIgnoreCase("wt")) {
+			if(args.length < 1) {
+				p.sendMessage(ChatColor.RED + "[WorldTp] Zu wenig Argumente");
+				return false;
+			}
 			if(args.length == 0) {
+				p.sendMessage(ChatColor.RED + "[WorldTp] Zu viele Argumente");
+				return false;
+			}
+			if(args.length == 1) {
+				String Spawnpoint = (args[0]);		
 				oldLocationList.put(p, p.getLocation());
 				
-			    double locY = this.getConfig().getDouble("Config.World.spawn.Y");
-			    double locX = this.getConfig().getDouble("Config.World.spawn.X");
-			    double locZ = this.getConfig().getDouble("Config.World.spawn.Z");
+				
+				double locY = this.getConfig().getDouble("Config."+ Spawnpoint +".spawn.Y");
+			    double locX = this.getConfig().getDouble("Config."+ Spawnpoint +".spawn.X");
+			    double locZ = this.getConfig().getDouble("Config."+ Spawnpoint +".spawn.Z");
 			    
 			    Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
 				
@@ -65,10 +75,19 @@ public class WorldTp extends JavaPlugin {
 		//Spawnpoint von der Welt setzen
 		//Defining the spawn point for the creative world
 		if(cmd.getName().equalsIgnoreCase("setspawnpoint")) {
+			if(args.length < 1) {
+				p.sendMessage(ChatColor.RED + "[WorldTp] Zu wenig Argumente");
+				return false;
+				
+			}
 			if(args.length == 0) {
-                getConfig().set("Config.World.spawn.X", p.getLocation().getX());
-                getConfig().set("Config.World.spawn.Y", p.getLocation().getY());
-            	getConfig().set("Config.World.spawn.Z", p.getLocation().getZ());
+				p.sendMessage(ChatColor.RED + "[WorldTp] Zu viele Argumente");
+			}
+			if(args.length == 1) {
+				String spawnName = (args[0]);
+				getConfig().set("Config."+ spawnName +".spawn.X", p.getLocation().getX());
+                getConfig().set("Config."+ spawnName +".spawn.Y", p.getLocation().getY());
+            	getConfig().set("Config."+ spawnName +".spawn.Z", p.getLocation().getZ());
                 
             	p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
                 p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4);
@@ -97,21 +116,6 @@ public class WorldTp extends JavaPlugin {
             }
 		}
 		
-		//Um hilfe von WorldTp zu bekommen
-		//Getting help from WorldTP
-		if(cmd.getName().equalsIgnoreCase("wt")) {
-			if(args.length == 0) {
-				p.sendMessage(ChatColor.RED + "/setspawnpoint: " + ChatColor.AQUA + sprache5);
-				p.sendMessage(ChatColor.RED + "/creative: " + ChatColor.AQUA + sprache6);
-				p.sendMessage(ChatColor.RED + "/worldtp or /wt: " + ChatColor.AQUA + sprache8);
-				p.sendMessage(ChatColor.RED + "/leave: " + ChatColor.AQUA + sprache7);
-				
-				return true;
-			}else {
-				return false;
-			}
-		}
-		
 		//Aus der Welt zum alten Standpunkt teleportieren
 		//Teleporting from the world to the old place
 		if(cmd.getName().equalsIgnoreCase("leave")) {
@@ -135,13 +139,7 @@ public class WorldTp extends JavaPlugin {
 	public HashMap<Player, Location> oldLocationList = new HashMap<Player, Location>();
 
 	public void loadConfig(){
-		String patchY = "Config.World.spawn.Y";
-		this.getConfig().addDefault(patchY, 0);
-		String patchX = "Config.World.spawn.X";
-		this.getConfig().addDefault(patchX, 0);
-		String patchZ = "Config.World.spawn.Z";
-		this.getConfig().addDefault(patchZ, 0);
-		String path1 = "Config.Sprache.kreativ";
+		String path1 = "Config.Sprache.creative";
 		this.getConfig().addDefault(path1, "You have been teleported");
 		String path2 = "Config.Sprache.leave";
 		this.getConfig().addDefault(path2, "You have been teleported back to your old position");
