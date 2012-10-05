@@ -27,14 +27,17 @@ public class WorldTp extends JavaPlugin {
 
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		
-		String sprache1 = this.getConfig().getString("Config.Sprache.creative");
-		String sprache2 = this.getConfig().getString("Config.Sprache.leave");
-		String sprache3 = this.getConfig().getString("Config.Sprache.setspawnpoint");
-		String sprache4 = this.getConfig().getString("Config.Sprache.setspawnpoint2");
-		String sprache5 = this.getConfig().getString("Config.Sprache.help.setspawnpoint");
-		String sprache6 = this.getConfig().getString("Config.Sprache.help.creative");
-		String sprache7 = this.getConfig().getString("Config.Sprache.help.leave");
-		String sprache8 = this.getConfig().getString("Config.Sprache.help.wt/worldTp");
+		String sprache1 = this.getConfig().getString("Config.language.Wt");
+		String sprache2 = this.getConfig().getString("Config.language.Leave");
+		String sprache3 = this.getConfig().getString("Config.language.Setspawnpoint");
+		String sprache4 = this.getConfig().getString("Config.language.Setspawnpoint2");
+		String sprache9 = this.getConfig().getString("Config.language.NoArgument");
+		String sprache10 = this.getConfig().getString("Config.language.TooManyArgument");
+		String sprache11 = this.getConfig().getString("Config.language.NoWarpPoint");
+		String sprache5 = this.getConfig().getString("Config.language.Help.Setspawnpoint");
+		String sprache6 = this.getConfig().getString("Config.language.Help.Wt");
+		String sprache7 = this.getConfig().getString("Config.language.Help.Leave");
+		String sprache8 = this.getConfig().getString("Config.language.Help.WorldTp");
 		
 		Player p = (Player)sender;
 		
@@ -42,11 +45,11 @@ public class WorldTp extends JavaPlugin {
 		//Teleporting to the spawn point
 		if(cmd.getName().equalsIgnoreCase("wt")) {
 			if(args.length < 1) {
-				p.sendMessage(ChatColor.RED + "[WorldTp] Zu wenig Argumente angegeben");
+				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
 				return false;
 			}
 			if(args.length == 0) {
-				p.sendMessage(ChatColor.RED + "[WorldTp] Zu viele Argumente angegeben");
+				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
 				return false;
 			}
 			if(args.length == 1) {
@@ -57,7 +60,7 @@ public class WorldTp extends JavaPlugin {
 			    double locZ = this.getConfig().getDouble("Config."+ Spawnpoint +".spawn.Z");
 			    
 			    if(locX == 0) if(locY == 0) if(locZ == 0) {
-			    	p.sendMessage(ChatColor.RED + "Warppoint nicht vorhanden");
+			    	p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache11);
 			    	return false;
 			    }
 			   
@@ -81,12 +84,12 @@ public class WorldTp extends JavaPlugin {
 		//Defining the spawn point for the creative world
 		if(cmd.getName().equalsIgnoreCase("setspawnpoint")) {
 			if(args.length < 1) {
-				p.sendMessage(ChatColor.RED + "[WorldTp] Zu wenig Argumente");
+				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
 				return false;
 				
 			}
 			if(args.length == 0) {
-				p.sendMessage(ChatColor.RED + "[WorldTp] Zu viele Argumente");
+				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
 			}
 			if(args.length == 1) {
 				String spawnName = (args[0]);
@@ -111,9 +114,9 @@ public class WorldTp extends JavaPlugin {
 		//Getting help from WorldTP
 		if(cmd.getName().equalsIgnoreCase("worldtp")) {
 			if(args.length == 0) {
-				p.sendMessage(ChatColor.RED + "/setspawnpoint: " + ChatColor.AQUA + sprache5);
-				p.sendMessage(ChatColor.RED + "/creative: " + ChatColor.AQUA + sprache6);
-				p.sendMessage(ChatColor.RED + "/worldtp or /wt: " + ChatColor.AQUA + sprache8);
+				p.sendMessage(ChatColor.RED + "/setspawnpoint <warpname>: " + ChatColor.AQUA + sprache5);
+				p.sendMessage(ChatColor.RED + "/creative <warpname>: " + ChatColor.AQUA + sprache6);
+				p.sendMessage(ChatColor.RED + "/worldtp: " + ChatColor.AQUA + sprache8);
 				p.sendMessage(ChatColor.RED + "/leave: " + ChatColor.AQUA + sprache7);
                 
 				return true;
@@ -145,22 +148,29 @@ public class WorldTp extends JavaPlugin {
 	public HashMap<Player, Location> oldLocationList = new HashMap<Player, Location>();
 
 	public void loadConfig(){
-		String path1 = "Config.Sprache.creative";
+		String path1 = "Config.language.Wt";
 		this.getConfig().addDefault(path1, "You have been teleported");
-		String path2 = "Config.Sprache.leave";
+		String path2 = "Config.language.Leave";
 		this.getConfig().addDefault(path2, "You have been teleported back to your old position");
-		String path3 = "Config.Sprache.setspawnpoint";
+		String path3 = "Config.language.Setspawnpoint";
 		this.getConfig().addDefault(path3, "You have defined the spawnpoint");
-		String path4 = "Config.Sprache.setspawnpoint2";
+		String path4 = "Config.language.Setspawnpoint2";
 		this.getConfig().addDefault(path4, "Saved");
-		String path5 = "Config.Sprache.help.setspawnpoint";
-		this.getConfig().addDefault(path5, "Sets the spawn point you reach with /creative");
-		String path6 = "Config.Sprache.help.creative";
+		String path9 = "Config.language.NoArgument";
+		this.getConfig().addDefault(path9, "Zu wenig Argumente");
+		String path10 = "Config.language.TooManyArgument";
+		this.getConfig().addDefault(path10, "Zu viele Argumente");
+		String path11 = "Config.language.NoWarpPoint";
+		this.getConfig().addDefault(path11, "Warppoint exestiert nicht");
+		String path5 = "Config.language.Help.Setspawnpoint";
+		this.getConfig().addDefault(path5, "Sets the spawn point you reach with /wt");
+		String path6 = "Config.language.Help.Wt";
 		this.getConfig().addDefault(path6, "You go to the spawn point you set");
-		String path7 = "Config.Sprache.help.leave";
+		String path7 = "Config.language.Help.Leave";
 		this.getConfig().addDefault(path7, "You leave the creative world");
-		String path8 = "Config.Sprache.help.wt/worldTp";
+		String path8 = "Config.language.Help.WorldTp";
 		this.getConfig().addDefault(path8, "Read the help for WorldTP");
+		
 		
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();

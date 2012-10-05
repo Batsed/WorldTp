@@ -8,8 +8,8 @@ commands:
           description: You go to the spawn point you set
           usage: /<command> <warpname>
      setspawnpoint:
-          description: Sets the spawn point you reach with /creative
-          usage: /<command> <name>
+          description: Sets the spawn point you reach with /wt <Warpname>
+          usage: /<command> <warpname>
      leave:
           description: You leave the creative world
           usage: /<command>
