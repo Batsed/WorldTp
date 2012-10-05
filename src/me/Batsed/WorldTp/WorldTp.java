@@ -90,6 +90,7 @@ public class WorldTp extends JavaPlugin {
 			}
 			if(args.length == 1) {
 				String spawnName = (args[0]);
+				
 				getConfig().set("Config."+ spawnName +".spawn.X", p.getLocation().getX());
                 getConfig().set("Config."+ spawnName +".spawn.Y", p.getLocation().getY());
             	getConfig().set("Config."+ spawnName +".spawn.Z", p.getLocation().getZ());
