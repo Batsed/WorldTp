@@ -9,7 +9,7 @@ commands:
           usage: /<command> <warpname>
      setspawnpoint:
           description: Sets the spawn point you reach with /wt
-          usage: /<command> <warpname> <withsave/nosave>
+          usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1>
      leave:
           description: You leave the creative world
           usage: /<command>

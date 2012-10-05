@@ -99,7 +99,6 @@ public class InventoryManager
 
 			oos.writeObject(inv);
 			oos.close();
-
 			return clearInventory(p);
 		}
 		catch (Exception e) {
