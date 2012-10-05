@@ -6,7 +6,7 @@ website: http://Batsed.de
 commands:
      wt:
           description: You go to the spawn point you set
-          usage: /<command> <name>
+          usage: /<command> <warpname>
      setspawnpoint:
           description: Sets the spawn point you reach with /creative
           usage: /<command> <name>

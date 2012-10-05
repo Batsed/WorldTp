@@ -42,21 +42,26 @@ public class WorldTp extends JavaPlugin {
 		//Teleporting to the spawn point
 		if(cmd.getName().equalsIgnoreCase("wt")) {
 			if(args.length < 1) {
-				p.sendMessage(ChatColor.RED + "[WorldTp] Zu wenig Argumente");
+				p.sendMessage(ChatColor.RED + "[WorldTp] Zu wenig Argumente angegeben");
 				return false;
 			}
 			if(args.length == 0) {
-				p.sendMessage(ChatColor.RED + "[WorldTp] Zu viele Argumente");
+				p.sendMessage(ChatColor.RED + "[WorldTp] Zu viele Argumente angegeben");
 				return false;
 			}
 			if(args.length == 1) {
 				String Spawnpoint = (args[0]);		
-				oldLocationList.put(p, p.getLocation());
-				
 				
 				double locY = this.getConfig().getDouble("Config."+ Spawnpoint +".spawn.Y");
 			    double locX = this.getConfig().getDouble("Config."+ Spawnpoint +".spawn.X");
 			    double locZ = this.getConfig().getDouble("Config."+ Spawnpoint +".spawn.Z");
+			    
+			    if(locX == 0) if(locY == 0) if(locZ == 0) {
+			    	p.sendMessage(ChatColor.RED + "Warppoint nicht vorhanden");
+			    	return false;
+			    }
+			   
+			    oldLocationList.put(p, p.getLocation());
 			    
 			    Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
 				
