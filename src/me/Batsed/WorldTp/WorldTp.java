@@ -1,14 +1,15 @@
 package me.Batsed.WorldTp;
 
 import java.util.HashMap;
+
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
 
 public class WorldTp extends JavaPlugin {
 	
@@ -48,7 +49,7 @@ public class WorldTp extends JavaPlugin {
 				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
 				return false;
 			}
-			if(args.length == 0) {
+			if(args.length > 1) {
 				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
 				return false;
 			}
@@ -58,16 +59,33 @@ public class WorldTp extends JavaPlugin {
 				double locY = this.getConfig().getDouble("Config."+ Spawnpoint +".spawn.Y");
 			    double locX = this.getConfig().getDouble("Config."+ Spawnpoint +".spawn.X");
 			    double locZ = this.getConfig().getDouble("Config."+ Spawnpoint +".spawn.Z");
+			    String saved = this.getConfig().getString("Config."+ Spawnpoint +".SaveInventory");
+			    String game = this.getConfig().getString("Config."+ Spawnpoint +".GamemodeCreative");
 			    
-			    if(locX == 0) if(locY == 0) if(locZ == 0) {
+			    //Fehler überprüfung
+			    if(locX == 0) {
 			    	p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache11);
 			    	return false;
 			    }
+			    if(game.length() > 5) {
+					p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint " + Spawnpoint + " hat in der Config bei GamemodeCreative einen Fehler");
+					return false;
+			    }
+			    if(game.length() < 4) {
+					p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint " + Spawnpoint + " hat in der Config bei GamemodeCreative einen Fehler");
+					return false;
+			    }
+			    if(saved.length() > 5) {
+			    	p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint " + Spawnpoint + " hat in der Config bei SaveInventory einen Fehler");
+			    	return false;
+			    }
+			    if(saved.length() < 4) {
+			    	p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint " + Spawnpoint + " hat in der Config bei SaveInventory einen Fehler");
+			    	return false;
+			    }
 			    
+			    //hauptquellcode
 			    oldLocationList.put(p, p.getLocation());
-			    
-			    String saved = this.getConfig().getString("Config."+ Spawnpoint +".SaveInventory");
-			    String game = this.getConfig().getString("Config."+ Spawnpoint +".GamemodeCreative");
 			    Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
 			    p.teleport(loc);
 			    p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache1);
@@ -80,7 +98,7 @@ public class WorldTp extends JavaPlugin {
 				}
 				return true;
 			}else{
-				p.sendMessage(ChatColor.RED + "[WorldTp] In der Config beim Spawnpoint ist bei option SaveInventory ein Fehler");
+				p.sendMessage(ChatColor.RED + "[WorldTp] In der Config von WorldTp ist ein Fehler");
 				return false;
 			}
 		}	
@@ -109,8 +127,9 @@ public class WorldTp extends JavaPlugin {
 					getConfig().get("Config."+ spawnName +".SaveInventory");
 					this.getConfig().set("Config."+ spawnName +".SaveInventory", false);
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
-					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4);
 					p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint " + spawnName + " eingestellt als '" + save + "' im Gamemode " + game);
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4);
+					p.sendMessage(ChatColor.RED + "[WorldTp] Weiter Einstellungen können sie im ordner plugins, WorldTp finden");
 					this.getConfig().options().copyDefaults(true);
 					this.saveConfig();
 				}
@@ -119,8 +138,9 @@ public class WorldTp extends JavaPlugin {
 					this.getConfig().set("Config."+ spawnName +".SaveInventory", true);
 					
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
-					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4);
 					p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint " + spawnName + " eingestellt als '" + save + "' im Gamemode " + game);
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4);
+					p.sendMessage(ChatColor.RED + "[WorldTp] Weiter Einstellungen können sie im ordner plugins, WorldTp finden");
                 
 					this.getConfig().options().copyDefaults(true);
 					this.saveConfig();
@@ -148,13 +168,12 @@ public class WorldTp extends JavaPlugin {
 			}
 		}	
 	
-		
 		//Um hilfe von WorldTp zu bekommen
 		//Getting help from WorldTP
 		if(cmd.getName().equalsIgnoreCase("worldtp")) {
 			if(args.length == 0) {
-				p.sendMessage(ChatColor.RED + "/setspawnpoint <warpname>: " + ChatColor.AQUA + sprache5);
-				p.sendMessage(ChatColor.RED + "/creative <warpname>: " + ChatColor.AQUA + sprache6);
+				p.sendMessage(ChatColor.RED + "/setspawnpoint: " + ChatColor.AQUA + sprache5);
+				p.sendMessage(ChatColor.RED + "/wt: " + ChatColor.AQUA + sprache6);
 				p.sendMessage(ChatColor.RED + "/worldtp: " + ChatColor.AQUA + sprache8);
 				p.sendMessage(ChatColor.RED + "/leave: " + ChatColor.AQUA + sprache7);
                 
@@ -179,8 +198,7 @@ public class WorldTp extends JavaPlugin {
 			}else {
 				return false;
 				}
-				
-			}
+		}
 		return true;
 	}
 	public HashMap<Player, Location> oldLocationList = new HashMap<Player, Location>();
@@ -213,8 +231,6 @@ public class WorldTp extends JavaPlugin {
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
 	
-		
-		
 	}
 	public static JavaPlugin getPlugin() {
 		// TODO Auto-generated method stub
