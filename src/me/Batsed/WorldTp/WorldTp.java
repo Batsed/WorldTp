@@ -188,6 +188,7 @@ public class WorldTp extends JavaPlugin {
 				p.sendMessage(ChatColor.RED + "/wt: " + ChatColor.AQUA + sprache6);
 				p.sendMessage(ChatColor.RED + "/worldtp: " + ChatColor.AQUA + sprache8);
 				p.sendMessage(ChatColor.RED + "/leave: " + ChatColor.AQUA + sprache7);
+				p.sendMessage(ChatColor.RED + "/invback: " +ChatColor.AQUA + "Give yor Inventory back");
                 
 				return true;
 			}else {
