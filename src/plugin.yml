@@ -1,5 +1,5 @@
 name: WorldTp
-version: 0.6
+version: 0.7
 main: me.Batsed.WorldTp.WorldTp
 author: Batsed
 website: http://Batsed.de
@@ -7,15 +7,20 @@ commands:
      wt:
           description: You go to the spawn point you set
           usage: /<command> <warpname>
+          premission: worldtp.wt
      setspawnpoint:
           description: Sets the spawn point you reach with /wt
           usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1>
+          premission: worldtp.setspawnpoint
      leave:
           description: You leave the creative world
-          usage: /<command>
+          usage: /<command> <warpname>
+          premission: worldtp.leave
      worldtp:
           description: Read the help for WorldTP
           usage: /<command>
+          premission: worldtp.worldtp
      invback:
           description: Give your Inventory back
-          usage: /<command>
+          usage: /<command> <warpname>
+          premission: worldtp.invback

@@ -1,4 +1,5 @@
 package me.Batsed.WorldTp;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,15 +14,16 @@ import org.bukkit.inventory.PlayerInventory;
  
 public class InventoryManager
 {
-	
+	String clearinv;
 	Command cmd;
 	String[] args;
 	Player p;
 	
-	public InventoryManager(Command cmd, String[] args, Player p) {
+	public InventoryManager(Command cmd, String[] args, Player p, String clearinv) {
 		this.cmd = cmd;
 		this.args = args;
 		this.p = p;
+		this.clearinv = clearinv;
 	}
 				
 	private static String EXT = ".inv";
@@ -36,6 +38,11 @@ public class InventoryManager
 
 		this.items = new HashMap<Player, ItemStack[]>();
 		this.armor = new HashMap<Player, ItemStack[]>();
+	}
+
+	public void InventoryManager1(Command cmd2, String[] args2, Player p2,
+			String clearinv2, String saved) {
+		// TODO Auto-generated constructor stub
 	}
 
 	public boolean storeInventory(Player p)
@@ -99,11 +106,16 @@ public class InventoryManager
 
 			oos.writeObject(inv);
 			oos.close();
-			return clearInventory(p);
+			if(this.clearinv.length() == 4) {
+				return clearInventory(p);
+				
+			}
+			return true;
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-		}return false;
+		}
+		return true;
 	}
 
 	public boolean loadFromFile(Player p)
