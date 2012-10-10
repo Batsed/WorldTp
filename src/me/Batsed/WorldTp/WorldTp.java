@@ -48,6 +48,7 @@ public class WorldTp extends JavaPlugin {
 		String sprache18 = this.getConfig().getString("Config.language.error.ClearInventoryError");
 		String sprache19 = this.getConfig().getString("Config.language.error.activateCommandInvbackError");
 		String sprache20 = this.getConfig().getString("Config.language.error.noPremmissions");
+		String sprache21 = this.getConfig().getString("Config.language.Help.Invback");
 		
 		Player p = (Player)sender;
 		
@@ -231,6 +232,7 @@ public class WorldTp extends JavaPlugin {
 						p.sendMessage(ChatColor.RED + "/wt: " + ChatColor.AQUA + sprache6);
 						p.sendMessage(ChatColor.RED + "/worldtp: " + ChatColor.AQUA + sprache8);
 						p.sendMessage(ChatColor.RED + "/leave: " + ChatColor.AQUA + sprache7);
+						p.sendMessage(ChatColor.RED + "/invback: " + ChatColor.AQUA + sprache21);
                 
 						return true;
 					}else {
@@ -366,6 +368,8 @@ public class WorldTp extends JavaPlugin {
 		this.getConfig().addDefault(path7, "You leave the creative world");
 		String path8 = "Config.language.Help.WorldTp";
 		this.getConfig().addDefault(path8, "Read the help for WorldTP");
+		String path21 = "Config.language.Help.Invback";
+		this.getConfig().addDefault(path21, "Gibt dein Inventar zurück");
 		
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
