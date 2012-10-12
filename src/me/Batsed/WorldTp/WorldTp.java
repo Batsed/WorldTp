@@ -331,33 +331,33 @@ public class WorldTp extends JavaPlugin {
 		String path3 = "Config.language.Setspawnpoint";
 		this.getConfig().addDefault(path3, "You have defined the spawnpoint");
 		String path17 = "Config.language.BlockLeave";
-		this.getConfig().addDefault(path17, "Leave ist für diese Warp nicht zugelassen");
+		this.getConfig().addDefault(path17, "Leave is not permitted for this warp");
 		String path4 = "Config.language.Setspawnpoint2";
 		this.getConfig().addDefault(path4, "Saved");
 		String path16 = "Config.language.info";
-		this.getConfig().addDefault(path16, "im Gamemode");
+		this.getConfig().addDefault(path16, "in Gamemode");
 		
 		//errors
 		String path9 = "Config.language.error.NoArgument";
-		this.getConfig().addDefault(path9, "Zu wenig Argumente");
+		this.getConfig().addDefault(path9, "Not enough arguments");
 		String path10 = "Config.language.error.TooManyArgument";
-		this.getConfig().addDefault(path10, "Zu viele Argumente");
+		this.getConfig().addDefault(path10, "Too many arguments");
 		String path11 = "Config.language.error.NoWarpPoint";
-		this.getConfig().addDefault(path11, "Warppoint exestiert nicht");
+		this.getConfig().addDefault(path11, "Warppoint doesn't exist");
 		String path12 = "Config.language.error.error";
-		this.getConfig().addDefault(path12, "Deine Eingaben sind nicht Korekt");
+		this.getConfig().addDefault(path12, "Your input ist not correct");
 		String path13 = "Config.language.error.ConfigError";
-		this.getConfig().addDefault(path13, "In der Config von WorldTp ist ein Fehler");
+		this.getConfig().addDefault(path13, "The WorldTP config contains an error");
 		String path14 = "Config.language.error.GamemodeCreativeError";
-		this.getConfig().addDefault(path14, "hat in der Config bei GamemodeCreative einen Fehler");
+		this.getConfig().addDefault(path14, "has a config error at GamemodeCreative");
 		String path15 = "Config.language.error.SaveInventoryError";
-		this.getConfig().addDefault(path15, "hat in der Config bei SaveInventory einen Fehler");
+		this.getConfig().addDefault(path15, "has a config error at SaveInventory");
 		String path18 = "Config.language.error.ClearInventoryError";
-		this.getConfig().addDefault(path18, "hat in der Config bei ClearInventory einen Fehler");
+		this.getConfig().addDefault(path18, "has a config error at ClearInventory");
 		String path19 = "Config.language.error.activateCommandInvbackError";
-		this.getConfig().addDefault(path19, "hat in der Config bei activateCommandInvback einen Fehler");
+		this.getConfig().addDefault(path19, "has a config error at activateCommandInvback");
 		String path20 = "Config.language.error.noPremmissions";
-		this.getConfig().addDefault(path20, "Du hast keine Rechte um diesen Befehl auszuführen");
+		this.getConfig().addDefault(path20, "You don't have permission to execute that command");
 		
 		//help
 		String path5 = "Config.language.Help.Setspawnpoint";
@@ -369,7 +369,7 @@ public class WorldTp extends JavaPlugin {
 		String path8 = "Config.language.Help.WorldTp";
 		this.getConfig().addDefault(path8, "Read the help for WorldTP");
 		String path21 = "Config.language.Help.Invback";
-		this.getConfig().addDefault(path21, "Gibt dein Inventar zurück");
+		this.getConfig().addDefault(path21, "Gives back your inventory");
 		
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
