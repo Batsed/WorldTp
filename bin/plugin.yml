@@ -2,7 +2,7 @@ name: WorldTp
 version: 0.7
 main: me.Batsed.WorldTp.WorldTp
 author: Batsed
-website: http://Batsed.de
+website: http://Batsed.de/worldtp
 commands:
      wt:
           description: You go to the spawn point you set
