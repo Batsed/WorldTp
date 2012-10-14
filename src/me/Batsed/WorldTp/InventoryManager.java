@@ -40,11 +40,6 @@ public class InventoryManager
 		this.armor = new HashMap<Player, ItemStack[]>();
 	}
 
-	public void InventoryManager1(Command cmd2, String[] args2, Player p2,
-			String clearinv2, String saved) {
-		// TODO Auto-generated constructor stub
-	}
-
 	public boolean storeInventory(Player p)
 	{
 		if ((this.items.containsKey(p)) && (this.armor.containsKey(p))) {
