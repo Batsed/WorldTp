@@ -6,7 +6,6 @@ website: http://Batsed.de/worldtp
 commands:
      wt:
           description: You go to the spawn point you set
-          usage: /<command> <warpname>
           premission: worldtp.wt
      setspawnpoint:
           description: Sets the spawn point you reach with /wt
@@ -24,3 +23,11 @@ commands:
           description: Give your Inventory back
           usage: /<command> <warpname>
           premission: worldtp.invback
+     clearinv:
+          description: Clear your Inventory
+          usage: /<command> <warpname>
+          premission: worldtp.clearinv
+     wt info:
+          description: They are information from Warp
+          usage: /<wt> <info> <Warpname>
+          premission: worldtp.info

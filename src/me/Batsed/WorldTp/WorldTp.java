@@ -19,7 +19,6 @@ public class WorldTp extends JavaPlugin {
 	public void onEnable() {
 		loadConfig();
 		System.out.println("[WorldTp] Plugin by Batsed");
-		System.out.println("[WorldTp] activate plugin");
 	}
 	
 	public void onDisable() {
@@ -40,6 +39,7 @@ public class WorldTp extends JavaPlugin {
 		String sprache7 = this.getConfig().getString("Config.language.Help.Leave");
 		String sprache8 = this.getConfig().getString("Config.language.Help.WorldTp");
 		String sprache12 = this.getConfig().getString("Config.language.error.error");
+		@SuppressWarnings("unused")
 		String sprache13 = this.getConfig().getString("Config.language.error.ConfigError");
 		String sprache14 = this.getConfig().getString("Config.language.error.GamemodeCreativeError");
 		String sprache15 = this.getConfig().getString("Config.language.error.SaveInventoryError");
@@ -51,63 +51,96 @@ public class WorldTp extends JavaPlugin {
 		String sprache21 = this.getConfig().getString("Config.language.Help.Invback");
 		
 		Player p = (Player)sender;
-		
-		String spawnpoint;
-		String spawnName;
-		String game;
-		String save;
-		String clearinv;
-		String loadInvByLeave;
-		String invback;
-		
+			
 		//Zum Spawnpoint teleportieren
 		//Teleporting to the spawn point
 		if(cmd.getName().equalsIgnoreCase("wt")) {
-			if(p.hasPermission("worldtp.wt")) { 
-				if(args.length < 1) {
-					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
-					return false;
-				}
-				if(args.length > 1) {
-					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
-					return false;
-				}
-				if(args.length == 1) {
-					spawnpoint = (args[0]);		
-					
-					double locY = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.Y");
-				    double locX = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.X");
-				    double locZ = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.Z");
-				    String saved = this.getConfig().getString("Config."+ spawnpoint +".SaveInventory");
-				    game = this.getConfig().getString("Config."+ spawnpoint +".GamemodeCreative");
-				    clearinv = this.getConfig().getString("Config."+ spawnpoint +".ClearInventory");
-				    invback = this.getConfig().getString("Config."+ spawnpoint +".activateCommandInvback");
+			if(args.length < 1) {
+				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
+				return false;
+			}
+			String spawnpoint = (args[0]);						    				    
 				    
-				    //Fehler überprüfung
-				    if(locX == 0) {
-				    	p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache11);
-				    	return false;
-				    }
-				    if(game.length() > 5) {
+			if (spawnpoint.equalsIgnoreCase("info")) {
+				if(p.hasPermission("worldtp.info")) {
+					//Fehlerüberprpfung "info"
+					if(args.length < 2) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
+						return false;
+					}
+					if(args.length > 2) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
+						return false;
+					}
+					//Hauptquellcode "info"
+					String warpname = (args[1]);
+				    		
+					String clearinvbycommand = this.getConfig().getString("Config."+ warpname +".ClearInvByCommand");
+					String saved = this.getConfig().getString("Config."+ warpname +".SaveInventory");
+					String game = this.getConfig().getString("Config."+ warpname +".GamemodeCreative");
+					String clearinv = this.getConfig().getString("Config."+ warpname +".ClearInventory");
+					String invback = this.getConfig().getString("Config."+ warpname +".activateCommandInvback");
+					String activateinvback = this.getConfig().getString("Config."+ warpname+".activateCommandInvback");
+					String loadinvbycommandleave = this.getConfig().getString("Config."+ warpname +".loadInvByCommandLeave");
+						    
+					p.sendMessage(ChatColor.RED + "[WorldTp] ClearInvByCommand = " + ChatColor.AQUA + clearinvbycommand);
+					p.sendMessage(ChatColor.RED + "[WorldTp] SaveInventory = " + ChatColor.AQUA + saved);
+					p.sendMessage(ChatColor.RED + "[WorldTp] GamemodeCreative = " + ChatColor.AQUA + game);
+					p.sendMessage(ChatColor.RED + "[WorldTp] ClearInventory = " + ChatColor.AQUA + clearinv);
+					p.sendMessage(ChatColor.RED + "[WorldTp] activateCommandInvback = " + ChatColor.AQUA + invback);
+					p.sendMessage(ChatColor.RED + "[WorldTp] activateCommandInvback = " + ChatColor.AQUA + activateinvback);
+					p.sendMessage(ChatColor.RED + "[WorldTp] loadInvByCommandLeave = " + ChatColor.AQUA + loadinvbycommandleave);
+					
+					return true;
+				}else{
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
+					return true;
+				}
+			}else{
+				if(p.hasPermission("worldtp.wt")) { 
+					
+					String saved = this.getConfig().getString("Config."+ spawnpoint +".SaveInventory");
+					String game = this.getConfig().getString("Config."+ spawnpoint +".GamemodeCreative");
+					String clearinv = this.getConfig().getString("Config."+ spawnpoint +".ClearInventory");
+					String invback = this.getConfig().getString("Config."+ spawnpoint +".activateCommandInvback");
+					    
+					double locY = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.Y");
+					double locX = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.X");
+					double locZ = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.Z");
+					    
+					//Fehler überprüfung
+					if(args.length < 1) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
+						return false;
+					}
+					if(args.length > 1) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
+						return false;
+					}
+					if(locX == 0) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache11);
+						return false;
+					}
+					if(game.length() > 5) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "', " + sprache14);
 						return false;
-				    }
-				    if(game.length() < 4) {
+					}
+					if(game.length() < 4) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "', " + sprache14);
 						return false;
-				    }
-				    if(saved.length() > 5) {
-				    	p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "', " + sprache15);
-				    	return false;
-				    }
-				    if(saved.length() < 4) {
-				    	p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "', " + sprache15);
-				    	return false;
-				    }
-				    if(clearinv.length() > 5) {
+					}
+					if(saved.length() > 5) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "', " + sprache15);
+						return false;
+					}
+					if(saved.length() < 4) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "', " + sprache15);
+						return false;
+					}
+					if(clearinv.length() > 5) {
 				    	p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "', " + sprache18);
 				    	return false;
-				    }
+					}
 				    if(clearinv.length() < 4) {
 				    	p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "', " + sprache18);
 				    	return false;
@@ -127,26 +160,24 @@ public class WorldTp extends JavaPlugin {
 				    Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
 				    p.teleport(loc);
 				    p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache1);
-				    
-				   if(game.length() == 4) {
-						p.setGameMode(GameMode.CREATIVE);
-					}
-					if(saved.length() == 4) {  
-						return new InventoryManager(cmd, args, p, clearinv).saveToFile(p);
-					}
-					if(clearinv.length() == 4) {
-						return new InventoryManager(cmd, args, p, clearinv).clearInventory(p);
-					}
-					return true;
+			    
+				    if(game.length() == 4) {
+				    	p.setGameMode(GameMode.CREATIVE);
+				    }
+				    if(saved.length() == 4) {  
+				    	return new InventoryManager(cmd, args, p, clearinv).saveToFile(p);
+				    }
+				    if(clearinv.length() == 4) {
+				    	return new InventoryManager(cmd, args, p, clearinv).clearInventory(p);
+				    }
+				    return true;
 				}else{
-					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache13);
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
 					return false;
 				}
-			}else{
-				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
-				return true;
 			}
 		}
+		
 		//Spawnpoint von der Welt setzen
 		//Defining the spawn point for the creative world
 		if(cmd.getName().equalsIgnoreCase("setspawnpoint")) {
@@ -160,9 +191,9 @@ public class WorldTp extends JavaPlugin {
 					return false;
 				}
 				if(args.length == 3) {
-					spawnName = (args[0]);
-					save = (args[1]);
-					game = (args[2]);
+					String spawnName = (args[0]);
+					String save = (args[1]);
+					String game = (args[2]);
 				
 					getConfig().set("Config."+ spawnName +".spawn.X", p.getLocation().getX());
 					getConfig().set("Config."+ spawnName +".spawn.Y", p.getLocation().getY());
@@ -175,6 +206,8 @@ public class WorldTp extends JavaPlugin {
 					this.getConfig().set("Config."+ spawnName +".loadInvByCommandLeave", true);
 					getConfig().get("Config."+ spawnName +".activateCommandInvback");
 					this.getConfig().set("Config."+ spawnName +".activateCommandInvback", true);
+					getConfig().get("Config."+ spawnName +".ClearInvByCommand");
+					this.getConfig().set("Config."+ spawnName +".ClearInvByCommand", false);
 				
 	            	if (save.equalsIgnoreCase("nosave")) {
 						getConfig().get("Config."+ spawnName +".SaveInventory");
@@ -233,6 +266,7 @@ public class WorldTp extends JavaPlugin {
 						p.sendMessage(ChatColor.RED + "/worldtp: " + ChatColor.AQUA + sprache8);
 						p.sendMessage(ChatColor.RED + "/leave: " + ChatColor.AQUA + sprache7);
 						p.sendMessage(ChatColor.RED + "/invback: " + ChatColor.AQUA + sprache21);
+						p.sendMessage(ChatColor.RED + "/wt info: " + ChatColor.AQUA + "Gibt infos über dein Spawn");
                 
 						return true;
 					}else {
@@ -243,8 +277,47 @@ public class WorldTp extends JavaPlugin {
 					return true;
 			}
 		}
+		if(cmd.getName().equalsIgnoreCase("clearinv")) {
+				if(args.length < 1) {
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
+					return false;
+				}
+				if(args.length > 1) {
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
+					return false;
+				}
+				if(p.hasPermission("worldtp.clearinv")) {
+					
+					String spawnName = (args[0]);
+					String clearinvByCommand = this.getConfig().getString("Config."+ spawnName +".ClearInvByCommand");
+					String clearinv = this.getConfig().getString("Config."+ spawnName +".ClearInventory");
+						
+					//Fehler Überprüfung
+					if(clearinvByCommand.length() > 5) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint "+ spawnName + "hat in der Config bei ClearInvByCommand einen Fehler");
+							return false;
+					}
+					if(clearinvByCommand.length() < 4) {
+							p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint "+ spawnName + "hat in der Config bei ClearInvByCommand einen Fehler");
+							return false;
+					}
+						
+					//hauptquellcode
+					if(clearinvByCommand.length() == 4) {
+						return new InventoryManager(cmd, args, p, clearinv).clearInventory(p);
+					}
+					if(clearinvByCommand.length() == 5) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] Für diesen spawn ist der Befehl nicht erlaubt");
+						return true;
+					}
+					
+				}else{
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
+					return false;
+				}
+		}
+		
 		//Gibt dein Inventar zurück
-		clearinv = this.getConfig().getString("Config.ClearInventory");
 		if(cmd.getName().equalsIgnoreCase("invback")) {
 			if(p.hasPermission("worldtp.invback")) {
 				if(args.length < 1) {
@@ -256,8 +329,9 @@ public class WorldTp extends JavaPlugin {
 						return false;
 				}
 				if(args.length == 1){
-					spawnName = (args[0]);
-					invback = this.getConfig().getString("Config."+ spawnName +".activateCommandInvback");
+					String spawnName = (args[0]);
+					String clearinv = this.getConfig().getString("Config."+ spawnName +".ClearInventory");
+					String invback = this.getConfig().getString("Config."+ spawnName +".activateCommandInvback");
 				
 					if(invback.length() == 5) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] Kommando 'invback' für diesen Spawnpoint deaktieviert");
@@ -286,9 +360,9 @@ public class WorldTp extends JavaPlugin {
 					return false;
 				}
 				if(args.length == 1) {
-					spawnName = (args[0]);
-					
-					loadInvByLeave = this.getConfig().getString("Config."+ spawnName +".loadInvByCommandLeave");
+					String spawnName = (args[0]);
+					String clearinv = this.getConfig().getString("Config."+ spawnName +".ClearInventory");
+					String loadInvByLeave = this.getConfig().getString("Config."+ spawnName +".loadInvByCommandLeave");
 					String leave = this.getConfig().getString("Config."+ spawnName +".activateCommandLeave");
 					
 					if(leave.length() == 5) {
@@ -305,7 +379,7 @@ public class WorldTp extends JavaPlugin {
 						p.setGameMode(GameMode.SURVIVAL);
 						}
 						if(loadInvByLeave.length() == 4) {
-						return new InventoryManager(cmd, args, p, clearinv).loadFromFile(p);
+							return new InventoryManager(cmd, args, p, clearinv).loadFromFile(p);
 						}
 					}
 					return true;
