@@ -1,7 +1,10 @@
 package me.Batsed.WorldTp;
 
 
+import java.io.File;
 import java.util.HashMap;
+
+import javax.security.auth.login.Configuration;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -13,16 +16,20 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class WorldTp extends JavaPlugin {
-
+	
 	PluginDescriptionFile descFile = this.getDescription();
+	
+	private static String ordner = "plugins/WorldTp/saves";
+	private static File OldLocation = new File(ordner + File.separator + "OldLocation.yml");
+	private static Configuration config;
+	
 
 	public void onEnable() {
-		loadConfig();
+		createConfig();
 		System.out.println("[WorldTp] Plugin by Batsed");
 	}
-	
+
 	public void onDisable() {
-		System.out.println("[WorldTp] deactivate plugin");
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
@@ -50,6 +57,10 @@ public class WorldTp extends JavaPlugin {
 		String sprache20 = this.getConfig().getString("Config.language.error.noPremmissions");
 		String sprache21 = this.getConfig().getString("Config.language.Help.Invback");
 		
+		//OldLocation Config
+		
+		String root1;
+		
 		Player p = (Player)sender;
 			
 		//Zum Spawnpoint teleportieren
@@ -60,16 +71,18 @@ public class WorldTp extends JavaPlugin {
 				return false;
 			}
 			String spawnpoint = (args[0]);						    				    
-				    
+			//Anfang command "/wt info"	    
 			if (spawnpoint.equalsIgnoreCase("info")) {
 				if(p.hasPermission("worldtp.info")) {
 					//Fehlerüberprpfung "info"
 					if(args.length < 2) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
+						p.sendMessage("usage: <wt> <info> <warpname>");
 						return false;
 					}
 					if(args.length > 2) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
+						p.sendMessage("usage: <wt> <info> <warpname>");
 						return false;
 					}
 					//Hauptquellcode "info"
@@ -83,6 +96,10 @@ public class WorldTp extends JavaPlugin {
 					String activateinvback = this.getConfig().getString("Config."+ warpname+".activateCommandInvback");
 					String loadinvbycommandleave = this.getConfig().getString("Config."+ warpname +".loadInvByCommandLeave");
 						    
+					if(game == null) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache11);
+						return false;
+					}
 					p.sendMessage(ChatColor.RED + "[WorldTp] ClearInvByCommand = " + ChatColor.AQUA + clearinvbycommand);
 					p.sendMessage(ChatColor.RED + "[WorldTp] SaveInventory = " + ChatColor.AQUA + saved);
 					p.sendMessage(ChatColor.RED + "[WorldTp] GamemodeCreative = " + ChatColor.AQUA + game);
@@ -96,7 +113,35 @@ public class WorldTp extends JavaPlugin {
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
 					return true;
 				}
-			}else{
+				
+			}
+			
+			//Anfang Command "/wt reload"
+			if(spawnpoint.equalsIgnoreCase("reload")) {
+				if(p.hasPermission("worldtp.reload")) {
+				
+					//Fehlerüberprüfung
+					if(args.length < 1) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
+						return false;
+					}
+					if(args.length > 1) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
+						return false;
+					}
+					//Hauptquellcode "/wt reload"
+					this.saveConfig();
+					reloadConfig();
+					p.sendMessage(ChatColor.RED + "[WorldTp] Config aktualliesiert");
+					return true;
+				}else{
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
+					return true;
+				}
+			}
+			
+			//Anfang Command "/wt"
+			else{
 				if(p.hasPermission("worldtp.wt")) { 
 					
 					String saved = this.getConfig().getString("Config."+ spawnpoint +".SaveInventory");
@@ -111,10 +156,12 @@ public class WorldTp extends JavaPlugin {
 					//Fehler überprüfung
 					if(args.length < 1) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
+						p.sendMessage("usage: <wt> <warpname>");
 						return false;
 					}
 					if(args.length > 1) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
+						p.sendMessage("usage: <wt> <warpname>");
 						return false;
 					}
 					if(locX == 0) {
@@ -155,7 +202,10 @@ public class WorldTp extends JavaPlugin {
 				    }
 				    
 				    
-				    //hauptquellcode
+				    //hauptquellcode "wt"
+					getConfig().set("Config."+ spawnpoint +".spawn.X", p.getLocation().getX());
+					getConfig().set("Config."+ spawnpoint +".spawn.Y", p.getLocation().getY());
+					
 				    oldLocationList.put(p, p.getLocation());
 				    Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
 				    p.teleport(loc);
@@ -194,7 +244,20 @@ public class WorldTp extends JavaPlugin {
 					String spawnName = (args[0]);
 					String save = (args[1]);
 					String game = (args[2]);
-				
+					
+					//Fehlerüberprüfung
+					if(spawnName.equalsIgnoreCase("info")) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] Der Name ist als Warp nich erlaubt");
+						return true;
+					}
+					if(spawnName.equalsIgnoreCase("reload")) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] Der Name ist als Warp nich erlaubt");
+						return true;
+					}
+					if(spawnName.equalsIgnoreCase("list")) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] Der Name ist als Warp nich erlaubt");
+						return true;
+					}
 					getConfig().set("Config."+ spawnName +".spawn.X", p.getLocation().getX());
 					getConfig().set("Config."+ spawnName +".spawn.Y", p.getLocation().getY());
 					getConfig().set("Config."+ spawnName +".spawn.Z", p.getLocation().getZ());
@@ -396,7 +459,32 @@ public class WorldTp extends JavaPlugin {
 	}
 	public HashMap<Player, Location> oldLocationList = new HashMap<Player, Location>();
 	
-	public void loadConfig(){
+	public Configuration loadFile() {
+		try {
+			Configuration config = new Configuration(OldLocation);
+			config.load();
+			return config;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	public Configuration createConfig() {
+		new File(ordner).mkdir();
+		
+		if(!configFile.exists()) {
+			try {
+				configFile.createNewFile();
+				
+				config = createConfig();
+				
+				config.setProperty("name", 100);
+				config.save();
+			}
+		}
+	}
+	
 		//language
 		String path1 = "Config.language.Wt";
 		this.getConfig().addDefault(path1, "You have been teleported");
@@ -447,11 +535,5 @@ public class WorldTp extends JavaPlugin {
 		
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
-	
 	}
-	public static JavaPlugin getPlugin() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-		
 }

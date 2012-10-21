@@ -31,3 +31,7 @@ commands:
           description: They are information from Warp
           usage: /<wt> <info> <Warpname>
           premission: worldtp.info
+     wt reload:
+          description: Reload the Config
+          usage: /<wt> <reload>
+          premission: worldtp.reload

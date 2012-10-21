@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
@@ -25,20 +24,19 @@ public class InventoryManager
 		this.p = p;
 		this.clearinv = clearinv;
 	}
-				
-	private static String EXT = ".inv";
+	static String EXT = ".inv";			
 	private File dir;
 	private Map<Player, ItemStack[]> items;
 	private Map<Player, ItemStack[]> armor;
  
-	public InventoryManager(WorldTp arena)
-	{
-		this.dir = new File(WorldTp.getPlugin().getDataFolder(), "inventories");
-		this.dir.mkdir();
+	//	public void InventoryManager()
+	//{
+	//this.dir = new File(WorldTp.getPlugin().getDataFolder(), "inventories");
+		//		this.dir.mkdir();
 
-		this.items = new HashMap<Player, ItemStack[]>();
-		this.armor = new HashMap<Player, ItemStack[]>();
-	}
+	//		this.items = new HashMap<Player, ItemStack[]>();
+	//	this.armor = new HashMap<Player, ItemStack[]>();
+	//	}
 
 	public boolean storeInventory(Player p)
 	{
