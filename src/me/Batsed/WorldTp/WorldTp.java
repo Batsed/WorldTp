@@ -4,8 +4,6 @@ package me.Batsed.WorldTp;
 import java.io.File;
 import java.util.HashMap;
 
-import javax.security.auth.login.Configuration;
-
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -17,16 +15,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class WorldTp extends JavaPlugin {
 	
+	private Config config;
 	PluginDescriptionFile descFile = this.getDescription();
 	
-	private static String ordner = "plugins/WorldTp/saves";
-	private static File OldLocation = new File(ordner + File.separator + "OldLocation.yml");
-	private static Configuration config;
+	private static String ordner = "saves/";
+	//private static File OldLocation = new File(ordner + File.separator + "OldLocation.yml");
 	
 
 	public void onEnable() {
 		createConfig();
 		System.out.println("[WorldTp] Plugin by Batsed");
+		config = new Config(new File(getDataFolder(), ordner + File.separator + "OldLocation.yml"));
+        Config.setDefaults();
+        Config.save();
 	}
 
 	public void onDisable() {
@@ -58,8 +59,6 @@ public class WorldTp extends JavaPlugin {
 		String sprache21 = this.getConfig().getString("Config.language.Help.Invback");
 		
 		//OldLocation Config
-		
-		String root1;
 		
 		Player p = (Player)sender;
 			
@@ -134,6 +133,7 @@ public class WorldTp extends JavaPlugin {
 					reloadConfig();
 					p.sendMessage(ChatColor.RED + "[WorldTp] Config aktualliesiert");
 					return true;
+					
 				}else{
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
 					return true;
@@ -203,9 +203,15 @@ public class WorldTp extends JavaPlugin {
 				    
 				    
 				    //hauptquellcode "wt"
+				    getConfig().set("Config."+ spawnpoint +".spawn.Y", p.getLocation().getZ());
 					getConfig().set("Config."+ spawnpoint +".spawn.X", p.getLocation().getX());
 					getConfig().set("Config."+ spawnpoint +".spawn.Y", p.getLocation().getY());
 					
+					String a = "a";
+					
+					if(a == "a") {
+						return new Config(cmd, args, p).OldPlayerLoc(p);
+					}
 				    oldLocationList.put(p, p.getLocation());
 				    Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
 				    p.teleport(loc);
@@ -220,7 +226,9 @@ public class WorldTp extends JavaPlugin {
 				    if(clearinv.length() == 4) {
 				    	return new InventoryManager(cmd, args, p, clearinv).clearInventory(p);
 				    }
-				    return true;
+					
+					return new Config(cmd, args, p).OldPlayerLocName(p);
+					
 				}else{
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
 					return false;
@@ -457,34 +465,13 @@ public class WorldTp extends JavaPlugin {
 		return true;
 		
 	}
+    public Config getConfiguration() {
+		return config;
+    }
 	public HashMap<Player, Location> oldLocationList = new HashMap<Player, Location>();
-	
-	public Configuration loadFile() {
-		try {
-			Configuration config = new Configuration(OldLocation);
-			config.load();
-			return config;
-		}catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
 		
-	}
-	public Configuration createConfig() {
-		new File(ordner).mkdir();
+	public void createConfig() {
 		
-		if(!configFile.exists()) {
-			try {
-				configFile.createNewFile();
-				
-				config = createConfig();
-				
-				config.setProperty("name", 100);
-				config.save();
-			}
-		}
-	}
-	
 		//language
 		String path1 = "Config.language.Wt";
 		this.getConfig().addDefault(path1, "You have been teleported");
