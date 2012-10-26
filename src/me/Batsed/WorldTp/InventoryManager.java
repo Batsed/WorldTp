@@ -29,14 +29,13 @@ public class InventoryManager
 	private Map<Player, ItemStack[]> items;
 	private Map<Player, ItemStack[]> armor;
  
-	//	public void InventoryManager()
-	//{
-	//this.dir = new File(WorldTp.getPlugin().getDataFolder(), "inventories");
-		//		this.dir.mkdir();
+	//public InventoryManager()
+	//	this.dir = new File("plugins/WorldTp/saves/inventories");
+	//  this.dir.mkdir();
 
-	//		this.items = new HashMap<Player, ItemStack[]>();
+	//	this.items = new HashMap<Player, ItemStack[]>();
 	//	this.armor = new HashMap<Player, ItemStack[]>();
-	//	}
+	//}
 
 	public boolean storeInventory(Player p)
 	{

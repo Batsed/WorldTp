@@ -15,22 +15,21 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class WorldTp extends JavaPlugin {
 	
-	private Config config;
+	public Config config;
 	PluginDescriptionFile descFile = this.getDescription();
 	
-	private static String ordner = "saves/";
-	//private static File OldLocation = new File(ordner + File.separator + "OldLocation.yml");
-	
+	private static String ordner = "plugins/WorldTp/saves";
 
 	public void onEnable() {
 		createConfig();
 		System.out.println("[WorldTp] Plugin by Batsed");
-		config = new Config(new File(getDataFolder(), ordner + File.separator + "OldLocation.yml"));
-        Config.setDefaults();
-        Config.save();
+		config = new Config(new File(ordner + File.separator + "Saves.yml"));
+        config.setDefaults();
+        config.save();
 	}
 
 	public void onDisable() {
+		config.save();
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
@@ -193,11 +192,11 @@ public class WorldTp extends JavaPlugin {
 				    	return false;
 				    }
 				    if(invback.length() > 5) {
-				    	p.sendMessage(ChatColor.RED + "[WorldTp Spawnpoint '" + spawnpoint +"', " + sprache19);
+				    	p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint +"', " + sprache19);
 				    	return false;
 				    }
 				    if(invback.length() < 4) {
-				    	p.sendMessage(ChatColor.RED + "[WorldTp Spawnpoint '" + spawnpoint +"', " + sprache19);
+				    	p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint +"', " + sprache19);
 				    	return false;
 				    }
 				    
@@ -207,11 +206,8 @@ public class WorldTp extends JavaPlugin {
 					getConfig().set("Config."+ spawnpoint +".spawn.X", p.getLocation().getX());
 					getConfig().set("Config."+ spawnpoint +".spawn.Y", p.getLocation().getY());
 					
-					String a = "a";
-					
-					if(a == "a") {
-						return new Config(cmd, args, p).OldPlayerLoc(p);
-					}
+					Config.OldPlayerLocName(p, spawnpoint);
+					config.save();
 				    oldLocationList.put(p, p.getLocation());
 				    Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
 				    p.teleport(loc);
@@ -226,8 +222,6 @@ public class WorldTp extends JavaPlugin {
 				    if(clearinv.length() == 4) {
 				    	return new InventoryManager(cmd, args, p, clearinv).clearInventory(p);
 				    }
-					
-					return new Config(cmd, args, p).OldPlayerLocName(p);
 					
 				}else{
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
@@ -422,16 +416,9 @@ public class WorldTp extends JavaPlugin {
 		//Teleporting from the world to the old place
 		if(cmd.getName().equalsIgnoreCase("leave")) {
 			if(p.hasPermission("worldtp.leave")) {
-				if(args.length < 1) {
-					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
-					return false;
-				}
-				if(args.length > 1) {
-					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
-					return false;
-				}
-				if(args.length == 1) {
-					String spawnName = (args[0]);
+				if(args.length == 0) {
+					String PlayerName = p.getName();
+					String spawnName = Config.configuration.getString(Config.oldLoc + PlayerName + ".LastSpawnPoint");
 					String clearinv = this.getConfig().getString("Config."+ spawnName +".ClearInventory");
 					String loadInvByLeave = this.getConfig().getString("Config."+ spawnName +".loadInvByCommandLeave");
 					String leave = this.getConfig().getString("Config."+ spawnName +".activateCommandLeave");
@@ -440,23 +427,33 @@ public class WorldTp extends JavaPlugin {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache17);
 						return false;
 					}
+					String s = "asdi";
 					
-					if(oldLocationList.containsKey(p)) {
+					if(s == spawnName) {
+						p.sendMessage(ChatColor.RED + "[WorldTP] Du kannst dich nur einmal zurück warpen");
+						return true;
+					}else{
+						Config.OldPlayerLeave(p);
+					}
+					double LocX = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.X");
+					double LocY = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.Y");
+					double LocZ = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.Z");
 						
-						p.teleport(oldLocationList.get(p));
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache2);
-						GameMode gamemode = p.getGameMode();
-						if(gamemode == GameMode.CREATIVE) {
+					Location loc = new Location(getServer().getWorld(p.getWorld().getName()),LocX, LocY, LocZ);
+						
+					p.teleport(loc);
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache2);
+					GameMode gamemode = p.getGameMode();
+					if(gamemode == GameMode.CREATIVE) {
 						p.setGameMode(GameMode.SURVIVAL);
-						}
-						if(loadInvByLeave.length() == 4) {
-							return new InventoryManager(cmd, args, p, clearinv).loadFromFile(p);
-						}
+					}
+					if(loadInvByLeave.length() == 4) {
+						return new InventoryManager(cmd, args, p, clearinv).loadFromFile(p);
 					}
 					return true;
 				}else {
 					return false;
-					}
+				}
 			}else{
 				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
 				return true;

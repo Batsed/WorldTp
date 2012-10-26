@@ -15,20 +15,17 @@ public class Config {
 	String[] args;
 	static Player p;
 	
+	
 	public Config(Command cmd, String[] args, Player p) {
 		this.cmd = cmd;
 		this.args = args;
 		Config.p = p;
 	}
 	
-	static String PlayerName = p.getName();
-    public static String Saves = "Saves";
-    public static String oldLoc = Saves + ".oldlocation.Player";
-    public static String oldLocZ = Saves + ".oldlocation" + PlayerName + "Spawn.Z";
-    public static String oldLocX = Saves + ".oldlocation" + PlayerName + "Spawn.X";
-    public static String oldLocY = Saves + ".oldlocation" + PlayerName + "Spawn.Y";
-    public static String Info = Saves + ".info";
-
+    static String Saves = "Saves";
+    static String oldLoc = Saves + ".Oldlocation.Players.";
+    static String Info = Saves + ".info";
+    
     protected static FileConfiguration configuration;
     protected static File file;
 
@@ -73,7 +70,7 @@ public class Config {
         configuration.set(path, value);
     }
 
-    public static void save() {
+    public void save() {
 
         try {
             configuration.save(file);
@@ -82,24 +79,29 @@ public class Config {
             e.printStackTrace();
         }
     }
-    
-    public boolean OldPlayerLocName(Player p) {
+    public static boolean OldPlayerLeave(Player p) {
     	String PlayerName = p.getName();
-    	configuration.set(Config.oldLoc, PlayerName);
-        Config.setDefaults();
-        Config.save();
-		return true;
+    	addDefault(Config.oldLoc + PlayerName + ".LastSpawnPoint", "asdi");
+    	return false;
     }
     
-    public boolean OldPlayerLoc(Player p) {
+    public static <Args> boolean OldPlayerLocName(Player p, String args) {
+    	String spawnpoint = args;
+    	String PlayerName = p.getName();
+		configuration.set(Config.oldLoc + PlayerName + ".LastSpawnPoint", spawnpoint);
+        return OldPlayerLoc(p);
+    }
+    
+    public static boolean OldPlayerLoc(Player p) {
     	
     	double getZ = p.getLocation().getZ();
 		double getX = p.getLocation().getX();
 		double getY = p.getLocation().getY();
     	
-		configuration.set(Config.oldLocY, getY);
-		configuration.set(Config.oldLocX, getX);
-    	configuration.set(Config.oldLocZ, getZ);
+		String PlayerName = p.getName();
+		configuration.set(Config.oldLoc + PlayerName + ".spawn.Z", getZ);
+		configuration.set(Config.oldLoc + PlayerName + ".spawn.X", getX);
+    	configuration.set(Config.oldLoc + PlayerName + ".spawn.Y", getY);
 		return true;
     }
 
@@ -109,10 +111,15 @@ public class Config {
             configuration.set(path, value);
         }
     }
-    public static void setDefaults() {
+    public void setDefaults() {
 
         //addDefault(Info, "Hier das ist für euch eher uninterresant, denn diese yml Datei speichert nur alte Spielerpositionen");
         
-    }
+	}
+
+	public Object getConfiguration() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

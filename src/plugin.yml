@@ -13,7 +13,7 @@ commands:
           premission: worldtp.setspawnpoint
      leave:
           description: You leave the creative world
-          usage: /<command> <warpname>
+          usage: /<command>
           premission: worldtp.leave
      worldtp:
           description: Read the help for WorldTP
