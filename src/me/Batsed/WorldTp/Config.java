@@ -25,6 +25,7 @@ public class Config {
     static String Saves = "Saves";
     static String oldLoc = Saves + ".Oldlocation.Players.";
     static String Info = Saves + ".info";
+    static String NewWarp = Saves + ".Warps";
     
     protected static FileConfiguration configuration;
     protected static File file;
@@ -79,10 +80,10 @@ public class Config {
             e.printStackTrace();
         }
     }
-    public static boolean OldPlayerLeave(Player p) {
+    public static void OldPlayerLeave(Player p) {
     	String PlayerName = p.getName();
-    	addDefault(Config.oldLoc + PlayerName + ".LastSpawnPoint", "asdi");
-    	return false;
+    	String s = "asdi";
+    	configuration.set(Config.oldLoc + PlayerName + ".LastSpawnPoint", s);
     }
     
     public static <Args> boolean OldPlayerLocName(Player p, String args) {

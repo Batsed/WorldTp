@@ -138,7 +138,16 @@ public class WorldTp extends JavaPlugin {
 					return true;
 				}
 			}
-			
+			if(spawnpoint.equalsIgnoreCase("list")) {
+				if(p.hasPermission("worldtp.list")) {
+					String warps = this.getConfig().getString("Config.Warps");
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + warps);
+					return true;
+				}else{
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
+					return true;
+				}
+			}
 			//Anfang Command "/wt"
 			else{
 				if(p.hasPermission("worldtp.wt")) { 
@@ -202,13 +211,9 @@ public class WorldTp extends JavaPlugin {
 				    
 				    
 				    //hauptquellcode "wt"
-				    getConfig().set("Config."+ spawnpoint +".spawn.Y", p.getLocation().getZ());
-					getConfig().set("Config."+ spawnpoint +".spawn.X", p.getLocation().getX());
-					getConfig().set("Config."+ spawnpoint +".spawn.Y", p.getLocation().getY());
 					
 					Config.OldPlayerLocName(p, spawnpoint);
 					config.save();
-				    oldLocationList.put(p, p.getLocation());
 				    Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
 				    p.teleport(loc);
 				    p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache1);
@@ -260,6 +265,10 @@ public class WorldTp extends JavaPlugin {
 						p.sendMessage(ChatColor.RED + "[WorldTp] Der Name ist als Warp nich erlaubt");
 						return true;
 					}
+					if(spawnName.equalsIgnoreCase("asdi")) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] Der Name ist als Warp nicht erlaubt");
+						return true;
+					}
 					getConfig().set("Config."+ spawnName +".spawn.X", p.getLocation().getX());
 					getConfig().set("Config."+ spawnName +".spawn.Y", p.getLocation().getY());
 					getConfig().set("Config."+ spawnName +".spawn.Z", p.getLocation().getZ());
@@ -273,6 +282,7 @@ public class WorldTp extends JavaPlugin {
 					this.getConfig().set("Config."+ spawnName +".activateCommandInvback", true);
 					getConfig().get("Config."+ spawnName +".ClearInvByCommand");
 					this.getConfig().set("Config."+ spawnName +".ClearInvByCommand", false);
+					this.getConfig().set("Config.Warps."+ spawnName, spawnName);
 				
 	            	if (save.equalsIgnoreCase("nosave")) {
 						getConfig().get("Config."+ spawnName +".SaveInventory");
@@ -302,14 +312,15 @@ public class WorldTp extends JavaPlugin {
 						this.saveConfig();
 						return true;
 					}
+					
 					if(game.equalsIgnoreCase("0")) {
 						getConfig().get("Config."+ spawnName +".GamemodeCreative");
 						this.getConfig().set("Config."+ spawnName +".GamemodeCreative", false);
 						this.getConfig().options().copyDefaults(true);
 						this.saveConfig();
 						return true;
-					}
-					else{
+						
+					}else{
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache12);
 						return false;
 					}
@@ -422,20 +433,25 @@ public class WorldTp extends JavaPlugin {
 					String clearinv = this.getConfig().getString("Config."+ spawnName +".ClearInventory");
 					String loadInvByLeave = this.getConfig().getString("Config."+ spawnName +".loadInvByCommandLeave");
 					String leave = this.getConfig().getString("Config."+ spawnName +".activateCommandLeave");
-					
-					if(leave.length() == 5) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache17);
-						return false;
-					}
 					String s = "asdi";
+					
 					
 					if(s == spawnName) {
 						p.sendMessage(ChatColor.RED + "[WorldTP] Du kannst dich nur einmal zurück warpen");
 						return true;
-					}else{
-						Config.OldPlayerLeave(p);
 					}
-					double LocX = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.X");
+						
+					if(leave.length() == 5) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache17);
+						return false;
+					}
+					
+					if(!(spawnName == "asdi")) {
+						Config.OldPlayerLeave(p);
+						config.save();
+					}
+				
+			    	double LocX = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.X");
 					double LocY = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.Y");
 					double LocZ = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.Z");
 						
