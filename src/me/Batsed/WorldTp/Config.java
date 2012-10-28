@@ -80,6 +80,21 @@ public class Config {
             e.printStackTrace();
         }
     }
+    public static void OldPlayerInvbackDoubleFine(Player p) {
+    	String PlayerName = p.getName();
+    	String s = "asde";
+    	configuration.set(Config.oldLoc + PlayerName + ".LastSpawnPointError", s);
+    }
+    public static void OldPlayerInvbackDouble(Player p) {
+    	String PlayerName = p.getName();
+    	String s = "asdf";
+    	configuration.set(Config.oldLoc + PlayerName + ".LastSpawnPointError", s);
+    }
+    public static void OldPlayerInvback(Player p) {
+    	String PlayerName = p.getName();
+    	String s = "asde";
+    	configuration.set(Config.oldLoc + PlayerName + ".LastSpawnPoint", s);
+    }
     public static void OldPlayerLeave(Player p) {
     	String PlayerName = p.getName();
     	String s = "asdi";
