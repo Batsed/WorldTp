@@ -25,11 +25,11 @@ public class WorldTp extends JavaPlugin {
 		System.out.println("[WorldTp] Plugin by Batsed");
 		config = new Config(new File(ordner + File.separator + "Saves.yml"));
         config.setDefaults();
-        config.save();
+        Config.save();
 	}
 
 	public void onDisable() {
-		config.save();
+		Config.save();
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
@@ -152,10 +152,14 @@ public class WorldTp extends JavaPlugin {
 			else{
 				if(p.hasPermission("worldtp.wt")) { 
 					
+					String PlayerName = p.getName();
 					String saved = this.getConfig().getString("Config."+ spawnpoint +".SaveInventory");
 					String game = this.getConfig().getString("Config."+ spawnpoint +".GamemodeCreative");
 					String clearinv = this.getConfig().getString("Config."+ spawnpoint +".ClearInventory");
 					String invback = this.getConfig().getString("Config."+ spawnpoint +".activateCommandInvback");
+					String AnotherWarp = Config.configuration.getString(Config.oldLoc + PlayerName + ".AnotherWarp");
+					String AnotherWarpOn = this.getConfig().getString("Config."+ spawnpoint +".TeleportToAnOtherWarp");
+					String DoubleWarp = Config.configuration.getString(Config.oldLoc + PlayerName + ".doubleWarp");
 					    
 					double locY = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.Y");
 					double locX = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.X");
@@ -211,19 +215,25 @@ public class WorldTp extends JavaPlugin {
 				    
 				    
 				    //hauptquellcode "wt"
-					
-					
-					String PlayerName = p.getName();
-					String spawnName = Config.configuration.getString(Config.oldLoc + PlayerName + ".LastSpawnPoint");
 				    Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
 				    
-				    Config.OldPlayerInvbackDoubleFine(p);
-				    
-				    if(spawnpoint == spawnName) {
-				    }else{
-				    	Config.OldPlayerLocName(p, spawnpoint);
-						config.save();
+				    if(AnotherWarpOn.length() == 5) {
+				    	if(AnotherWarp == "asdn") {
+				    		p.sendMessage(ChatColor.RED + "[WorldTp] Mehrmals Warpen ist nicht erlaubt");
+				    		return true;
+				    	}
 				    }
+				
+				    if(!(DoubleWarp == "doubleWarpOn")) {
+				    	Config.OldPlayerLocName(p, spawnpoint);				    	
+				    }
+				    
+				    Config.DoubleWarp(p);
+				    
+				    Config.OldPlayerInvbackDoubleFine(p);
+				    Config.TeleportToWarp(p);				    
+				    
+				    p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache1);
 				    
 				    p.teleport(loc);
 				    
@@ -236,8 +246,6 @@ public class WorldTp extends JavaPlugin {
 				    if(clearinv.length() == 4) {
 				    	return new InventoryManager(cmd, args, p, clearinv).clearInventory(p);
 				    }
-					
-				    p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache1);
 				    
 				}else{
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
@@ -287,6 +295,8 @@ public class WorldTp extends JavaPlugin {
             		this.getConfig().set("Config."+ spawnName +".activateCommandLeave", true);
             		getConfig().get("Config."+ spawnName +".ClearInvByCommand");
 					this.getConfig().set("Config."+ spawnName +".ClearInvByCommand", true);
+					getConfig().get("Config."+ spawnName +".TeleportToAnOtherWarp");
+					this.getConfig().set("Config."+ spawnName +".TeleportToAnOtherWarp", true);
 					this.getConfig().set("Config.Warps."+ spawnName, spawnName);
 				
 	            	if (save.equalsIgnoreCase("nosave")) {
@@ -433,7 +443,7 @@ public class WorldTp extends JavaPlugin {
 					}
 					Config.OldPlayerInvbackDouble(p);
 					Config.OldPlayerInvback(p);
-					config.save();
+					Config.save();
 					if(invback.length() == 4) {
 						return new InventoryManager(cmd, args, p, clearinv).loadFromFile(p);
 					}
@@ -472,9 +482,12 @@ public class WorldTp extends JavaPlugin {
 					
 					if(!(spawnName == "asdi")) {
 						Config.OldPlayerLeave(p);
-						config.save();
+						Config.save();
 					}
-				
+					
+					Config.TeleportToWarpLeave(p);
+					Config.DoubleWarpOff(p);
+					
 			    	double LocX = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.X");
 					double LocY = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.Y");
 					double LocZ = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.Z");

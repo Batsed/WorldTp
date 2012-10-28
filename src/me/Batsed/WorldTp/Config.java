@@ -71,7 +71,7 @@ public class Config {
         configuration.set(path, value);
     }
 
-    public void save() {
+    public static void save() {
 
         try {
             configuration.save(file);
@@ -80,35 +80,52 @@ public class Config {
             e.printStackTrace();
         }
     }
+    public static void TeleportToWarpLeave(Player p) {
+    	String PlayerName = p.getName();
+    	String s = "asdi";
+    	configuration.set(Config.oldLoc + PlayerName + ".AnotherWarp", s);
+    	Config.save();
+    }
+    public static void TeleportToWarp(Player p) {
+    	String PlayerName = p.getName();
+    	String s = "asdn";
+    	configuration.set(Config.oldLoc + PlayerName + ".AnotherWarp", s);
+    	Config.save();
+    }
     public static void OldPlayerInvbackDoubleFine(Player p) {
     	String PlayerName = p.getName();
     	String s = "asde";
     	configuration.set(Config.oldLoc + PlayerName + ".LastSpawnPointError", s);
+    	Config.save();
     }
     public static void OldPlayerInvbackDouble(Player p) {
     	String PlayerName = p.getName();
     	String s = "asdf";
     	configuration.set(Config.oldLoc + PlayerName + ".LastSpawnPointError", s);
+    	Config.save();
     }
     public static void OldPlayerInvback(Player p) {
     	String PlayerName = p.getName();
     	String s = "asde";
     	configuration.set(Config.oldLoc + PlayerName + ".LastSpawnPoint", s);
+    	Config.save();
     }
     public static void OldPlayerLeave(Player p) {
     	String PlayerName = p.getName();
     	String s = "asdi";
     	configuration.set(Config.oldLoc + PlayerName + ".LastSpawnPoint", s);
+    	Config.save();
     }
     
-    public static <Args> boolean OldPlayerLocName(Player p, String args) {
+    public static void OldPlayerLocName(Player p, String args) {
     	String spawnpoint = args;
     	String PlayerName = p.getName();
 		configuration.set(Config.oldLoc + PlayerName + ".LastSpawnPoint", spawnpoint);
-        return OldPlayerLoc(p);
+		Config.save();
+        Config.OldPlayerLoc(p);
     }
     
-    public static boolean OldPlayerLoc(Player p) {
+    public static void OldPlayerLoc(Player p) {
     	
     	double getZ = p.getLocation().getZ();
 		double getX = p.getLocation().getX();
@@ -118,7 +135,19 @@ public class Config {
 		configuration.set(Config.oldLoc + PlayerName + ".spawn.Z", getZ);
 		configuration.set(Config.oldLoc + PlayerName + ".spawn.X", getX);
     	configuration.set(Config.oldLoc + PlayerName + ".spawn.Y", getY);
-		return true;
+    	Config.save();
+    }
+    public static void DoubleWarpOff(Player p) {
+    	String PlayerName = p.getName();
+    	String s = "doubleWarpOff";
+    	configuration.set(Config.oldLoc + PlayerName + ".doubleWarp", s);
+    	Config.save();
+    }
+    public static void DoubleWarp(Player p) {
+    	String PlayerName = p.getName();
+    	String s = "doubleWarpOn";
+    	configuration.set(Config.oldLoc + PlayerName + ".doubleWarp", s);
+    	Config.save();
     }
 
 	protected static void addDefault(String path, Object value) {
