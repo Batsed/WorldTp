@@ -23,6 +23,8 @@ public class Config {
 	}
 	
     static String Saves = "Saves";
+    static String warps = Saves + ".Warps";
+    static String rechner = Saves + ".Zahl";
     static String oldLoc = Saves + ".Oldlocation.Players.";
     static String Info = Saves + ".info";
     static String NewWarp = Saves + ".Warps";
@@ -79,6 +81,26 @@ public class Config {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public static void WarpUp(String spawnName) {
+       	String zahl = configuration.getString(Config.rechner);
+       	String warpName = configuration.getString(Config.warps);
+    	
+       	if(zahl == "0") {
+       		configuration.set(Config.warps, spawnName);
+       		String erg = zahl + 1;
+       		configuration.set(Config.rechner, erg);  
+       		Config.save();
+       		return;
+       	}
+       	
+       	if(!(zahl == "0")) {
+       		configuration.set(Config.warps, warpName + " | " + spawnName);
+       		String erg = zahl + 1;
+       		configuration.set(Config.rechner, erg);       		
+       		Config.save();
+       		return;
+       	}
     }
     public static void TeleportToWarpLeave(Player p) {
     	String PlayerName = p.getName();
@@ -157,9 +179,8 @@ public class Config {
         }
     }
     public void setDefaults() {
-
-        //addDefault(Info, "Hier das ist für euch eher uninterresant, denn diese yml Datei speichert nur alte Spielerpositionen");
-        
+        addDefault(rechner, "0");
+        Config.save();
 	}
 
 	public Object getConfiguration() {

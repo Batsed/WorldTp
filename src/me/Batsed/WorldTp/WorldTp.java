@@ -3,7 +3,6 @@ package me.Batsed.WorldTp;
 
 import java.io.File;
 import java.util.HashMap;
-
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -140,7 +139,13 @@ public class WorldTp extends JavaPlugin {
 			}
 			if(spawnpoint.equalsIgnoreCase("list")) {
 				if(p.hasPermission("worldtp.list")) {
-					String warps = this.getConfig().getString("Config.Warps");
+					String warps = Config.configuration.getString(Config.warps);
+					
+					if(warps == null) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] Keine Warps verfügbar");
+						return true;
+					}
+					p.sendMessage(ChatColor.RED + "[WorldTp] **Warplist**");
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + warps);
 					return true;
 				}else{
@@ -180,36 +185,44 @@ public class WorldTp extends JavaPlugin {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache11);
 						return false;
 					}
+					if(AnotherWarpOn.length() > 5) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "' hat in der Config bei TeleportToAnOtherWarp einen Fehler");
+						return false;
+					}
+					if(AnotherWarpOn.length() < 4) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "' hat in der Config bei TeleportToAnOtherWarp einen Fehler");
+						return false;
+					}
 					if(game.length() > 5) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "', " + sprache14);
+						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "' " + sprache14);
 						return false;
 					}
 					if(game.length() < 4) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "', " + sprache14);
+						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "' " + sprache14);
 						return false;
 					}
 					if(saved.length() > 5) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "', " + sprache15);
+						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "' " + sprache15);
 						return false;
 					}
 					if(saved.length() < 4) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "', " + sprache15);
+						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "' " + sprache15);
 						return false;
 					}
 					if(clearinv.length() > 5) {
-				    	p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "', " + sprache18);
+				    	p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "' " + sprache18);
 				    	return false;
 					}
 				    if(clearinv.length() < 4) {
-				    	p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "', " + sprache18);
+				    	p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "' " + sprache18);
 				    	return false;
 				    }
 				    if(invback.length() > 5) {
-				    	p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint +"', " + sprache19);
+				    	p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint +"' " + sprache19);
 				    	return false;
 				    }
 				    if(invback.length() < 4) {
-				    	p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint +"', " + sprache19);
+				    	p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint +"' " + sprache19);
 				    	return false;
 				    }
 				    
@@ -288,6 +301,10 @@ public class WorldTp extends JavaPlugin {
 						p.sendMessage(ChatColor.RED + "[WorldTp] Der Name ist als Warp nicht erlaubt");
 						return true;
 					}
+					if(spawnName.equalsIgnoreCase("finderror")) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] Der Name ist als Warp nicht erlaubt");
+						return true;
+					}
 					getConfig().set("Config."+ spawnName +".spawn.X", p.getLocation().getX());
 					getConfig().set("Config."+ spawnName +".spawn.Y", p.getLocation().getY());
 					getConfig().set("Config."+ spawnName +".spawn.Z", p.getLocation().getZ());
@@ -297,7 +314,8 @@ public class WorldTp extends JavaPlugin {
 					this.getConfig().set("Config."+ spawnName +".ClearInvByCommand", true);
 					getConfig().get("Config."+ spawnName +".TeleportToAnOtherWarp");
 					this.getConfig().set("Config."+ spawnName +".TeleportToAnOtherWarp", true);
-					this.getConfig().set("Config.Warps."+ spawnName, spawnName);
+					this.getConfig().getList("Config.Warps."+ spawnName);
+					Config.WarpUp(spawnName);
 				
 	            	if (save.equalsIgnoreCase("nosave")) {
 						getConfig().get("Config."+ spawnName +".SaveInventory");
