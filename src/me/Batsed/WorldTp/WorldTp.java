@@ -129,6 +129,7 @@ public class WorldTp extends JavaPlugin {
 					//Hauptquellcode "/wt reload"
 					this.saveConfig();
 					reloadConfig();
+					Config.save();
 					p.sendMessage(ChatColor.RED + "[WorldTp] Config aktualliesiert");
 					return true;
 					
@@ -145,7 +146,7 @@ public class WorldTp extends JavaPlugin {
 						p.sendMessage(ChatColor.RED + "[WorldTp] Keine Warps verfügbar");
 						return true;
 					}
-					p.sendMessage(ChatColor.RED + "[WorldTp] **Warplist**");
+					p.sendMessage(ChatColor.RED + "[WorldTp] **Warps**");
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + warps);
 					return true;
 				}else{
@@ -398,17 +399,10 @@ public class WorldTp extends JavaPlugin {
 			}
 		}
 		if(cmd.getName().equalsIgnoreCase("clearinv")) {
-				if(args.length < 1) {
-					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
-					return false;
-				}
-				if(args.length > 1) {
-					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
-					return false;
-				}
 				if(p.hasPermission("worldtp.clearinv")) {
 					
-					String spawnName = (args[0]);
+					String PlayerName = p.getName();
+					String spawnName = Config.configuration.getString(Config.oldLoc + PlayerName + ".LastSpawnPoint");
 					String clearinvByCommand = this.getConfig().getString("Config."+ spawnName +".ClearInvByCommand");
 					String clearinv = this.getConfig().getString("Config."+ spawnName +".ClearInventory");
 						
@@ -440,10 +434,6 @@ public class WorldTp extends JavaPlugin {
 		//Gibt dein Inventar zurück
 		if(cmd.getName().equalsIgnoreCase("invback")) {
 			if(p.hasPermission("worldtp.invback")) {
-				if(args.length > 0) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
-						return false;
-				}
 				if(args.length == 0){
 					String PlayerName = p.getName();
 					String spawnName = Config.configuration.getString(Config.oldLoc + PlayerName + ".LastSpawnPoint");

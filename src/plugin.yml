@@ -25,7 +25,7 @@ commands:
           premission: worldtp.invback
      clearinv:
           description: Clear your Inventory
-          usage: /<command> <warpname>
+          usage: /<command>
           premission: worldtp.clearinv
      wt info:
           description: They are information from Warp
@@ -35,3 +35,7 @@ commands:
           description: Reload the Config
           usage: /<wt> <reload>
           premission: worldtp.reload
+     wt list:
+          description: A list from the warps
+          usage: /<wt> <list>
+          premission: worldtp.list
