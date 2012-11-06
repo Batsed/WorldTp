@@ -23,11 +23,13 @@ public class Config {
 	}
 	
     static String Saves = "Saves";
-    static String warps = Saves + ".Warps";
     static String rechner = Saves + ".Zahl";
     static String oldLoc = Saves + ".Oldlocation.Players.";
     static String Info = Saves + ".info";
     static String NewWarp = Saves + ".Warps";
+    static String NewWarpUp = Saves + ".Warps.";
+    static String WarpNumber = Saves + ".Number.";
+    static String NumberCache = Saves + ".Cache";
     
     protected static FileConfiguration configuration;
     protected static File file;
@@ -83,24 +85,41 @@ public class Config {
         }
     }
     public static void WarpUp(String spawnName) {
-       	String zahl = configuration.getString(Config.rechner);
-       	String warpName = configuration.getString(Config.warps);
-    	
-       	if(zahl == "0") {
-       		configuration.set(Config.warps, spawnName);
-       		String erg = zahl + 1;
-       		configuration.set(Config.rechner, erg);  
-       		Config.save();
-       		return;
-       	}
+       	int zahl = configuration.getInt(Config.rechner);
+    	int summe = zahl + 1;
+       	configuration.set(Config.rechner, summe);
+        String anzahl = String.valueOf(summe);
+       	configuration.set(Config.WarpNumber + anzahl, spawnName);
+       	Config.save();
        	
-       	if(!(zahl == "0")) {
-       		configuration.set(Config.warps, warpName + " | " + spawnName);
-       		String erg = zahl + 1;
-       		configuration.set(Config.rechner, erg);       		
+       	if(zahl == 0) {
+       		configuration.set(Config.NewWarp, spawnName);
        		Config.save();
-       		return;
+       	}else{
+       		if(zahl == 1) {
+       			configuration.set(Config.NewWarp, "");
+       			Config.save();
+       		}
+       		Config.WarpLoader(spawnName);
        	}
+    }
+    public static boolean WarpLoader(String spawnName) {
+    	
+    	int zahl = configuration.getInt(Config.rechner);
+    	int anzahl = configuration.getInt(Config.NumberCache);
+    	int anzahlG = anzahl + 1;
+    	String warp = configuration.getString(Config.NewWarp);
+    	String SpawnName = configuration.getString(Config.WarpNumber + anzahlG);
+    	configuration.set(Config.NewWarp, warp + " | " + SpawnName + " |");
+    	configuration.set(Config.NumberCache, anzahlG);
+    	Config.save();
+    	
+    	if(!(anzahlG == zahl)) {
+    		Config.WarpLoader(SpawnName);
+    		return true;
+    	}
+    	
+		return true;
     }
     public static void TeleportToWarpLeave(Player p) {
     	String PlayerName = p.getName();
@@ -179,7 +198,8 @@ public class Config {
         }
     }
     public void setDefaults() {
-        addDefault(rechner, "0");
+        addDefault(rechner, 0);
+        addDefault(NumberCache, 0);
         Config.save();
 	}
 

@@ -140,13 +140,14 @@ public class WorldTp extends JavaPlugin {
 			}
 			if(spawnpoint.equalsIgnoreCase("list")) {
 				if(p.hasPermission("worldtp.list")) {
-					String warps = Config.configuration.getString(Config.warps);
+					String warps = Config.configuration.getString(Config.NewWarp);
+					int zahl = Config.configuration.getInt(Config.rechner);
 					
 					if(warps == null) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] Keine Warps verfügbar");
 						return true;
 					}
-					p.sendMessage(ChatColor.RED + "[WorldTp] **Warps**");
+					p.sendMessage(ChatColor.RED + "[WorldTp] ** " + zahl + " Warps **");
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + warps);
 					return true;
 				}else{
