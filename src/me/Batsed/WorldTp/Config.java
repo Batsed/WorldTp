@@ -30,7 +30,8 @@ public class Config {
     static String NewWarpUp = Saves + ".Warps.";
     static String WarpNumber = Saves + ".Number.";
     static String NumberCache = Saves + ".Cache";
-    
+    static String ErrorCache = Saves + ".ErrorCache";
+    static String Backup = Saves + ".backup.";
     protected static FileConfiguration configuration;
     protected static File file;
 
@@ -40,7 +41,7 @@ public class Config {
         configuration = YamlConfiguration.loadConfiguration(file);
     }
 
-    public FileConfiguration getConfig() {
+    public static FileConfiguration getConfig() {
 
         return configuration;
     }
@@ -93,13 +94,11 @@ public class Config {
        	Config.save();
        	
        	if(zahl == 0) {
-       		configuration.set(Config.NewWarp, spawnName);
+       		configuration.set(Config.NewWarp, " | " + spawnName + " | ");
        		Config.save();
        	}else{
-       		if(zahl == 1) {
-       			configuration.set(Config.NewWarp, "");
-       			Config.save();
-       		}
+       		configuration.set(Config.NewWarp, "");
+       		Config.save();
        		Config.WarpLoader(spawnName);
        	}
     }
@@ -116,6 +115,11 @@ public class Config {
     	
     	if(!(anzahlG == zahl)) {
     		Config.WarpLoader(SpawnName);
+    		return true;
+    	}
+    	if(anzahlG == zahl) {
+    		configuration.set(Config.NumberCache, 0);
+    		Config.save();
     		return true;
     	}
     	
@@ -200,6 +204,7 @@ public class Config {
     public void setDefaults() {
         addDefault(rechner, 0);
         addDefault(NumberCache, 0);
+        addDefault("Saves.ErrorCache", 0);
         Config.save();
 	}
 

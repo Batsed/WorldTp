@@ -56,6 +56,12 @@ public class WorldTp extends JavaPlugin {
 		String sprache20 = this.getConfig().getString("Config.language.error.noPremmissions");
 		String sprache21 = this.getConfig().getString("Config.language.Help.Invback");
 		
+		Config.configuration.set(Config.Backup + "language.error.GamemodeCreativeError", sprache14);
+		Config.configuration.set(Config.Backup + "language.error.SaveInventoryError", sprache15);
+		Config.configuration.set(Config.Backup + "language.error.ClearInventoryError", sprache18);
+		Config.configuration.set(Config.Backup + "language.error.activateCommandInvbackError", sprache19);
+		Config.save();
+		
 		//OldLocation Config
 		
 		Player p = (Player)sender;
@@ -154,6 +160,14 @@ public class WorldTp extends JavaPlugin {
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
 					return true;
 				}
+			}
+			if(spawnpoint.equalsIgnoreCase("finderror")) {
+				int zahl = Config.configuration.getInt(Config.rechner);
+				if(zahl == 0) {
+					p.sendMessage(ChatColor.RED + "[WorldTp] Keine Errors endeckt!");
+					return true;
+				}
+				return new FindError(cmd, args, p).Error();
 			}
 			//Anfang Command "/wt"
 			else{
@@ -312,59 +326,75 @@ public class WorldTp extends JavaPlugin {
 					getConfig().set("Config."+ spawnName +".spawn.Z", p.getLocation().getZ());
             		getConfig().get("Config."+ spawnName +".activateCommandLeave");
             		this.getConfig().set("Config."+ spawnName +".activateCommandLeave", true);
+            		Config.configuration.set(Config.Backup + spawnName +".activateCommandLeave", true);
             		getConfig().get("Config."+ spawnName +".ClearInvByCommand");
 					this.getConfig().set("Config."+ spawnName +".ClearInvByCommand", true);
+					Config.configuration.set(Config.Backup + spawnName +".ClearInvByCommand", true);
 					getConfig().get("Config."+ spawnName +".TeleportToAnOtherWarp");
 					this.getConfig().set("Config."+ spawnName +".TeleportToAnOtherWarp", true);
-					this.getConfig().getList("Config.Warps."+ spawnName);
+					Config.configuration.set(Config.Backup + spawnName +".TeleportToAnOtherWarp", true);
 					Config.WarpUp(spawnName);
 				
 	            	if (save.equalsIgnoreCase("nosave")) {
 						getConfig().get("Config."+ spawnName +".SaveInventory");
 						this.getConfig().set("Config."+ spawnName +".SaveInventory", false);
+						Config.configuration.set(Config.Backup + spawnName +".SaveInventory", false);
 						getConfig().get("Config."+ spawnName +".activateCommandInvback");
 						this.getConfig().set("Config."+ spawnName +".activateCommandInvback", true);
+						Config.configuration.set(Config.Backup + spawnName +".activateCommandInvback", true);
 						getConfig().get("Config."+ spawnName +".ClearInventory");
 						this.getConfig().set("Config."+ spawnName +".ClearInventory", false);
+						Config.configuration.set(Config.Backup + spawnName +".ClearInventory", false);
 						getConfig().get("Config."+ spawnName +".loadInvByCommandLeave");
 						this.getConfig().set("Config."+ spawnName +".loadInvByCommandLeave", false);
+						Config.configuration.set(Config.Backup + spawnName +".loadInvByCommandLeave", false);
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
 						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnName + "', '" + save + "' " + sprache16 + " '" + game + "'");
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4);					
 						this.getConfig().options().copyDefaults(true);
 						this.saveConfig();
+						Config.save();
 					}
 	            	if (save.equalsIgnoreCase("withsave")) {
 						getConfig().get("Config."+ spawnName +".SaveInventory");
 						this.getConfig().set("Config."+ spawnName +".SaveInventory", true);
+						Config.configuration.set(Config.Backup + spawnName + ".SaveInventory", true);
 						getConfig().get("Config."+ spawnName +".activateCommandInvback");
 						this.getConfig().set("Config."+ spawnName +".activateCommandInvback", false);
+						Config.configuration.set(Config.Backup + spawnName + ".activateCommandInvback", false);
 						getConfig().get("Config."+ spawnName +".ClearInventory");
 						this.getConfig().set("Config."+ spawnName +".ClearInventory", true);
+						Config.configuration.set(Config.Backup + spawnName + ".ClearInventory", true);
 						getConfig().get("Config."+ spawnName +".loadInvByCommandLeave");
 						this.getConfig().set("Config."+ spawnName +".loadInvByCommandLeave", true);
+						Config.configuration.set(Config.Backup + spawnName + ".loadInvByCommandLeave", true);
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
 						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnName + "', '" + save + "' " + sprache16 + " '" + game + "'");
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4);
 	                
 						this.getConfig().options().copyDefaults(true);
 						this.saveConfig();
+						Config.save();
 	            	}
 	            	
 	            	if(game.equalsIgnoreCase("1")) {
 	            		getConfig().get("Config."+ spawnName +".GamemodeCreative");
 						this.getConfig().set("Config."+ spawnName +".GamemodeCreative", true);
+						Config.configuration.set(Config.Backup + spawnName + ".GamemodeCreative", true);
 						this.getConfig().options().copyDefaults(true);
 						this.saveConfig();
+						Config.save();
 						return true;
 					}
 					
 					if(game.equalsIgnoreCase("0")) {
 						getConfig().get("Config."+ spawnName +".GamemodeCreative");
 						this.getConfig().set("Config."+ spawnName +".GamemodeCreative", false);
+						Config.configuration.set(Config.Backup + spawnName + ".GamemodeCreative", false);
 						this.getConfig().options().copyDefaults(true);
 						this.saveConfig();
-						return true;
+						Config.save();
+						return true;	
 						
 					}else{
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache12);
