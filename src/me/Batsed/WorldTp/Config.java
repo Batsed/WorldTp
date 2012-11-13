@@ -21,7 +21,6 @@ public class Config {
 		this.args = args;
 		Config.p = p;
 	}
-	
     static String Saves = "Saves";
     static String rechner = Saves + ".Zahl";
     static String oldLoc = Saves + ".Oldlocation.Players.";
@@ -31,7 +30,12 @@ public class Config {
     static String WarpNumber = Saves + ".Number.";
     static String NumberCache = Saves + ".Cache";
     static String ErrorCache = Saves + ".ErrorCache";
+    static String TrueCache = Saves + ".TrueCache";
+    static String TrueCachePoint = Saves + ".TrueCache.";
     static String Backup = Saves + ".backup.";
+    static String ErrorOn = Saves + ".ErrorOn";
+    static String WarpCachePoint = Saves + ".WarpCache.";
+    static String WarpCache = Saves + ".WarpCache";
     protected static FileConfiguration configuration;
     protected static File file;
 
@@ -205,6 +209,7 @@ public class Config {
         addDefault(rechner, 0);
         addDefault(NumberCache, 0);
         addDefault("Saves.ErrorCache", 0);
+        addDefault(Config.ErrorOn, "off");
         Config.save();
 	}
 
