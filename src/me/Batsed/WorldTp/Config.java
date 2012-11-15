@@ -36,6 +36,8 @@ public class Config {
     static String ErrorOn = Saves + ".ErrorOn";
     static String WarpCachePoint = Saves + ".WarpCache.";
     static String WarpCache = Saves + ".WarpCache";
+    static String blockwarp = Saves + ".BlockWarp";
+    static String blockwarpPoint = Saves + ".BlockWarp.";
     protected static FileConfiguration configuration;
     protected static File file;
 

@@ -301,21 +301,31 @@ public class WorldTp extends JavaPlugin {
 				    //hauptquellcode "wt"
 				    Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
 				    String AnotherWarpPoint = Config.configuration.getString(Config.TrueCachePoint + PlayerName);
-
-				    if(AnotherWarpPoint.length() == 5) {
-				    	if(AnotherWarp == "asdn") {
-				    		p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache30);
-				    		return true;
-				    	}
-				    }
+				    String blockTp = Config.configuration.getString(Config.blockwarpPoint + PlayerName);
 				    
 				    if(AnotherWarpPoint.length() == 5) {
-				    	if(!(AnotherWarp == "asdn")) {
-				    		Config.configuration.set(Config.oldLoc + PlayerName + ".AnotherWarp", "asdn");
-				    		Config.save();
-				    	}
+				    	if(blockTp == "asde") {
+					    	p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache30);
+					    	return true;
+					    }
 				    }
 				    
+				    if(!(WarpCache == "asdf")) {
+					    if(AnotherWarpPoint.length() == 5) {
+					    	if(AnotherWarp == "asdn") {
+					    		p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache30);
+					    		return true;
+					    	}
+					    }
+					    
+					    if(AnotherWarpPoint.length() == 5) {
+					    	if(!(AnotherWarp == "asdn")) {
+					    		Config.configuration.set(Config.oldLoc + PlayerName + ".AnotherWarp", "asdn");
+					    		Config.save();
+					    	}
+					    }
+				    }
+					    
 				    if(!(DoubleWarp == "doubleWarpOn")) {
 				    	Config.OldPlayerLocName(p, spawnpoint);				    	
 				    }
@@ -339,6 +349,7 @@ public class WorldTp extends JavaPlugin {
 				    	return new InventoryManager(cmd, args, p, clearinv).clearInventory(p);
 				    }
 				    Config.configuration.set(Config.WarpCachePoint + PlayerName, spawnpoint);
+				    Config.configuration.set(Config.blockwarpPoint + PlayerName, "asde");
 				    Config.save();
 				}else{
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
@@ -597,7 +608,9 @@ public class WorldTp extends JavaPlugin {
 			    	double LocX = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.X");
 					double LocY = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.Y");
 					double LocZ = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.Z");
-						
+					
+					Config.configuration.set(Config.blockwarpPoint + PlayerName, "asdf");
+					
 					Location loc = new Location(getServer().getWorld(p.getWorld().getName()),LocX, LocY, LocZ);
 						
 					p.teleport(loc);
