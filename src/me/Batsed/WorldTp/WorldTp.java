@@ -770,7 +770,7 @@ public class WorldTp extends JavaPlugin {
 		String path35 = "Config.language.Help.WtList";
 		this.getConfig().addDefault(path35, "Shows available warps");
 		String path36 = "Config.language.Help.WtFinderror";
-		this.getConfig().addDefault(path36, "Looks for config errors");
+		this.getConfig().addDefault(path36, "Looks for config errors.");
 		
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
