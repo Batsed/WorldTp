@@ -692,7 +692,7 @@ public class WorldTp extends JavaPlugin {
 		String path3 = "Config.language.Setspawnpoint";
 		this.getConfig().addDefault(path3, "You have set the spawn point");
 		String path17 = "Config.language.BlockLeave";
-		this.getConfig().addDefault(path17, "Leave is now activated for this warp");
+		this.getConfig().addDefault(path17, "Leave is not activated for this warp");
 		String path4 = "Config.language.Setspawnpoint2";
 		this.getConfig().addDefault(path4, "Saved");
 		String path16 = "Config.language.info";
