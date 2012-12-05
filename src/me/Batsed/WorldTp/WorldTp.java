@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class WorldTp extends JavaPlugin {
 	
 	public Config config;
+	public File SaveInventory;
 	PluginDescriptionFile descFile = this.getDescription();
 	
 	private static String ordner = "plugins/WorldTp/saves";
@@ -22,6 +23,7 @@ public class WorldTp extends JavaPlugin {
 		createConfig();
 		System.out.println("[WorldTp] Plugin by Batsed");
 		config = new Config(new File(ordner + File.separator + "Saves.yml"));
+		//SaveInventory = new File(new File(ordner + File.separator + "SaveInventory.yml"));
         config.setDefaults();
         Config.save();
 	}
@@ -100,7 +102,7 @@ public class WorldTp extends JavaPlugin {
 			}
 			String spawnpoint = (args[0]);						    				    
 			//Anfang command "/wt info"	    
-			if (spawnpoint.equalsIgnoreCase("info")) {
+			if(spawnpoint.equalsIgnoreCase("info")) {
 				if(p.hasPermission("worldtp.info")) {
 					//Fehlerüberprpfung "info"
 					if(args.length < 2) {
@@ -120,7 +122,7 @@ public class WorldTp extends JavaPlugin {
 					String saved = this.getConfig().getString("Config."+ warpname +".SaveInventory");
 					String game = this.getConfig().getString("Config."+ warpname +".GamemodeCreative");
 					String clearinv = this.getConfig().getString("Config."+ warpname +".ClearInventory");
-					String invback = this.getConfig().getString("Config."+ warpname +".activateCommandInvback");
+					String TeleportToAnOtherWarp = this.getConfig().getString("Config."+ warpname +".TeleportToAnOtherWarp");
 					String activateinvback = this.getConfig().getString("Config."+ warpname+".activateCommandInvback");
 					String loadinvbycommandleave = this.getConfig().getString("Config."+ warpname +".loadInvByCommandLeave");
 					String activateCommandLeave = this.getConfig().getString("Config."+ warpname +".activateCommandLeave");
@@ -133,7 +135,7 @@ public class WorldTp extends JavaPlugin {
 					p.sendMessage(ChatColor.RED + "[WorldTp] SaveInventory = " + ChatColor.AQUA + saved);
 					p.sendMessage(ChatColor.RED + "[WorldTp] GamemodeCreative = " + ChatColor.AQUA + game);
 					p.sendMessage(ChatColor.RED + "[WorldTp] ClearInventory = " + ChatColor.AQUA + clearinv);
-					p.sendMessage(ChatColor.RED + "[WorldTp] activateCommandInvback = " + ChatColor.AQUA + invback);
+					p.sendMessage(ChatColor.RED + "[WorldTp] activateCommandInvback = " + ChatColor.AQUA + TeleportToAnOtherWarp);
 					p.sendMessage(ChatColor.RED + "[WorldTp] activateCommandInvback = " + ChatColor.AQUA + activateinvback);
 					p.sendMessage(ChatColor.RED + "[WorldTp] loadInvByCommandLeave = " + ChatColor.AQUA + loadinvbycommandleave);
 					p.sendMessage(ChatColor.RED + "[WorldTp] activateCommandLeave = " + ChatColor.AQUA + activateCommandLeave);
@@ -207,10 +209,37 @@ public class WorldTp extends JavaPlugin {
 					return true;
 				}
 			}
+			if(spawnpoint.equalsIgnoreCase("delete")) {
+				if(p.hasPermission("worldtp.delete")) {
+					if(args.length < 2) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
+						p.sendMessage("usage: <wt> <delete> <warpname>");
+						return true;
+					}
+					if(args.length > 2) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
+						p.sendMessage("usage: <wt> <delete> <warpname>");
+						return true;
+					}
+					if(args.length == 2) {
+						String warpname = (args[1]);
+						findWarp(warpname);
+						WarpLoader(warpname);
+						this.getConfig().set("Config."+ warpname +".delete", "DELETED!!!");
+						this.saveConfig();
+						return true;
+					}
+				}else{
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
+					return true;
+				}
+			}
+			
 			//Anfang Command "/wt"
 			else{
 				if(p.hasPermission("worldtp.wt")) { 
 					String PlayerName = p.getName();
+					String TeleportMessage = this.getConfig().getString("Config.Global.TeleportMessage");
 					String WarpCache = Config.configuration.getString(Config.WarpCachePoint + PlayerName);
 					
 					String spawnName = Config.configuration.getString(Config.oldLoc + PlayerName + ".LastSpawnPoint");
@@ -335,8 +364,10 @@ public class WorldTp extends JavaPlugin {
 				    Config.OldPlayerInvbackDoubleFine(p);
 				    Config.TeleportToWarp(p);				    
 				    
-				    p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache1);
-				    
+				    if(TeleportMessage.length() == 4) {
+				    	p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache1);
+				    }
+				    	
 				    p.teleport(loc);
 				    
 				    if(game.length() == 4) {
@@ -393,6 +424,10 @@ public class WorldTp extends JavaPlugin {
 						return true;
 					}
 					if(spawnName.equalsIgnoreCase("finderror")) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache29);
+						return true;
+					}
+					if(spawnName.equalsIgnoreCase("delete")) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache29);
 						return true;
 					}
@@ -581,6 +616,7 @@ public class WorldTp extends JavaPlugin {
 					String loadInvByLeave = this.getConfig().getString("Config."+ spawnName +".loadInvByCommandLeave");
 					String leave = this.getConfig().getString("Config."+ spawnName +".activateCommandLeave");
 					String another = Config.configuration.getString(Config.oldLoc + PlayerName + ".AnotherWarp");
+					String TeleportMessageBack = this.getConfig().getString("Config.Global.TeleportMessageBack");
 					String s = "asdi";
 					
 					if(spawnName == "asde") {
@@ -614,7 +650,11 @@ public class WorldTp extends JavaPlugin {
 					Location loc = new Location(getServer().getWorld(p.getWorld().getName()),LocX, LocY, LocZ);
 						
 					p.teleport(loc);
-					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache2);
+					
+					if(TeleportMessageBack.length() == 4) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache2);
+					}
+					
 					GameMode gamemode = p.getGameMode();
 					if(gamemode == GameMode.CREATIVE) {
 						p.setGameMode(GameMode.SURVIVAL);
@@ -639,7 +679,17 @@ public class WorldTp extends JavaPlugin {
 		return true;
 		
 	}
-    public Config getConfiguration() {
+    private void WarpLoader(String spawnName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void findWarp(String warpname) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Config getConfiguration() {
 		return config;
     }
 	
@@ -684,6 +734,12 @@ public class WorldTp extends JavaPlugin {
 		
 	public void createConfig() {
 		
+		//Gobal
+		String path42 = "Config.Global.TeleportMessage";
+		this.getConfig().addDefault(path42, true);
+		String path43 = "Config.Global.TeleportMessageBack";
+		this.getConfig().addDefault(path43, true);
+				
 		//language
 		String path1 = "Config.language.Wt";
 		this.getConfig().addDefault(path1, "You have teleported");

@@ -43,3 +43,7 @@ commands:
           description: Finds the Error in the Config
           usage: /<wt> <command>
           premission: worldtp.finderror
+     wt delete:
+          description: Delete warps
+          usage: /<wt> <command> <warpname>
+          premission: worldtp.delete

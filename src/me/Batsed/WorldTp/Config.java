@@ -115,6 +115,11 @@ public class Config {
     	int anzahlG = anzahl + 1;
     	String warp = configuration.getString(Config.NewWarp);
     	String SpawnName = configuration.getString(Config.WarpNumber + anzahlG);
+    	
+    	if(SpawnName == "deleted") {
+    		Config.WarpLoader(SpawnName);
+    		return true;
+    	}
     	configuration.set(Config.NewWarp, warp + " | " + SpawnName + " |");
     	configuration.set(Config.NumberCache, anzahlG);
     	Config.save();
