@@ -97,7 +97,13 @@ public class Config {
        	configuration.set(Config.rechner, summe);
         String anzahl = String.valueOf(summe);
        	configuration.set(Config.WarpNumber + anzahl, spawnName);
+       	String SpawnName = configuration.getString(Config.WarpNumber + summe);
        	Config.save();
+       	
+       	if(SpawnName == "true") {
+    		Config.WarpLoader(SpawnName);
+    		return;
+    	}
        	
        	if(zahl == 0) {
        		configuration.set(Config.NewWarp, " | " + spawnName + " | ");
@@ -116,7 +122,7 @@ public class Config {
     	String warp = configuration.getString(Config.NewWarp);
     	String SpawnName = configuration.getString(Config.WarpNumber + anzahlG);
     	
-    	if(SpawnName == "deleted") {
+    	if(SpawnName == "true") {
     		Config.WarpLoader(SpawnName);
     		return true;
     	}

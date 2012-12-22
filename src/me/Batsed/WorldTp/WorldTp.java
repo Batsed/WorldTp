@@ -24,6 +24,7 @@ public class WorldTp extends JavaPlugin {
 		System.out.println("[WorldTp] Plugin by Batsed");
 		config = new Config(new File(ordner + File.separator + "Saves.yml"));
 		//SaveInventory = new File(new File(ordner + File.separator + "SaveInventory.yml"));
+		WarpLoader(null);
         config.setDefaults();
         Config.save();
 	}
@@ -222,12 +223,12 @@ public class WorldTp extends JavaPlugin {
 						return true;
 					}
 					if(args.length == 2) {
-						String warpname = (args[1]);
-						findWarp(warpname);
-						WarpLoader(warpname);
-						this.getConfig().set("Config."+ warpname +".delete", "DELETED!!!");
+						String warpname = (args[1]);						
+						this.getConfig().set("Config."+ warpname +".delete", "true");
+						p.sendMessage(ChatColor.RED + "[WorldTp] Warp "+ warpname +" delete!");
+						p.sendMessage(ChatColor.RED + "[WorldTp] Please reload the Server");
 						this.saveConfig();
-						return true;
+						return new FindWarp(cmd, args, p).warpNumber(warpname);												
 					}
 				}else{
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
@@ -241,8 +242,13 @@ public class WorldTp extends JavaPlugin {
 					String PlayerName = p.getName();
 					String TeleportMessage = this.getConfig().getString("Config.Global.TeleportMessage");
 					String WarpCache = Config.configuration.getString(Config.WarpCachePoint + PlayerName);
-					
+					String WarpDelete = this.getConfig().getString("Config."+ spawnpoint +".delete");
 					String spawnName = Config.configuration.getString(Config.oldLoc + PlayerName + ".LastSpawnPoint");
+					
+					if(WarpDelete.length() == 4) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache11);					
+						return false;
+					}
 					if(spawnName == null) {
 						String AnotherWarpOn = this.getConfig().getString("Config."+ spawnpoint +".TeleportToAnOtherWarp");
 						Config.configuration.set(Config.TrueCachePoint + PlayerName, AnotherWarpOn);
@@ -266,11 +272,11 @@ public class WorldTp extends JavaPlugin {
 					String clearinv = this.getConfig().getString("Config."+ spawnpoint +".ClearInventory");
 					String invback = this.getConfig().getString("Config."+ spawnpoint +".activateCommandInvback");
 					String AnotherWarp = Config.configuration.getString(Config.oldLoc + PlayerName + ".AnotherWarp");
-					String DoubleWarp = Config.configuration.getString(Config.oldLoc + PlayerName + ".doubleWarp");
-					    
+					String DoubleWarp = Config.configuration.getString(Config.oldLoc + PlayerName + ".doubleWarp");					
+					
 					double locY = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.Y");
 					double locX = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.X");
-					double locZ = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.Z");													
+					double locZ = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.Z");												
 					
 					//Fehler überprüfung
 					if(args.length < 1) {
@@ -282,7 +288,7 @@ public class WorldTp extends JavaPlugin {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
 						p.sendMessage("usage: <wt> <warpname>");
 						return false;
-					}
+					}					
 					if(locX == 0) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache11);
 						return false;
@@ -442,6 +448,7 @@ public class WorldTp extends JavaPlugin {
 					Config.configuration.set(Config.Backup + spawnName +".ClearInvByCommand", true);
 					getConfig().get("Config."+ spawnName +".TeleportToAnOtherWarp");
 					this.getConfig().set("Config."+ spawnName +".TeleportToAnOtherWarp", true);
+					this.getConfig().set("Config."+ spawnName +".delete", false);
 					Config.configuration.set(Config.Backup + spawnName +".TeleportToAnOtherWarp", true);
 					Config.WarpUp(spawnName);
 				
@@ -680,11 +687,6 @@ public class WorldTp extends JavaPlugin {
 		
 	}
     private void WarpLoader(String spawnName) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void findWarp(String warpname) {
 		// TODO Auto-generated method stub
 		
 	}
