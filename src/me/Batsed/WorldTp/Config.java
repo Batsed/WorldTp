@@ -38,6 +38,7 @@ public class Config {
     static String WarpCache = Saves + ".WarpCache";
     static String blockwarp = Saves + ".BlockWarp";
     static String blockwarpPoint = Saves + ".BlockWarp.";
+    static String warpzahl = Saves + ".WarpZahl";
     protected static FileConfiguration configuration;
     protected static File file;
 
@@ -95,43 +96,53 @@ public class Config {
        	int zahl = configuration.getInt(Config.rechner);
     	int summe = zahl + 1;
        	configuration.set(Config.rechner, summe);
+       	configuration.set(Config.warpzahl, summe);
         String anzahl = String.valueOf(summe);
        	configuration.set(Config.WarpNumber + anzahl, spawnName);
        	String SpawnName = configuration.getString(Config.WarpNumber + summe);
        	Config.save();
        	
-       	if(SpawnName == "true") {
-    		Config.WarpLoader(SpawnName);
-    		return;
+       	if(SpawnName.equalsIgnoreCase("deleted")) {
+       		if(zahl == 1) {
+       			configuration.set(Config.warpzahl, 0);
+       			return;
+       		}       		
     	}
        	
-       	if(zahl == 0) {
+       	if(zahl == 1) {
        		configuration.set(Config.NewWarp, " | " + spawnName + " | ");
        		Config.save();
        	}else{
        		configuration.set(Config.NewWarp, "");
        		Config.save();
-       		Config.WarpLoader(spawnName);
+       		Config.WarpLoader();
        	}
     }
-    public static boolean WarpLoader(String spawnName) {
+    public static boolean WarpLoader() {	
     	
     	int zahl = configuration.getInt(Config.rechner);
     	int anzahl = configuration.getInt(Config.NumberCache);
     	int anzahlG = anzahl + 1;
     	String warp = configuration.getString(Config.NewWarp);
-    	String SpawnName = configuration.getString(Config.WarpNumber + anzahlG);
+    	String SpawnName = configuration.getString(Config.WarpNumber + anzahlG);    	
     	
-    	if(SpawnName == "true") {
-    		Config.WarpLoader(SpawnName);
-    		return true;
+    	if(SpawnName.equalsIgnoreCase("deleted")) {
+    		configuration.set(Config.NumberCache, anzahlG);
+    		int a = anzahlG - 1;
+    		configuration.set(Config.warpzahl, a);
+    		Config.save();
+    		Config.WarpLoader();
+    		return false;
     	}
     	configuration.set(Config.NewWarp, warp + " | " + SpawnName + " |");
     	configuration.set(Config.NumberCache, anzahlG);
+    	
+    	int b = anzahlG + 1;
+    	configuration.set(Config.warpzahl, b);
     	Config.save();
     	
     	if(!(anzahlG == zahl)) {
-    		Config.WarpLoader(SpawnName);
+    		Config.WarpLoader();
     		return true;
     	}
     	if(anzahlG == zahl) {

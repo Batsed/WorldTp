@@ -1,5 +1,4 @@
 package me.Batsed.WorldTp;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 
@@ -23,13 +22,13 @@ public class FindWarp {
 		Config.configuration.set(Config.ErrorCache, anzahlG);
 		
 		String spawnName = Config.configuration.getString(Config.WarpNumber + anzahlG);
-		p.sendMessage(ChatColor.AQUA + spawnName);
-		p.sendMessage(ChatColor.AQUA + warpname);
+		String warpName = warpname;
+		
 		//Warp Nummer finden
-		if(spawnName == warpname) {
-			p.sendMessage(ChatColor.RED + "Hallo");
-			Config.configuration.set(Config.WarpNumber + anzahlG, "true");
-			Config.save();
+		if(spawnName.equalsIgnoreCase(warpName)) {								
+			Config.configuration.set(Config.WarpNumber + anzahlG, "deleted");
+			Config.configuration.set(Config.ErrorCache, 0);
+			Config.save();			
 			return false;
 		}	
 				

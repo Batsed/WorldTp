@@ -24,9 +24,14 @@ public class WorldTp extends JavaPlugin {
 		System.out.println("[WorldTp] Plugin by Batsed");
 		config = new Config(new File(ordner + File.separator + "Saves.yml"));
 		//SaveInventory = new File(new File(ordner + File.separator + "SaveInventory.yml"));
-		WarpLoader(null);
+		WarpUp(null);
         config.setDefaults();
         Config.save();
+	}
+
+	private void WarpUp(Object object) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void onDisable() {
@@ -223,9 +228,9 @@ public class WorldTp extends JavaPlugin {
 						return true;
 					}
 					if(args.length == 2) {
-						String warpname = (args[1]);						
+						String warpname = (args[1]);
 						this.getConfig().set("Config."+ warpname +".delete", "true");
-						p.sendMessage(ChatColor.RED + "[WorldTp] Warp "+ warpname +" delete!");
+						p.sendMessage(ChatColor.RED + "[WorldTp] Warp '"+ warpname +"' delete!");
 						p.sendMessage(ChatColor.RED + "[WorldTp] Please reload the Server");
 						this.saveConfig();
 						return new FindWarp(cmd, args, p).warpNumber(warpname);												
@@ -245,6 +250,24 @@ public class WorldTp extends JavaPlugin {
 					String WarpDelete = this.getConfig().getString("Config."+ spawnpoint +".delete");
 					String spawnName = Config.configuration.getString(Config.oldLoc + PlayerName + ".LastSpawnPoint");
 					
+					double locY = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.Y");
+					double locX = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.X");
+					double locZ = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.Z");
+					
+					if(args.length < 1) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
+						p.sendMessage("usage: <wt> <warpname>");
+						return false;
+					}
+					if(args.length > 1) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
+						p.sendMessage("usage: <wt> <warpname>");
+						return false;
+					}					
+					if(locX == 0) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache11);
+						return false;
+					}		
 					if(WarpDelete.length() == 4) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache11);					
 						return false;
@@ -272,27 +295,9 @@ public class WorldTp extends JavaPlugin {
 					String clearinv = this.getConfig().getString("Config."+ spawnpoint +".ClearInventory");
 					String invback = this.getConfig().getString("Config."+ spawnpoint +".activateCommandInvback");
 					String AnotherWarp = Config.configuration.getString(Config.oldLoc + PlayerName + ".AnotherWarp");
-					String DoubleWarp = Config.configuration.getString(Config.oldLoc + PlayerName + ".doubleWarp");					
+					String DoubleWarp = Config.configuration.getString(Config.oldLoc + PlayerName + ".doubleWarp");																	
 					
-					double locY = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.Y");
-					double locX = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.X");
-					double locZ = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.Z");												
-					
-					//Fehler überprüfung
-					if(args.length < 1) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
-						p.sendMessage("usage: <wt> <warpname>");
-						return false;
-					}
-					if(args.length > 1) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
-						p.sendMessage("usage: <wt> <warpname>");
-						return false;
-					}					
-					if(locX == 0) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache11);
-						return false;
-					}					
+					//Fehler überprüfung								
 					if(game.length() > 5) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "' " + sprache37);
 						System.out.println("[WorldTp] Spawnpoint '" + spawnpoint + "' " + sprache14);
@@ -686,12 +691,7 @@ public class WorldTp extends JavaPlugin {
 		return true;
 		
 	}
-    private void WarpLoader(String spawnName) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public Config getConfiguration() {
+    public Config getConfiguration() {
 		return config;
     }
 	
