@@ -24,14 +24,8 @@ public class WorldTp extends JavaPlugin {
 		System.out.println("[WorldTp] Plugin by Batsed");
 		config = new Config(new File(ordner + File.separator + "Saves.yml"));
 		//SaveInventory = new File(new File(ordner + File.separator + "SaveInventory.yml"));
-		WarpUp(null);
         config.setDefaults();
         Config.save();
-	}
-
-	private void WarpUp(Object object) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void onDisable() {
@@ -182,10 +176,14 @@ public class WorldTp extends JavaPlugin {
 			if(spawnpoint.equalsIgnoreCase("list")) {
 				if(p.hasPermission("worldtp.list")) {
 					String warps = Config.configuration.getString(Config.NewWarp);
-					int zahl = Config.configuration.getInt(Config.rechner);
+					int zahl = Config.configuration.getInt(Config.warpzahl);
 					
 					if(warps == null) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache31);
+						return true;
+					}
+					if(zahl == 0) {
+						p.sendMessage(ChatColor.RED + "[WorldTP] " + sprache31);
 						return true;
 					}
 					if(zahl == 1) {
@@ -231,7 +229,6 @@ public class WorldTp extends JavaPlugin {
 						String warpname = (args[1]);
 						this.getConfig().set("Config."+ warpname +".delete", "true");
 						p.sendMessage(ChatColor.RED + "[WorldTp] Warp '"+ warpname +"' delete!");
-						p.sendMessage(ChatColor.RED + "[WorldTp] Please reload the Server");
 						this.saveConfig();
 						return new FindWarp(cmd, args, p).warpNumber(warpname);												
 					}

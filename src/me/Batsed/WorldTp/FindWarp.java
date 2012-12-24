@@ -27,7 +27,8 @@ public class FindWarp {
 		//Warp Nummer finden
 		if(spawnName.equalsIgnoreCase(warpName)) {								
 			Config.configuration.set(Config.WarpNumber + anzahlG, "deleted");
-			Config.configuration.set(Config.ErrorCache, 0);
+			Config.configuration.set(Config.ErrorCache, 0);			
+			Config.WarpUp("asdi");
 			Config.save();			
 			return false;
 		}	
@@ -42,6 +43,7 @@ public class FindWarp {
 	    
 	    Config.configuration.set(Config.ErrorCache, 0);
 	    Config.save();
+	    Config.WarpUp("deleted");
 		return true;
 	}
 }

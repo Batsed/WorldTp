@@ -98,20 +98,29 @@ public class Config {
        	configuration.set(Config.rechner, summe);
        	configuration.set(Config.warpzahl, summe);
         String anzahl = String.valueOf(summe);
-       	configuration.set(Config.WarpNumber + anzahl, spawnName);
+        if(!(spawnName == "asdi")) {
+        	configuration.set(Config.WarpNumber + anzahl, spawnName);
+        }
+        if(spawnName == "asdi") {
+        	summe = summe - 1;
+        }
+        Config.save();
        	String SpawnName = configuration.getString(Config.WarpNumber + summe);
-       	Config.save();
+       	
        	
        	if(SpawnName.equalsIgnoreCase("deleted")) {
-       		if(zahl == 1) {
+       		if(summe == 1) {
        			configuration.set(Config.warpzahl, 0);
+       			configuration.set(Config.rechner, 1);
+       			configuration.set(Config.NewWarp, "");
+       			Config.save();
        			return;
        		}       		
-    	}
-       	
-       	if(zahl == 1) {
+    	}       	
+       	if(summe == 1) {
        		configuration.set(Config.NewWarp, " | " + spawnName + " | ");
        		Config.save();
+       		return;
        	}else{
        		configuration.set(Config.NewWarp, "");
        		Config.save();
@@ -127,9 +136,14 @@ public class Config {
     	String SpawnName = configuration.getString(Config.WarpNumber + anzahlG);    	
     	
     	if(SpawnName.equalsIgnoreCase("deleted")) {
+    		if(anzahlG == zahl) {
+    			configuration.set(Config.NumberCache, 0);
+    			Config.save();
+    		}
     		configuration.set(Config.NumberCache, anzahlG);
-    		int a = anzahlG - 1;
+    		int a = anzahlG - 1;    		
     		configuration.set(Config.warpzahl, a);
+    		configuration.set(Config.rechner, anzahlG);
     		Config.save();
     		Config.WarpLoader();
     		return false;
@@ -137,10 +151,13 @@ public class Config {
     	configuration.set(Config.NewWarp, warp + " | " + SpawnName + " |");
     	configuration.set(Config.NumberCache, anzahlG);
     	
-    	int b = anzahlG + 1;
+    	int b = anzahlG;
     	configuration.set(Config.warpzahl, b);
     	Config.save();
     	
+    	if(anzahlG > zahl) {
+    		return true;
+    	}
     	if(!(anzahlG == zahl)) {
     		Config.WarpLoader();
     		return true;
@@ -233,6 +250,7 @@ public class Config {
         addDefault(rechner, 0);
         addDefault(NumberCache, 0);
         addDefault("Saves.ErrorCache", 0);
+        addDefault(warpzahl, 0);
         addDefault(Config.ErrorOn, "off");
         Config.save();
 	}
