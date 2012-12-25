@@ -20,15 +20,15 @@ public class FindWarp {
 		int anzahl = Config.configuration.getInt(Config.ErrorCache);
 		int anzahlG = anzahl + 1;
 		Config.configuration.set(Config.ErrorCache, anzahlG);
+		Config.save();
 		
 		String spawnName = Config.configuration.getString(Config.WarpNumber + anzahlG);
-		String warpName = warpname;
 		
 		//Warp Nummer finden
-		if(spawnName.equalsIgnoreCase(warpName)) {								
+		if(spawnName.equalsIgnoreCase(warpname)) {								
 			Config.configuration.set(Config.WarpNumber + anzahlG, "deleted");
 			Config.configuration.set(Config.ErrorCache, 0);			
-			Config.WarpUp("asdi");
+			WarpUpDelete();
 			Config.save();			
 			return false;
 		}	
@@ -40,10 +40,80 @@ public class FindWarp {
 	 	    	return true;
 	 		}		
 		}
-	    
-	    Config.configuration.set(Config.ErrorCache, 0);
-	    Config.save();
-	    Config.WarpUp("deleted");
 		return true;
 	}
+	   public static void WarpUpDelete() {
+	       	int zahl = Config.configuration.getInt(Config.rechner);
+	       	String SpawnName = Config.configuration.getString(Config.WarpNumber + 1);
+	       	int warpderzahl = Config.configuration.getInt(Config.warpzahl);
+	       	
+	       	if(zahl == 1) {
+	       		if(SpawnName.equalsIgnoreCase("deleted")) {
+	       			warpderzahl = warpderzahl - 1;
+	       			Config.configuration.set(Config.warpzahl, warpderzahl);
+	       			Config.configuration.set(Config.NewWarp, "");
+	       			Config.save();
+	       			return;
+	       		}       		
+	    	}       	
+	       	if(zahl == 1) {
+	       		Config.configuration.set(Config.NewWarp, " | " + SpawnName + " | ");
+	       		Config.configuration.set(Config.warpzahl, warpderzahl);
+	       		Config.save();
+	       		return;
+	       	}else{
+	       		Config.configuration.set(Config.NewWarp, "");
+	       		Config.configuration.set(Config.warpzahl, 0);
+	       		Config.save();
+	       		WarpLoaderDelete();
+	       		return;
+	       	}
+	    }
+	    public static boolean WarpLoaderDelete() {	
+	    	
+	    	int zahl = Config.configuration.getInt(Config.rechner);
+	    	int anzahl = Config.configuration.getInt(Config.NumberCache);
+	    	int anzahlG = anzahl + 1;
+	    	String warp = Config.configuration.getString(Config.NewWarp);
+	    	String SpawnName = Config.configuration.getString(Config.WarpNumber + anzahlG);    
+	    	int warpzahl = Config.configuration.getInt(Config.warpzahl);
+	    	
+	    	if(SpawnName.equalsIgnoreCase("deleted")) {	
+	    		Config.configuration.set(Config.NumberCache, anzahlG);
+	    		
+	    		int zahlDerWarp = warpzahl;
+	    		
+	    		Config.configuration.set(Config.warpzahl, zahlDerWarp);
+	    		Config.save();
+	    		if(anzahlG == zahl) {
+	    			Config.configuration.set(Config.NumberCache, 0);
+	    			return false;
+	    		}else{
+	    			WarpLoaderDelete();
+	    			return false;
+	    		}
+	    	}else{
+	    		Config.configuration.set(Config.NewWarp, warp + " | " + SpawnName + " |");
+	    		Config.configuration.set(Config.NumberCache, anzahlG);
+	    	
+	    		int warpderzahl = warpzahl + 1;
+	    		Config.configuration.set(Config.warpzahl, warpderzahl);
+	    		Config.save();
+	    	}
+	    	if(anzahlG > zahl) {
+	    		return false;
+	    	}
+	    	
+	    	if(!(anzahlG == zahl)) {
+	    		WarpLoaderDelete();
+	    		return true;
+	    	}
+	    	if(anzahlG == zahl) {
+	    		Config.configuration.set(Config.NumberCache, 0);
+	    		Config.save();
+	    		return true;
+	    	}
+	    	
+			return true;
+	    }
 }

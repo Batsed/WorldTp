@@ -96,22 +96,14 @@ public class Config {
        	int zahl = configuration.getInt(Config.rechner);
     	int summe = zahl + 1;
        	configuration.set(Config.rechner, summe);
-       	configuration.set(Config.warpzahl, summe);
         String anzahl = String.valueOf(summe);
-        if(!(spawnName == "asdi")) {
-        	configuration.set(Config.WarpNumber + anzahl, spawnName);
-        }
-        if(spawnName == "asdi") {
-        	summe = summe - 1;
-        }
+        configuration.set(Config.WarpNumber + anzahl, spawnName);
         Config.save();
        	String SpawnName = configuration.getString(Config.WarpNumber + summe);
        	
        	
        	if(SpawnName.equalsIgnoreCase("deleted")) {
        		if(summe == 1) {
-       			configuration.set(Config.warpzahl, 0);
-       			configuration.set(Config.rechner, 1);
        			configuration.set(Config.NewWarp, "");
        			Config.save();
        			return;
@@ -119,10 +111,12 @@ public class Config {
     	}       	
        	if(summe == 1) {
        		configuration.set(Config.NewWarp, " | " + spawnName + " | ");
+       		configuration.set(Config.warpzahl, 1);
        		Config.save();
        		return;
        	}else{
        		configuration.set(Config.NewWarp, "");
+       		configuration.set(Config.warpzahl, 0);
        		Config.save();
        		Config.WarpLoader();
        	}
@@ -133,17 +127,15 @@ public class Config {
     	int anzahl = configuration.getInt(Config.NumberCache);
     	int anzahlG = anzahl + 1;
     	String warp = configuration.getString(Config.NewWarp);
-    	String SpawnName = configuration.getString(Config.WarpNumber + anzahlG);    	
+    	String SpawnName = configuration.getString(Config.WarpNumber + anzahlG);    
+    	int warpzahl = configuration.getInt(Config.warpzahl);
     	
-    	if(SpawnName.equalsIgnoreCase("deleted")) {
-    		if(anzahlG == zahl) {
-    			configuration.set(Config.NumberCache, 0);
-    			Config.save();
-    		}
+    	if(SpawnName.equalsIgnoreCase("deleted")) {	
     		configuration.set(Config.NumberCache, anzahlG);
-    		int a = anzahlG - 1;    		
-    		configuration.set(Config.warpzahl, a);
-    		configuration.set(Config.rechner, anzahlG);
+    		
+    		int zahlDerWarp = warpzahl;
+    		
+    		configuration.set(Config.warpzahl, zahlDerWarp);
     		Config.save();
     		Config.WarpLoader();
     		return false;
@@ -151,13 +143,11 @@ public class Config {
     	configuration.set(Config.NewWarp, warp + " | " + SpawnName + " |");
     	configuration.set(Config.NumberCache, anzahlG);
     	
-    	int b = anzahlG;
-    	configuration.set(Config.warpzahl, b);
+    	int warpderzahl = warpzahl + 1;
+    	configuration.set(Config.warpzahl, warpderzahl);
     	Config.save();
     	
-    	if(anzahlG > zahl) {
-    		return true;
-    	}
+    	
     	if(!(anzahlG == zahl)) {
     		Config.WarpLoader();
     		return true;

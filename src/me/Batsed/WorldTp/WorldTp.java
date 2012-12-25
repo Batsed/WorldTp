@@ -592,7 +592,11 @@ public class WorldTp extends JavaPlugin {
 					String spawnNameError = Config.configuration.getString(Config.oldLoc + PlayerName + ".LastSpawnPointError");
 					String clearinv = this.getConfig().getString("Config."+ spawnName +".ClearInventory");
 					String invback = this.getConfig().getString("Config."+ spawnName +".activateCommandInvback");
-				
+					
+					if(invback == null) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] Found no inventory");
+						return true;
+					}
 					if(invback.length() == 5) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache26);
 						return true;
@@ -626,6 +630,18 @@ public class WorldTp extends JavaPlugin {
 					String leave = this.getConfig().getString("Config."+ spawnName +".activateCommandLeave");
 					String another = Config.configuration.getString(Config.oldLoc + PlayerName + ".AnotherWarp");
 					String TeleportMessageBack = this.getConfig().getString("Config.Global.TeleportMessageBack");
+					
+					double LocX = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.X");
+					double LocY = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.Y");
+					double LocZ = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.Z");
+					
+					Location loc = new Location(getServer().getWorld(p.getWorld().getName()),LocX, LocY, LocZ);
+					
+					if(LocX == 0) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");
+						return true;
+					}
+					
 					String s = "asdi";
 					
 					if(spawnName == "asde") {
@@ -650,13 +666,11 @@ public class WorldTp extends JavaPlugin {
 					Config.TeleportToWarpLeave(p);
 					Config.DoubleWarpOff(p);
 					
-			    	double LocX = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.X");
-					double LocY = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.Y");
-					double LocZ = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.Z");
+			    	
 					
 					Config.configuration.set(Config.blockwarpPoint + PlayerName, "asdf");
 					
-					Location loc = new Location(getServer().getWorld(p.getWorld().getName()),LocX, LocY, LocZ);
+					
 						
 					p.teleport(loc);
 					

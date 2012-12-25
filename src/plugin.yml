@@ -21,7 +21,7 @@ commands:
           premission: worldtp.worldtp
      invback:
           description: Give your Inventory back
-          usage: /<command> <warpname>
+          usage: /<command>
           premission: worldtp.invback
      clearinv:
           description: Clear your Inventory
