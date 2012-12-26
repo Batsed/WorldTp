@@ -15,7 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class WorldTp extends JavaPlugin {
 	
 	public Config config;
-	public File SaveInventory;
+	public File dir;
 	PluginDescriptionFile descFile = this.getDescription();
 	
 	private static String ordner = "plugins/WorldTp/saves";
@@ -24,7 +24,8 @@ public class WorldTp extends JavaPlugin {
 		createConfig();
 		System.out.println("[WorldTp] Plugin by Batsed");
 		config = new Config(new File(ordner + File.separator + "Saves.yml"));
-		//SaveInventory = new File(new File(ordner + File.separator + "SaveInventory.yml"));
+		this.dir = new File("plugins/WorldTp/saves/inventories");
+		this.dir.mkdir();
         config.setDefaults();
         Config.save();
 	}

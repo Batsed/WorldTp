@@ -24,18 +24,11 @@ public class InventoryManager
 		this.p = p;
 		this.clearinv = clearinv;
 	}
-	static String EXT = ".inv";			
-	private File dir;
+	
+	private static String dir = "plugins/WorldTp/saves/inventories";
+	static String EXT = ".inv";
 	private Map<Player, ItemStack[]> items;
 	private Map<Player, ItemStack[]> armor;
- 
-	//public InventoryManager()
-	//	this.dir = new File("plugins/WorldTp/saves/inventories");
-	//  this.dir.mkdir();
-
-	//	this.items = new HashMap<Player, ItemStack[]>();
-	//	this.armor = new HashMap<Player, ItemStack[]>();
-	//}
 
 	public boolean storeInventory(Player p)
 	{
@@ -65,7 +58,7 @@ public class InventoryManager
 			inv.setContents(memItems);
 			inv.setArmorContents(memArmor);
 
-			new File(this.dir, p.getName() + EXT).delete();
+			new File(InventoryManager.dir, p.getName() + EXT).delete();
 
 			return true;
 		}
@@ -85,7 +78,7 @@ public class InventoryManager
 	}
 
 	public boolean saveToFile(Player p) {
-		File file = new File(this.dir, p.getName() + EXT);
+		File file = new File(InventoryManager.dir, p.getName() + EXT);
 		if (file.exists()) {
 			return true;
 		}
@@ -112,7 +105,7 @@ public class InventoryManager
 
 	public boolean loadFromFile(Player p)
 	{
-		File file = new File(this.dir, p.getName() + EXT);
+		File file = new File(InventoryManager.dir, p.getName() + EXT);
  
 		if (!file.exists()) {
 			return true;
