@@ -256,6 +256,7 @@ public class WorldTp extends JavaPlugin {
 					String WarpCache = Config.configuration.getString(Config.WarpCachePoint + PlayerName);
 					String WarpDelete = this.getConfig().getString("Config."+ spawnpoint +".delete");
 					String spawnName = Config.configuration.getString(Config.oldLoc + PlayerName + ".LastSpawnPoint");
+					String world = this.getConfig().getString("Config." + spawnpoint +".world");
 					
 					double locY = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.Y");
 					double locX = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.X");
@@ -346,7 +347,7 @@ public class WorldTp extends JavaPlugin {
 				    	return false;
 				    }			
 				    //hauptquellcode "wt"
-				    Location loc = new Location(getServer().getWorld(p.getWorld().getName()),locX, locY, locZ);
+				    Location loc = new Location(getServer().getWorld(world), locX, locY, locZ);
 				    String AnotherWarpPoint = Config.configuration.getString(Config.TrueCachePoint + PlayerName);
 				    String blockTp = Config.configuration.getString(Config.blockwarpPoint + PlayerName);
 				    
@@ -477,7 +478,8 @@ public class WorldTp extends JavaPlugin {
 				this.getConfig().set("Config."+ spawnName +".TeleportToAnOtherWarp", true);
 				this.getConfig().set("Config."+ spawnName +".delete", false);
 				Config.configuration.set(Config.Backup + spawnName +".TeleportToAnOtherWarp", true);				
-									
+				String world = p.getLocation().getWorld().getName();
+				this.getConfig().set("Config."+ spawnName +".world", world);
 				
             	if(args.length == 1) {            	            		
 					getConfig().get("Config."+ spawnName +".SaveInventory");
@@ -720,12 +722,13 @@ public class WorldTp extends JavaPlugin {
 					String leave = this.getConfig().getString("Config."+ spawnName +".activateCommandLeave");
 					String another = Config.configuration.getString(Config.oldLoc + PlayerName + ".AnotherWarp");
 					String TeleportMessageBack = this.getConfig().getString("Config.Global.TeleportMessageBack");
+					String world = Config.configuration.getString(Config.oldPoint + PlayerName + ".world");
 					
 					double LocX = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.X");
 					double LocY = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.Y");
 					double LocZ = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.Z");
 					
-					Location loc = new Location(getServer().getWorld(p.getWorld().getName()),LocX, LocY, LocZ);
+					Location loc = new Location(getServer().getWorld(world) ,LocX, LocY, LocZ);
 					
 					if(LocX == 0) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");

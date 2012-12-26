@@ -39,6 +39,7 @@ public class Config {
     static String blockwarp = Saves + ".BlockWarp";
     static String blockwarpPoint = Saves + ".BlockWarp.";
     static String warpzahl = Saves + ".WarpZahl";
+    static String oldPoint = Saves + ".Oldlocation.Players.";
     protected static FileConfiguration configuration;
     protected static File file;
 
@@ -206,12 +207,13 @@ public class Config {
     }
     
     public static void OldPlayerLoc(Player p) {
-    	
+    	String PlayerName = p.getName();
+    	String world = p.getLocation().getWorld().getName();
     	double getZ = p.getLocation().getZ();
 		double getX = p.getLocation().getX();
-		double getY = p.getLocation().getY();
-    	
-		String PlayerName = p.getName();
+		double getY = p.getLocation().getY();    	
+		
+		Config.configuration.set(Config.oldPoint + PlayerName + ".world", world);
 		configuration.set(Config.oldLoc + PlayerName + ".spawn.Z", getZ);
 		configuration.set(Config.oldLoc + PlayerName + ".spawn.X", getX);
     	configuration.set(Config.oldLoc + PlayerName + ".spawn.Y", getY);
