@@ -730,12 +730,31 @@ public class WorldTp extends JavaPlugin {
 					
 					Location loc = new Location(getServer().getWorld(world) ,LocX, LocY, LocZ);
 					
+					//Fehlerüberprüfung
+					if(world == null) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");
+						return true;
+					}
 					if(LocX == 0) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");
 						return true;
 					}
+					if(spawnName == null) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");
+						return true;
+					}
+					if(leave == null) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");
+						return true;
+					}
+					if(loadInvByLeave == null) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");
+						return true;
+					}
 					
+					//Hauptquellcode "/leave"
 					String s = "asdi";
+					
 					
 					if(spawnName == "asde") {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache24);
@@ -757,14 +776,10 @@ public class WorldTp extends JavaPlugin {
 					}
 					
 					Config.TeleportToWarpLeave(p);
-					Config.DoubleWarpOff(p);
+					Config.DoubleWarpOff(p);								    
 					
-			    	
-					
-					Config.configuration.set(Config.blockwarpPoint + PlayerName, "asdf");
-					
-					
-						
+					Config.configuration.set(Config.blockwarpPoint + PlayerName, "asdf");					
+											
 					p.teleport(loc);
 					
 					if(TeleportMessageBack.length() == 4) {
