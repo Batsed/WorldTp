@@ -127,19 +127,27 @@ public class WorldTp extends JavaPlugin {
 					String activateinvback = this.getConfig().getString("Config."+ warpname+".activateCommandInvback");
 					String loadinvbycommandleave = this.getConfig().getString("Config."+ warpname +".loadInvByCommandLeave");
 					String activateCommandLeave = this.getConfig().getString("Config."+ warpname +".activateCommandLeave");
+					String deleted = this.getConfig().getString("Config."+ warpname +".delete");
 						    
 					if(game == null) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache11);
 						return false;
 					}
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + ChatColor.AQUA + "Looking for informations in warp '" + warpname + "'");
+					if(deleted.equalsIgnoreCase("true")) {
+						p.sendMessage(ChatColor.RED + "[WorldTP] " + ChatColor.AQUA + "This warp are deleted");
+					}
 					p.sendMessage(ChatColor.RED + "[WorldTp] ClearInvByCommand = " + ChatColor.AQUA + clearinvbycommand);
 					p.sendMessage(ChatColor.RED + "[WorldTp] SaveInventory = " + ChatColor.AQUA + saved);
 					p.sendMessage(ChatColor.RED + "[WorldTp] GamemodeCreative = " + ChatColor.AQUA + game);
 					p.sendMessage(ChatColor.RED + "[WorldTp] ClearInventory = " + ChatColor.AQUA + clearinv);
-					p.sendMessage(ChatColor.RED + "[WorldTp] activateCommandInvback = " + ChatColor.AQUA + TeleportToAnOtherWarp);
+					p.sendMessage(ChatColor.RED + "[WorldTp] TeleportToAnOtherWarp = " + ChatColor.AQUA + TeleportToAnOtherWarp);
 					p.sendMessage(ChatColor.RED + "[WorldTp] activateCommandInvback = " + ChatColor.AQUA + activateinvback);
 					p.sendMessage(ChatColor.RED + "[WorldTp] loadInvByCommandLeave = " + ChatColor.AQUA + loadinvbycommandleave);
 					p.sendMessage(ChatColor.RED + "[WorldTp] activateCommandLeave = " + ChatColor.AQUA + activateCommandLeave);
+					if(deleted.equalsIgnoreCase("false")) {
+						p.sendMessage(ChatColor.RED + "[WorldTp] deleted = " + ChatColor.AQUA + deleted);
+					}
 					
 					return true;
 				}else{
@@ -228,8 +236,8 @@ public class WorldTp extends JavaPlugin {
 					}
 					if(args.length == 2) {
 						String warpname = (args[1]);
-						this.getConfig().set("Config."+ warpname +".delete", "true");
-						p.sendMessage(ChatColor.RED + "[WorldTp] Warp '"+ warpname +"' delete!");
+						
+						this.getConfig().set("Config."+ warpname +".delete", "true");					
 						this.saveConfig();
 						return new FindWarp(cmd, args, p).warpNumber(warpname);												
 					}
@@ -496,7 +504,42 @@ public class WorldTp extends JavaPlugin {
 					return true;
             	}
 				
-            	if(args.length > 2) {
+            	if(args.length > 2) {   
+            		//Fehlerüberprüfung
+	            	if(!(game.equalsIgnoreCase("1"))) {
+	            		if(!(game.equalsIgnoreCase("0"))) {
+	            			p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache12);
+							p.sendMessage("usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1> or");
+							p.sendMessage("usage: /<command> <warpname>");
+							return false;
+	            		}
+	            	}
+	            	if(!(game.equalsIgnoreCase("0"))) {
+	            		if(!(game.equalsIgnoreCase("1"))) {
+	            			p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache12);
+							p.sendMessage("usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1> or");
+							p.sendMessage("usage: /<command> <warpname>");
+							return false;
+	            		}
+	            	}
+	            	if(!(save.equalsIgnoreCase("nosave"))) {
+	            		if(!(save.equalsIgnoreCase("withsave"))) {
+	            			p.sendMessage(ChatColor.RED + "[WorldTP] '" + save + "' ist als eingabe nicht möglich");
+							p.sendMessage("usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1> or");
+							p.sendMessage("usage: /<command> <warpname>");
+							return false;
+	            		}
+	            	}
+	            	if(!(save.equalsIgnoreCase("withsave"))) {
+	            		if(!(save.equalsIgnoreCase("nosave"))) {
+	            			p.sendMessage(ChatColor.RED + "[WorldTP] '" + save + "' ist als eingabe nicht möglich");
+							p.sendMessage("usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1> or");
+							p.sendMessage("usage: /<command> <warpname>");
+	            			return false;
+	            		}
+	            	}
+	            	
+	            	//Hauptquellcode "setwt"
 	            	if (save.equalsIgnoreCase("nosave")) {
 						getConfig().get("Config."+ spawnName +".SaveInventory");
 						this.getConfig().set("Config."+ spawnName +".SaveInventory", false);
@@ -529,36 +572,19 @@ public class WorldTp extends JavaPlugin {
 						Config.configuration.set(Config.Backup + spawnName + ".ClearInventory", true);
 						getConfig().get("Config."+ spawnName +".loadInvByCommandLeave");
 						this.getConfig().set("Config."+ spawnName +".loadInvByCommandLeave", true);
-						Config.configuration.set(Config.Backup + spawnName + ".loadInvByCommandLeave", true);
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
-						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnName + "', '" + save + "' " + sprache16 + " '" + game + "'");
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4);               
+						Config.configuration.set(Config.Backup + spawnName + ".loadInvByCommandLeave", true);					              
 						this.getConfig().options().copyDefaults(true);
 						this.saveConfig();
 						Config.save();
-	            	}	            	           
-	            	if(!(save.equalsIgnoreCase("nosave"))) {
-	            		if(!(save.equalsIgnoreCase("withsave"))) {
-	            			p.sendMessage(ChatColor.RED + "[WorldTP] '" + save + "' ist als eingabe nicht möglich");
-							p.sendMessage("usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1> or");
-							p.sendMessage("usage: /<command> <warpname>");
-							return false;
-	            		}
-	            	}
-	            	if(!(save.equalsIgnoreCase("withsave"))) {
-	            		if(!(save.equalsIgnoreCase("nosave"))) {
-	            			p.sendMessage(ChatColor.RED + "[WorldTP] '" + save + "' ist als eingabe nicht möglich");
-							p.sendMessage("usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1> or");
-							p.sendMessage("usage: /<command> <warpname>");
-	            			return false;
-	            		}
-	            	}	 
-	            	
+	            	}	 	            	
 	            	if(game.equalsIgnoreCase("1")) {
 	            		getConfig().get("Config."+ spawnName +".GamemodeCreative");
 						this.getConfig().set("Config."+ spawnName +".GamemodeCreative", true);
 						Config.configuration.set(Config.Backup + spawnName + ".GamemodeCreative", true);
 						Config.WarpUp(spawnName);	
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
+						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnName + "', '" + save + "' " + sprache16 + " '" + game + "'");
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4); 
 						this.getConfig().options().copyDefaults(true);
 						this.saveConfig();
 						Config.save();
@@ -569,7 +595,10 @@ public class WorldTp extends JavaPlugin {
 						getConfig().get("Config."+ spawnName +".GamemodeCreative");
 						this.getConfig().set("Config."+ spawnName +".GamemodeCreative", false);
 						Config.configuration.set(Config.Backup + spawnName + ".GamemodeCreative", false);
-						Config.WarpUp(spawnName);	
+						Config.WarpUp(spawnName);
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
+						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnName + "', '" + save + "' " + sprache16 + " '" + game + "'");
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4); 
 						this.getConfig().options().copyDefaults(true);
 						this.saveConfig();
 						Config.save();
