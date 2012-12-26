@@ -34,7 +34,27 @@ public class FindError {
 		int anzahl = Config.configuration.getInt(Config.ErrorCache);
 		int anzahlG = anzahl + 1;
 		String SpawnName = Config.configuration.getString(Config.WarpNumber + anzahlG);
+		String Error = Config.configuration.getString(Config.ErrorOn);
 		Config.configuration.set(Config.ErrorCache, anzahlG);
+		
+		if(SpawnName.equalsIgnoreCase("deleted")) {
+			if(anzahlG == zahl) {
+				Config.configuration.set(Config.ErrorCache, 0);
+				if(Error == "on") {
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache42);
+					Config.configuration.set(Config.ErrorOn, "off");
+					Config.save();
+					return true;
+				}
+				if(!(Error == "on")) {
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache23);
+					Config.save();
+					return true;
+				}
+			}
+			Error();
+			return true;
+		}
 		
 		String saved = Config.configuration.getString(Config.Backup + SpawnName +".SaveInventory");
 		String game = Config.configuration.getString(Config.Backup + SpawnName +".GamemodeCreative");
@@ -137,7 +157,6 @@ public class FindError {
 			return true;			
 		}
 		if(anzahlG == zahl) {
-			String Error = Config.configuration.getString(Config.ErrorOn);
 			Config.configuration.set(Config.ErrorCache, 0);
 			
 			if(Error == "on") {
@@ -148,6 +167,7 @@ public class FindError {
 			}
 			if(!(Error == "on")) {
 				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache23);
+				Config.save();
 				return true;
 			}
 			return true;		

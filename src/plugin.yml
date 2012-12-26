@@ -7,10 +7,9 @@ commands:
      wt:
           description: You go to the spawn point you set
           premission: worldtp.wt
-     setspawnpoint:
+     setwt:
           description: Sets the spawn point you reach with /wt
-          usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1>
-          premission: worldtp.setspawnpoint
+          premission: worldtp.setwt
      leave:
           description: You leave the creative world
           usage: /<command>

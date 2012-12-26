@@ -2,6 +2,7 @@ package me.Batsed.WorldTp;
 
 
 import java.io.File;
+
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -399,61 +400,103 @@ public class WorldTp extends JavaPlugin {
 		
 		//Spawnpoint von der Welt setzen
 		//Defining the spawn point for the creative world
-		if(cmd.getName().equalsIgnoreCase("setspawnpoint")) {
-			if(p.hasPermission("worldtp.setspawnpoint")) {
-				if(args.length < 3) {
-					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
-					return false;
-				}
+		if(cmd.getName().equalsIgnoreCase("setwt")) {
+			if(p.hasPermission("worldtp.setwt")) {				
 				if(args.length > 3) {
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache10);
+					p.sendMessage("usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1> or");
+					p.sendMessage("usage: /<command> <warpname>");
+					return false;
+				}							
+				
+				if(args.length == 0) {
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
+					p.sendMessage("usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1> or");
+					p.sendMessage("usage: /<command> <warpname>");
 					return false;
 				}
-				if(args.length == 3) {
-					String spawnName = (args[0]);
-					String save = (args[1]);
-					String game = (args[2]);
-					
-					//Fehlerüberprüfung
-					if(spawnName.equalsIgnoreCase("info")) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache29);
-						return true;
-					}
-					if(spawnName.equalsIgnoreCase("reload")) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache29);
-						return true;
-					}
-					if(spawnName.equalsIgnoreCase("list")) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache29);
-						return true;
-					}
-					if(spawnName.equalsIgnoreCase("asdi")) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache29);
-						return true;
-					}
-					if(spawnName.equalsIgnoreCase("finderror")) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache29);
-						return true;
-					}
-					if(spawnName.equalsIgnoreCase("delete")) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache29);
-						return true;
-					}
-					getConfig().set("Config."+ spawnName +".spawn.X", p.getLocation().getX());
-					getConfig().set("Config."+ spawnName +".spawn.Y", p.getLocation().getY());
-					getConfig().set("Config."+ spawnName +".spawn.Z", p.getLocation().getZ());
-            		getConfig().get("Config."+ spawnName +".activateCommandLeave");
-            		this.getConfig().set("Config."+ spawnName +".activateCommandLeave", true);
-            		Config.configuration.set(Config.Backup + spawnName +".activateCommandLeave", true);
-            		getConfig().get("Config."+ spawnName +".ClearInvByCommand");
-					this.getConfig().set("Config."+ spawnName +".ClearInvByCommand", true);
-					Config.configuration.set(Config.Backup + spawnName +".ClearInvByCommand", true);
-					getConfig().get("Config."+ spawnName +".TeleportToAnOtherWarp");
-					this.getConfig().set("Config."+ spawnName +".TeleportToAnOtherWarp", true);
-					this.getConfig().set("Config."+ spawnName +".delete", false);
-					Config.configuration.set(Config.Backup + spawnName +".TeleportToAnOtherWarp", true);
-					Config.WarpUp(spawnName);
+				if(args.length == 2) {
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
+					p.sendMessage("usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1> or");
+					p.sendMessage("usage: /<command> <warpname>");
+					return false;
+				}
 				
+				String spawnName = (args[0]);								
+				String save = null;
+				String game = null;
+				if(args.length > 2) {
+					save = (args[1]);
+					game = (args[2]);	
+				}											
+				
+				//Fehlerüberprüfung
+				if(spawnName.equalsIgnoreCase("info")) {
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache29);
+					return true;
+				}
+				if(spawnName.equalsIgnoreCase("reload")) {
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache29);
+					return true;
+				}
+				if(spawnName.equalsIgnoreCase("list")) {
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache29);
+					return true;
+				}
+				if(spawnName.equalsIgnoreCase("asdi")) {
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache29);
+					return true;
+				}
+				if(spawnName.equalsIgnoreCase("finderror")) {
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache29);
+					return true;
+				}
+				if(spawnName.equalsIgnoreCase("delete")) {
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache29);
+					return true;
+				}
+				getConfig().set("Config."+ spawnName +".spawn.X", p.getLocation().getX());
+				getConfig().set("Config."+ spawnName +".spawn.Y", p.getLocation().getY());
+				getConfig().set("Config."+ spawnName +".spawn.Z", p.getLocation().getZ());
+        		getConfig().get("Config."+ spawnName +".activateCommandLeave");
+        		this.getConfig().set("Config."+ spawnName +".activateCommandLeave", true);
+        		Config.configuration.set(Config.Backup + spawnName +".activateCommandLeave", true);
+        		getConfig().get("Config."+ spawnName +".ClearInvByCommand");
+				this.getConfig().set("Config."+ spawnName +".ClearInvByCommand", true);
+				Config.configuration.set(Config.Backup + spawnName +".ClearInvByCommand", true);
+				getConfig().get("Config."+ spawnName +".TeleportToAnOtherWarp");
+				this.getConfig().set("Config."+ spawnName +".TeleportToAnOtherWarp", true);
+				this.getConfig().set("Config."+ spawnName +".delete", false);
+				Config.configuration.set(Config.Backup + spawnName +".TeleportToAnOtherWarp", true);				
+									
+				
+            	if(args.length == 1) {            	            		
+					getConfig().get("Config."+ spawnName +".SaveInventory");
+					this.getConfig().set("Config."+ spawnName +".SaveInventory", false);
+					Config.configuration.set(Config.Backup + spawnName +".SaveInventory", false);
+					getConfig().get("Config."+ spawnName +".activateCommandInvback");
+					this.getConfig().set("Config."+ spawnName +".activateCommandInvback", true);
+					Config.configuration.set(Config.Backup + spawnName +".activateCommandInvback", false);
+					getConfig().get("Config."+ spawnName +".ClearInventory");
+					this.getConfig().set("Config."+ spawnName +".ClearInventory", false);
+					Config.configuration.set(Config.Backup + spawnName +".ClearInventory", false);
+					getConfig().get("Config."+ spawnName +".loadInvByCommandLeave");
+					this.getConfig().set("Config."+ spawnName +".loadInvByCommandLeave", false);
+					Config.configuration.set(Config.Backup + spawnName +".loadInvByCommandLeave", false);
+					getConfig().get("Config."+ spawnName +".GamemodeCreative");
+					this.getConfig().set("Config."+ spawnName +".GamemodeCreative", false);
+					Config.configuration.set(Config.Backup + spawnName + ".GamemodeCreative", false);
+					this.getConfig().options().copyDefaults(true);
+					Config.WarpUp(spawnName);	
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
+					p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint " + spawnName + ", 'nosave' " + sprache16 + " survival");
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4);												
+					this.saveConfig();
+					Config.save();
+					return true;
+            	}
+				
+            	if(args.length > 2) {
 	            	if (save.equalsIgnoreCase("nosave")) {
 						getConfig().get("Config."+ spawnName +".SaveInventory");
 						this.getConfig().set("Config."+ spawnName +".SaveInventory", false);
@@ -489,17 +532,33 @@ public class WorldTp extends JavaPlugin {
 						Config.configuration.set(Config.Backup + spawnName + ".loadInvByCommandLeave", true);
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
 						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnName + "', '" + save + "' " + sprache16 + " '" + game + "'");
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4);
-	                
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4);               
 						this.getConfig().options().copyDefaults(true);
 						this.saveConfig();
 						Config.save();
+	            	}	            	           
+	            	if(!(save.equalsIgnoreCase("nosave"))) {
+	            		if(!(save.equalsIgnoreCase("withsave"))) {
+	            			p.sendMessage(ChatColor.RED + "[WorldTP] '" + save + "' ist als eingabe nicht möglich");
+							p.sendMessage("usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1> or");
+							p.sendMessage("usage: /<command> <warpname>");
+							return false;
+	            		}
 	            	}
+	            	if(!(save.equalsIgnoreCase("withsave"))) {
+	            		if(!(save.equalsIgnoreCase("nosave"))) {
+	            			p.sendMessage(ChatColor.RED + "[WorldTP] '" + save + "' ist als eingabe nicht möglich");
+							p.sendMessage("usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1> or");
+							p.sendMessage("usage: /<command> <warpname>");
+	            			return false;
+	            		}
+	            	}	 
 	            	
 	            	if(game.equalsIgnoreCase("1")) {
 	            		getConfig().get("Config."+ spawnName +".GamemodeCreative");
 						this.getConfig().set("Config."+ spawnName +".GamemodeCreative", true);
 						Config.configuration.set(Config.Backup + spawnName + ".GamemodeCreative", true);
+						Config.WarpUp(spawnName);	
 						this.getConfig().options().copyDefaults(true);
 						this.saveConfig();
 						Config.save();
@@ -510,6 +569,7 @@ public class WorldTp extends JavaPlugin {
 						getConfig().get("Config."+ spawnName +".GamemodeCreative");
 						this.getConfig().set("Config."+ spawnName +".GamemodeCreative", false);
 						Config.configuration.set(Config.Backup + spawnName + ".GamemodeCreative", false);
+						Config.WarpUp(spawnName);	
 						this.getConfig().options().copyDefaults(true);
 						this.saveConfig();
 						Config.save();
@@ -517,11 +577,11 @@ public class WorldTp extends JavaPlugin {
 						
 					}else{
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache12);
+						p.sendMessage("usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1> or");
+						p.sendMessage("usage: /<command> <warpname>");
 						return false;
 					}
-				}else {
-					return false;
-				}
+            	}
 			}else{
 				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
 				return true;
@@ -532,7 +592,7 @@ public class WorldTp extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("worldtp")) {
 			if(p.hasPermission("worldtp.worldtp")) {
 					if(args.length == 0) {
-						p.sendMessage(ChatColor.RED + "/setspawnpoint: " + ChatColor.AQUA + sprache5);
+						p.sendMessage(ChatColor.RED + "/setwt: " + ChatColor.AQUA + sprache5);
 						p.sendMessage(ChatColor.RED + "/wt: " + ChatColor.AQUA + sprache6);
 						p.sendMessage(ChatColor.RED + "/worldtp: " + ChatColor.AQUA + sprache8);
 						p.sendMessage(ChatColor.RED + "/leave: " + ChatColor.AQUA + sprache7);
@@ -702,7 +762,8 @@ public class WorldTp extends JavaPlugin {
 		return true;
 		
 	}
-    public Config getConfiguration() {
+
+	public Config getConfiguration() {
 		return config;
     }
 	
@@ -771,7 +832,7 @@ public class WorldTp extends JavaPlugin {
 		String path32 = "Config.language.ConfigReload";
 		this.getConfig().addDefault(path32, "Config updated");
 		String path38 = "Config.language.SearchErrors";
-		this.getConfig().addDefault(path38, "searching for errors is warp:");
+		this.getConfig().addDefault(path38, "searching for errors in warp:");
 
 		//errors
 		String path9 = "Config.language.error.NoArgument";
