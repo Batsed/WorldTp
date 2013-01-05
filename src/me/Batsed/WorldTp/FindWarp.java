@@ -44,7 +44,8 @@ public class FindWarp {
 		}
 	    if(anzahlG == zahl) {
 	    	if(!(spawnName == warpname)) {
-	    		p.sendMessage(ChatColor.RED + "[WorldTp] '" + warpname + "' existiert nicht");
+	    		String noPoint = Config.configuration.getString(Config.Backup + "language.error.notFound");
+	    		p.sendMessage(ChatColor.RED + "[WorldTp] '" + warpname + "' " + noPoint);
 	    		Config.configuration.set(Config.ErrorCache, 0);	
 	    		Config.save();
 	    		return true;

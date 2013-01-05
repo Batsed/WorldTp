@@ -64,7 +64,7 @@ public class WorldTp extends JavaPlugin {
 		String sprache23 = this.getConfig().getString("Config.language.NoError");
 		String sprache24 = this.getConfig().getString("Config.language.error.BlockInvback");
 		String sprache25 = this.getConfig().getString("Config.language.error.DoubleWarp");
-		String sprache26 = this.getConfig().getString("Config.language.error.InvackFalse");
+		String sprache26 = this.getConfig().getString("Config.language.error.InvbackFalse");
 		String sprache27 = this.getConfig().getString("Config.language.error.DoubleInv");
 		String sprache28 = this.getConfig().getString("Config.language.error.BlockCommand");
 		String sprache29 = this.getConfig().getString("Config.language.error.WarpName");
@@ -80,6 +80,16 @@ public class WorldTp extends JavaPlugin {
 		String sprache39 = this.getConfig().getString("Config.language.error.loadInvByCommandLeaveerror");
 		String sprache40 = this.getConfig().getString("Config.language.error.ClearInvByCommanderror");
 		String sprache41 = this.getConfig().getString("Config.language.error.activateCommandLeave");
+		String sprache42 = this.getConfig().getString("Config.language.SpawnInfo");
+		String sprache43 = this.getConfig().getString("Config.language.WarpDeleted");
+		String sprache44 = this.getConfig().getString("Config.language.deleted");
+		String sprache45 = this.getConfig().getString("Config.language.error.BlockMisspelling");
+		String sprache46 = this.getConfig().getString("Config.language.Help.ClearInv");
+		String sprache47 = this.getConfig().getString("Config.language.Help.WtReload");
+		String sprache48 = this.getConfig().getString("Config.language.Help.WtDelete");
+		String sprache49 = this.getConfig().getString("Config.language.error.FoundNoInventory");
+		String sprache50 = this.getConfig().getString("Config.language.error.NoLeavePoint");
+		String sprache51 = this.getConfig().getString("Config.language.error.NoPoint");
 		
 		//Saves Config
 		Config.configuration.set(Config.Backup + "language.error.GamemodeCreativeError", sprache14);
@@ -93,14 +103,11 @@ public class WorldTp extends JavaPlugin {
 		Config.configuration.set(Config.Backup + "language.error.ClearInvByCommanderror", sprache40);
 		Config.configuration.set(Config.Backup + "language.error.activateCommandLeave", sprache41);
 		Config.configuration.set(Config.Backup + "language.error.ConfigError", sprache13);
-		Config.save();
-		
-		//OldLocation Config
+		Config.configuration.set(Config.Backup + "language.error.notFound", sprache51);
+		Config.save();		
 		
 		Player p = (Player)sender;
-			
-		//Zum Spawnpoint teleportieren
-		//Teleporting to the spawn point
+
 		if(cmd.getName().equalsIgnoreCase("wt")) {
 			if(args.length < 1) {
 				p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
@@ -138,9 +145,9 @@ public class WorldTp extends JavaPlugin {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache11);
 						return false;
 					}
-					p.sendMessage(ChatColor.RED + "[WorldTp] " + ChatColor.AQUA + "Looking for informations in warp '" + warpname + "'");
+					p.sendMessage(ChatColor.RED + "[WorldTp] " + ChatColor.AQUA + sprache42 + " '" + warpname + "'");
 					if(deleted.equalsIgnoreCase("true")) {
-						p.sendMessage(ChatColor.RED + "[WorldTP] " + ChatColor.AQUA + "This warp are deleted");
+						p.sendMessage(ChatColor.RED + "[WorldTP] " + ChatColor.AQUA + sprache43);
 					}
 					p.sendMessage(ChatColor.RED + "[WorldTp] ClearInvByCommand = " + ChatColor.AQUA + clearinvbycommand);
 					p.sendMessage(ChatColor.RED + "[WorldTp] SaveInventory = " + ChatColor.AQUA + saved);
@@ -151,7 +158,7 @@ public class WorldTp extends JavaPlugin {
 					p.sendMessage(ChatColor.RED + "[WorldTp] loadInvByCommandLeave = " + ChatColor.AQUA + loadinvbycommandleave);
 					p.sendMessage(ChatColor.RED + "[WorldTp] activateCommandLeave = " + ChatColor.AQUA + activateCommandLeave);
 					if(deleted.equalsIgnoreCase("false")) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] deleted = " + ChatColor.AQUA + deleted);
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache44 + "= " + ChatColor.AQUA + deleted);
 					}
 					
 					return true;
@@ -530,7 +537,7 @@ public class WorldTp extends JavaPlugin {
 	            	}
 	            	if(!(save.equalsIgnoreCase("nosave"))) {
 	            		if(!(save.equalsIgnoreCase("withsave"))) {
-	            			p.sendMessage(ChatColor.RED + "[WorldTP] '" + save + "' ist als eingabe nicht möglich");
+	            			p.sendMessage(ChatColor.RED + "[WorldTP] '" + save + "' " + sprache45);
 							p.sendMessage("usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1> or");
 							p.sendMessage("usage: /<command> <warpname>");
 							return false;
@@ -538,7 +545,7 @@ public class WorldTp extends JavaPlugin {
 	            	}
 	            	if(!(save.equalsIgnoreCase("withsave"))) {
 	            		if(!(save.equalsIgnoreCase("nosave"))) {
-	            			p.sendMessage(ChatColor.RED + "[WorldTP] '" + save + "' ist als eingabe nicht möglich");
+	            			p.sendMessage(ChatColor.RED + "[WorldTP] '" + save + "' " + sprache45);
 							p.sendMessage("usage: /<command> <warpname> <withsave/nosave> <gamemodenumber 0/1> or");
 							p.sendMessage("usage: /<command> <warpname>");
 	            			return false;
@@ -633,9 +640,12 @@ public class WorldTp extends JavaPlugin {
 						p.sendMessage(ChatColor.RED + "/worldtp: " + ChatColor.AQUA + sprache8);
 						p.sendMessage(ChatColor.RED + "/leave: " + ChatColor.AQUA + sprache7);
 						p.sendMessage(ChatColor.RED + "/invback: " + ChatColor.AQUA + sprache21);
+						p.sendMessage(ChatColor.RED + "/clearinv: " + ChatColor.AQUA + sprache46);
+						p.sendMessage(ChatColor.RED + "/wt reload: " + ChatColor.AQUA + sprache47);
 						p.sendMessage(ChatColor.RED + "/wt info: " + ChatColor.AQUA + sprache34);
 						p.sendMessage(ChatColor.RED + "/wt list: " + ChatColor.AQUA + sprache35);
 						p.sendMessage(ChatColor.RED + "/wt finderror: " + ChatColor.AQUA + sprache36);
+						p.sendMessage(ChatColor.RED + "/wt delete: " + ChatColor.AQUA + sprache48);
                 
 						return true;
 					}else {
@@ -693,7 +703,7 @@ public class WorldTp extends JavaPlugin {
 					this.getConfig().getString("Config."+ spawnName +".loadCreativeInv");
 					
 					if(invback == null) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] Found no Inventory");
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache49);
 						return true;
 					}
 					//Überprüft ob das Kommando in der Config für den jeweiligen Spawn deaktiviert wurde.
@@ -756,23 +766,23 @@ public class WorldTp extends JavaPlugin {
 					
 					//Fehlerüberprüfungen				
 					if(world == null) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache50);
 						return true;
 					}
 					if(LocX == 0) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache50);
 						return true;
 					}
 					if(spawnName == null) {						
-						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache50);
 						return true;
 					}
 					if(leave == null) {						
-						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache50);
 						return true;
 					}
 					if(loadInvByLeave == null) {						
-						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");
+						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache50);
 						return true;
 					}
 					
@@ -914,6 +924,12 @@ public class WorldTp extends JavaPlugin {
 		this.getConfig().addDefault(path32, "Config updated");
 		String path38 = "Config.language.SearchErrors";
 		this.getConfig().addDefault(path38, "searching for errors in warp:");
+		String path44 = "Config.language.SpawnInfo";
+		this.getConfig().addDefault(path44, "Suche nach Informationen in warp:");
+		String path45 = "Config.language.WarpDeleted";
+		this.getConfig().addDefault(path45, "This warp are deleted");
+		String path46 = "Config.language.deleted";
+		this.getConfig().addDefault(path46, "deleted");
 
 		//errors
 		String path9 = "Config.language.error.NoArgument";
@@ -942,7 +958,7 @@ public class WorldTp extends JavaPlugin {
 		this.getConfig().addDefault(path24, "Das Kommando '/leave' ist für diesen Spawn nach benutzung von '/invback' deaktiviert");
 		String path25 = "Config.language.error.DoubleWarp";
 		this.getConfig().addDefault(path25, "You can only warp back once");
-		String path26 = "Config.language.error.InvackFalse";
+		String path26 = "Config.language.error.InvbackFalse";
 		this.getConfig().addDefault(path26, "The command 'invback' is disabled for this spawn point");
 		String path27 = "Config.language.error.DoubleInv";
 		this.getConfig().addDefault(path27, "Command '/invback' has already been used");
@@ -963,8 +979,16 @@ public class WorldTp extends JavaPlugin {
 		String path40 = "Config.language.error.ClearInvByCommanderror";
 		this.getConfig().addDefault(path40, "has a config error at ClearInvByCommand.");
 		String path41 = "Config.language.error.activateCommandLeave";
-		this.getConfig().addDefault(path41, "has a config error at activateCommandLeave");
-
+		this.getConfig().addDefault(path41, "has a config error at activateCommandLeave");	
+		String path47 = "Config.language.error.BlockMisspelling";
+		this.getConfig().addDefault(path47, "ist als Eingabe nicht möglich");
+		String path51 = "Config.language.error.FoundNoInventory";
+		this.getConfig().addDefault(path51, "Kein Inventar gefunden");
+		String path52 = "Config.language.error.NoLeavePoint";
+		this.getConfig().addDefault(path52, "Kein Leavepoint vorhanden");
+		String path53 = "Config.language.error.NoPoint";
+		this.getConfig().addDefault(path53, "existiert nicht");
+		
 		//help
 		String path5 = "Config.language.Help.Setspawnpoint";
 		this.getConfig().addDefault(path5, "Sets the spawn point that you reach with the '/wt' command");
@@ -981,7 +1005,13 @@ public class WorldTp extends JavaPlugin {
 		String path35 = "Config.language.Help.WtList";
 		this.getConfig().addDefault(path35, "Shows available warps");
 		String path36 = "Config.language.Help.WtFinderror";
-		this.getConfig().addDefault(path36, "Looks for config errors.");
+		this.getConfig().addDefault(path36, "Looks for config errors");
+		String path48 = "Config.language.Help.ClearInv";
+		this.getConfig().addDefault(path48, "Leert das Inventar vom Spieler");
+		String path49 = "Config.language.Help.WtReload";
+		this.getConfig().addDefault(path49, "Reloadet die Config");
+		String path50 = "Config.language.Help.WtDelete";
+		this.getConfig().addDefault(path50, "Löscht den gewünschten spawn");
 		
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
