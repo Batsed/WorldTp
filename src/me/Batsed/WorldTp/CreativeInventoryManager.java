@@ -6,53 +6,53 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Map;
+
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
- 
-public class InventoryManager
-{
+
+public class CreativeInventoryManager {
 	String loadCreativeInv;
 	static String clearinv;
 	Command cmd;
 	String[] args;
 	Player p;
 	
-	public InventoryManager(Command cmd, String[] args, Player p, String clearinv, String loadCreativeInv) {
+	public CreativeInventoryManager(Command cmd, String[] args, Player p, String clearinv, String loadCreativeInv) {
 		this.cmd = cmd;
 		this.args = args;
 		this.p = p;
-		InventoryManager.clearinv = clearinv;
+		CreativeInventoryManager.clearinv = clearinv;
 		this.loadCreativeInv = loadCreativeInv;
 	}
 
-	private static String dir = "plugins/WorldTp/saves/inventories";
+	private static String dir = "plugins/WorldTp/saves/Creative Inventories";
 	static String EXT = ".inv";
 	private static Map<Player, ItemStack[]> items;
 	private static Map<Player, ItemStack[]> armor;
 
 	public static void storeInventory(Player p)
 	{
-		if ((InventoryManager.items.containsKey(p)) && (InventoryManager.armor.containsKey(p))) {
+		if ((CreativeInventoryManager.items.containsKey(p)) && (CreativeInventoryManager.armor.containsKey(p))) {
 			return;
 		}
 
 		PlayerInventory inv = p.getInventory();
 		ItemStack[] memItems = inv.getContents();
 		ItemStack[] memArmor = inv.getArmorContents();
-		InventoryManager.items.put(p, memItems);
-		InventoryManager.armor.put(p, memArmor);
+		CreativeInventoryManager.items.put(p, memItems);
+		CreativeInventoryManager.armor.put(p, memArmor);
 
-		InventoryManager.saveToFile(p);
-		InventoryManager.clearInventory(p);
+		CreativeInventoryManager.saveToFile(p);
+		CreativeInventoryManager.clearInventory(p);
 		return;
 	}
 
 	public static void restoreInventory(Player p)
 	{
-		ItemStack[] memItems = (ItemStack[])InventoryManager.items.remove(p);
-		ItemStack[] memArmor = (ItemStack[])InventoryManager.armor.remove(p);
+		ItemStack[] memItems = (ItemStack[])CreativeInventoryManager.items.remove(p);
+		ItemStack[] memArmor = (ItemStack[])CreativeInventoryManager.armor.remove(p);
 
 		if ((memItems != null) && (memArmor != null)) {
 			PlayerInventory inv = p.getInventory();
@@ -60,11 +60,11 @@ public class InventoryManager
 			inv.setContents(memItems);
 			inv.setArmorContents(memArmor);
 
-			new File(InventoryManager.dir, p.getName() + EXT).delete();
+			new File(CreativeInventoryManager.dir, p.getName() + EXT).delete();
 
 			return;
 		}
-		InventoryManager.loadFromFile(p);
+		CreativeInventoryManager.loadFromFile(p);
 		return;
 	}
 
@@ -80,9 +80,9 @@ public class InventoryManager
 	}
 
 	public static void saveToFile(Player p) {
-		File file = new File(InventoryManager.dir, p.getName() + EXT);
+		File file = new File(CreativeInventoryManager.dir, p.getName() + EXT);
 		if (file.exists()) {
-			return; 
+			return;
 		}
 		try
 		{
@@ -103,13 +103,13 @@ public class InventoryManager
 
 	public static void loadFromFile(Player p)
 	{
-		File file = new File(InventoryManager.dir, p.getName() + EXT);
+		File file = new File(CreativeInventoryManager.dir, p.getName() + EXT);
  
 		if (!file.exists()) {
 			return;
 		}
 		try
-		{			
+		{
 			FileInputStream fis = new FileInputStream(file);
 			ObjectInputStream ois = new ObjectInputStream(fis);
  
@@ -147,14 +147,14 @@ public class InventoryManager
 		return;
 	}
  
-	public static boolean restoreFromFile(WorldTp plugin, Player p)
+	public static void restoreFromFile(WorldTp plugin, Player p)
 	{
 		File dir = new File(plugin.getDataFolder(), "inventories");
 
 		File file = new File(dir, p.getName() + EXT);
 
 		if (!file.exists()) {
-			return false;
+			return;
 		}
 		try
 		{
@@ -169,10 +169,10 @@ public class InventoryManager
  
 			file.delete();
 			
-			return true;
+			return;
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-		}return false;
+		}return;
 	}
 }

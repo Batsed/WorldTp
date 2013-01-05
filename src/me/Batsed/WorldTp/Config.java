@@ -181,14 +181,14 @@ public class Config {
     }
     public static void OldPlayerInvbackDouble(Player p) {
     	String PlayerName = p.getName();
-    	String s = "asdf";
+    	String s = "DoubleInvbackOn";
     	configuration.set(Config.oldLoc + PlayerName + ".LastSpawnPointError", s);
     	Config.save();
     }
     public static void OldPlayerInvback(Player p) {
     	String PlayerName = p.getName();
-    	String s = "asde";
-    	configuration.set(Config.oldLoc + PlayerName + ".LastSpawnPoint", s);
+    	String s = "DoubleInvbackOn";
+    	configuration.set(Config.oldLoc + PlayerName + ".DoubleInvback", s);
     	Config.save();
     }
     public static void OldPlayerLeave(Player p) {

@@ -16,6 +16,7 @@ public class WorldTp extends JavaPlugin {
 	
 	public Config config;
 	public File dir;
+	public File folder;
 	PluginDescriptionFile descFile = this.getDescription();
 	
 	private static String ordner = "plugins/WorldTp/saves";
@@ -24,10 +25,13 @@ public class WorldTp extends JavaPlugin {
 		createConfig();
 		System.out.println("[WorldTp] Plugin by Batsed");
 		config = new Config(new File(ordner + File.separator + "Saves.yml"));
-		this.dir = new File("plugins/WorldTp/saves/inventories");
-		this.dir.mkdir();
+		dir = new File("plugins/WorldTp/saves/inventories");
+		folder = new File("plugins/WorldTp/saves/Creative Inventories");
+		dir.mkdir();
+		folder.mkdir();
         config.setDefaults();
         Config.save();
+        this.reloadFolders();
 	}
 
 	public void onDisable() {
@@ -292,6 +296,7 @@ public class WorldTp extends JavaPlugin {
 					String clearinv = this.getConfig().getString("Config."+ spawnpoint +".ClearInventory");
 					String invback = this.getConfig().getString("Config."+ spawnpoint +".activateCommandInvback");
 					Config.configuration.getString(Config.oldLoc + PlayerName + ".AnotherWarp");
+					
 					//Fehler überprüfung								
 					if(game.length() > 5) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnpoint + "' " + sprache37);
@@ -338,6 +343,7 @@ public class WorldTp extends JavaPlugin {
 				    Config.configuration.getString(Config.TrueCachePoint + PlayerName);
 				    String blockTp = Config.configuration.getString(Config.blockwarpPoint + PlayerName);
 				    String leaveOn = this.getConfig().getString("Config."+ spawnpoint +".SaveLeavepointAfterTp");
+				    String loadCreativeInv = this.getConfig().getString("Config."+ spawnpoint +".loadCreativeInv");
 				    
 				    if(blockTp == null) {
 				    	if(warping.length() == 5) {
@@ -381,11 +387,17 @@ public class WorldTp extends JavaPlugin {
 				    	p.setGameMode(GameMode.CREATIVE);
 				    }
 				    if(saved.length() == 4) {  
-				    	return new InventoryManager(cmd, args, p, clearinv).saveToFile(p);
+				    	InventoryManager.saveToFile(p);
 				    }
-				    if(clearinv.length() == 4) {
-				    	return new InventoryManager(cmd, args, p, clearinv).clearInventory(p);
-				    }
+				    if(!(loadCreativeInv.length() == 4)) {
+				    	if(clearinv.length() == 4) {
+					    	InventoryManager.clearInventory(p);
+					    }
+				    }				    
+				    if(loadCreativeInv.length() == 4) {		
+				    	InventoryManager.clearInventory(p);
+				    	CreativeInventoryManager.loadFromFile(p);
+				    }				    
 				    Config.configuration.set(Config.WarpCachePoint + PlayerName, spawnpoint);
 				    Config.save();
 				}else{
@@ -466,6 +478,7 @@ public class WorldTp extends JavaPlugin {
 				this.getConfig().set("Config."+ spawnName +".delete", false);
 				Config.configuration.set(Config.Backup + spawnName +".TeleportToAnOtherWarp", true);
 				this.getConfig().set("Config."+ spawnName +".SaveLeavepointAfterTp", true);
+				this.getConfig().set("Config."+ spawnName +".BlockLeaveAfterCommandInvback", false);
 				String world = p.getLocation().getWorld().getName();
 				this.getConfig().set("Config."+ spawnName +".world", world);
 				
@@ -485,6 +498,8 @@ public class WorldTp extends JavaPlugin {
 					getConfig().get("Config."+ spawnName +".GamemodeCreative");
 					this.getConfig().set("Config."+ spawnName +".GamemodeCreative", false);
 					Config.configuration.set(Config.Backup + spawnName + ".GamemodeCreative", false);
+					this.getConfig().set("Config."+ spawnName +".SaveCreativeInv", false);
+					this.getConfig().set("Config."+ spawnName +".loadCreativeInv", false);
 					this.getConfig().options().copyDefaults(true);
 					Config.WarpUp(spawnName);	
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
@@ -543,10 +558,8 @@ public class WorldTp extends JavaPlugin {
 						Config.configuration.set(Config.Backup + spawnName +".ClearInventory", false);
 						getConfig().get("Config."+ spawnName +".loadInvByCommandLeave");
 						this.getConfig().set("Config."+ spawnName +".loadInvByCommandLeave", false);
-						Config.configuration.set(Config.Backup + spawnName +".loadInvByCommandLeave", false);
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
-						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnName + "', '" + save + "' " + sprache16 + " '" + game + "'");
-						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4);					
+						Config.configuration.set(Config.Backup + spawnName +".loadInvByCommandLeave", false);	
+						this.getConfig().set("Config."+ spawnName +".SaveCreativeInv", false);
 						this.getConfig().options().copyDefaults(true);
 						this.saveConfig();
 						Config.save();
@@ -559,11 +572,12 @@ public class WorldTp extends JavaPlugin {
 						this.getConfig().set("Config."+ spawnName +".activateCommandInvback", false);
 						Config.configuration.set(Config.Backup + spawnName + ".activateCommandInvback", false);
 						getConfig().get("Config."+ spawnName +".ClearInventory");
-						this.getConfig().set("Config."+ spawnName +".ClearInventory", true);
+						this.getConfig().set("Config."+ spawnName +".ClearInventory", false);
 						Config.configuration.set(Config.Backup + spawnName + ".ClearInventory", true);
 						getConfig().get("Config."+ spawnName +".loadInvByCommandLeave");
 						this.getConfig().set("Config."+ spawnName +".loadInvByCommandLeave", true);
-						Config.configuration.set(Config.Backup + spawnName + ".loadInvByCommandLeave", true);					              
+						Config.configuration.set(Config.Backup + spawnName + ".loadInvByCommandLeave", true);
+						this.getConfig().set("Config."+ spawnName +".SaveCreativeInv", true);						
 						this.getConfig().options().copyDefaults(true);
 						this.saveConfig();
 						Config.save();
@@ -572,6 +586,7 @@ public class WorldTp extends JavaPlugin {
 	            		getConfig().get("Config."+ spawnName +".GamemodeCreative");
 						this.getConfig().set("Config."+ spawnName +".GamemodeCreative", true);
 						Config.configuration.set(Config.Backup + spawnName + ".GamemodeCreative", true);
+						this.getConfig().set("Config."+ spawnName +".loadCreativeInv", true);
 						Config.WarpUp(spawnName);	
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
 						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnName + "', '" + save + "' " + sprache16 + " '" + game + "'");
@@ -586,6 +601,7 @@ public class WorldTp extends JavaPlugin {
 						getConfig().get("Config."+ spawnName +".GamemodeCreative");
 						this.getConfig().set("Config."+ spawnName +".GamemodeCreative", false);
 						Config.configuration.set(Config.Backup + spawnName + ".GamemodeCreative", false);
+						this.getConfig().set("Config."+ spawnName +".loadCreativeInv", false);
 						Config.WarpUp(spawnName);
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
 						p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint '" + spawnName + "', '" + save + "' " + sprache16 + " '" + game + "'");
@@ -636,7 +652,8 @@ public class WorldTp extends JavaPlugin {
 					String PlayerName = p.getName();
 					String spawnName = Config.configuration.getString(Config.oldLoc + PlayerName + ".LastSpawnPoint");
 					String clearinvByCommand = this.getConfig().getString("Config."+ spawnName +".ClearInvByCommand");
-					String clearinv = this.getConfig().getString("Config."+ spawnName +".ClearInventory");
+					this.getConfig().getString("Config."+ spawnName +".ClearInventory");
+					this.getConfig().getString("Config."+ spawnName +".loadCreativeInv");
 						
 					//Fehler Überprüfung
 					if(clearinvByCommand.length() > 5) {
@@ -648,9 +665,9 @@ public class WorldTp extends JavaPlugin {
 							return false;
 					}
 						
-					//hauptquellcode
+					//hauptquellcode vom Kommando "/clearinv"
 					if(clearinvByCommand.length() == 4) {
-						return new InventoryManager(cmd, args, p, clearinv).clearInventory(p);
+						InventoryManager.clearInventory(p);
 					}
 					if(clearinvByCommand.length() == 5) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache28);
@@ -670,26 +687,36 @@ public class WorldTp extends JavaPlugin {
 					String PlayerName = p.getName();
 					String spawnName = Config.configuration.getString(Config.oldLoc + PlayerName + ".LastSpawnPoint");
 					String spawnNameError = Config.configuration.getString(Config.oldLoc + PlayerName + ".LastSpawnPointError");
-					String clearinv = this.getConfig().getString("Config."+ spawnName +".ClearInventory");
+					this.getConfig().getString("Config."+ spawnName +".ClearInventory");
 					String invback = this.getConfig().getString("Config."+ spawnName +".activateCommandInvback");
+					String invDoubleBlock = this.getConfig().getString("Config."+ spawnName +".BlockLeaveAfterCommandInvback");
+					this.getConfig().getString("Config."+ spawnName +".loadCreativeInv");
 					
 					if(invback == null) {
-						p.sendMessage(ChatColor.RED + "[WorldTp] Found no inventory");
+						p.sendMessage(ChatColor.RED + "[WorldTp] Found no Inventory");
 						return true;
 					}
+					//Überprüft ob das Kommando in der Config für den jeweiligen Spawn deaktiviert wurde.
 					if(invback.length() == 5) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache26);
 						return true;
 					}
-					if(spawnNameError == "asdf") {
+					//Guckt ob das Kommando "/invback" schonmal benutzt wurde.					
+					if(spawnNameError == "DoubleInvbackOn") {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache27);
 						return true;
 					}
+					//Gibt an, dass das Kommando "/invack" schonmal benutzt wurde.
 					Config.OldPlayerInvbackDouble(p);
-					Config.OldPlayerInvback(p);
 					Config.save();
+					
+					//Ruft aus der Config ab, ob nach benutzung des Kommandos Invback, das Kommando "/leave" geblockt werden soll.
+					if(invDoubleBlock.length() == 4) {						
+						Config.OldPlayerInvback(p);
+						Config.save();
+					}					
 					if(invback.length() == 4) {
-						return new InventoryManager(cmd, args, p, clearinv).loadFromFile(p);
+						InventoryManager.loadFromFile(p);
 					}
 					return true;
 				}
@@ -704,14 +731,17 @@ public class WorldTp extends JavaPlugin {
 			if(p.hasPermission("worldtp.leave")) {
 				if(args.length == 0) {
 					String PlayerName = p.getName();
-					String spawnName = Config.configuration.getString(Config.oldLoc + PlayerName + ".LastSpawnPoint");					
-					String clearinv = this.getConfig().getString("Config."+ spawnName +".ClearInventory");
+					String spawnName = Config.configuration.getString(Config.oldLoc + PlayerName + ".LastSpawnPoint");	
+					String DoubleInvback = Config.configuration.getString(Config.oldLoc + PlayerName + ".DoubleInvback");
+					this.getConfig().getString("Config."+ spawnName +".ClearInventory");
 					String loadInvByLeave = this.getConfig().getString("Config."+ spawnName +".loadInvByCommandLeave");
 					String leave = this.getConfig().getString("Config."+ spawnName +".activateCommandLeave");
 					String another = Config.configuration.getString(Config.oldLoc + PlayerName + ".AnotherWarp");
 					String TeleportMessageBack = this.getConfig().getString("Config.Global.TeleportMessageBack");
 					String world = Config.configuration.getString(Config.oldPoint + PlayerName + ".world");
 					String blockTp = Config.configuration.getString(Config.blockwarpPoint + PlayerName);
+					String SaveCreativeInv = this.getConfig().getString("Config."+ spawnName +".SaveCreativeInv");
+					this.getConfig().getString("Config."+ spawnName +".loadCreativeInv");
 					
 					if(blockTp.equalsIgnoreCase("blockWarpOn")) {
 						Config.configuration.set(Config.blockwarpPoint + PlayerName, "blockWarpOff");
@@ -724,7 +754,7 @@ public class WorldTp extends JavaPlugin {
 					
 					Location loc = new Location(getServer().getWorld(world) ,LocX, LocY, LocZ);
 					
-					//Fehlerüberprüfung					
+					//Fehlerüberprüfungen				
 					if(world == null) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");
 						return true;
@@ -733,23 +763,29 @@ public class WorldTp extends JavaPlugin {
 						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");
 						return true;
 					}
-					if(spawnName == null) {
+					if(spawnName == null) {						
 						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");
 						return true;
 					}
-					if(leave == null) {
+					if(leave == null) {						
 						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");
 						return true;
 					}
-					if(loadInvByLeave == null) {
+					if(loadInvByLeave == null) {						
 						p.sendMessage(ChatColor.RED + "[WorldTp] No leave point");
 						return true;
+					}
+					
+					//Überprüft ob das "Creative Inventar" gespeichert werden soll.
+					if(SaveCreativeInv.length() == 4) {
+						CreativeInventoryManager.saveToFile(p);
 					}
 					
 					//Hauptquellcode "/leave"
 					String s = "asdi";										
 					
-					if(spawnName == "asde") {
+					//Blocken wenn Invback benutzt wurde
+					if(DoubleInvback == "DoubleInvbackOn") {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache24);
 						return true;
 					}
@@ -783,7 +819,7 @@ public class WorldTp extends JavaPlugin {
 					}
 					
 					if(loadInvByLeave.length() == 4) {
-						return new InventoryManager(cmd, args, p, clearinv).loadFromFile(p);
+						InventoryManager.loadFromFile(p);
 					}
 					if(another == "asdn") {
 						Config.configuration.set(Config.oldLoc + PlayerName + ".AnotherWarp", "asdm");
@@ -800,6 +836,12 @@ public class WorldTp extends JavaPlugin {
 		}
 		return true;
 		
+	}
+	public void reloadFolders() {
+		dir = new File("plugins/WorldTp/saves/inventories");
+		folder = new File("plugins/WorldTp/saves/Creative Inventories");
+		dir.mkdir();
+		folder.mkdir();
 	}
 
 	public Config getConfiguration() {
@@ -897,7 +939,7 @@ public class WorldTp extends JavaPlugin {
 		String path20 = "Config.language.error.noPremmissions";
 		this.getConfig().addDefault(path20, "You don't have the rights to do that");
 		String path24 = "Config.language.error.BlockInvback";
-		this.getConfig().addDefault(path24, "Because you have executed /invback you can not teleport back");
+		this.getConfig().addDefault(path24, "Das Kommando '/leave' ist für diesen Spawn nach benutzung von '/invback' deaktiviert");
 		String path25 = "Config.language.error.DoubleWarp";
 		this.getConfig().addDefault(path25, "You can only warp back once");
 		String path26 = "Config.language.error.InvackFalse";
