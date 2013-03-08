@@ -925,9 +925,9 @@ public class WorldTp extends JavaPlugin {
 		String path38 = "Config.language.SearchErrors";
 		this.getConfig().addDefault(path38, "searching for errors in warp:");
 		String path44 = "Config.language.SpawnInfo";
-		this.getConfig().addDefault(path44, "Suche nach Informationen in warp:");
+		this.getConfig().addDefault(path44, "searching for information in warp:");
 		String path45 = "Config.language.WarpDeleted";
-		this.getConfig().addDefault(path45, "This warp are deleted");
+		this.getConfig().addDefault(path45, "This warp has been deleted");
 		String path46 = "Config.language.deleted";
 		this.getConfig().addDefault(path46, "deleted");
 
@@ -955,7 +955,7 @@ public class WorldTp extends JavaPlugin {
 		String path20 = "Config.language.error.noPremmissions";
 		this.getConfig().addDefault(path20, "You don't have the rights to do that");
 		String path24 = "Config.language.error.BlockInvback";
-		this.getConfig().addDefault(path24, "Das Kommando '/leave' ist für diesen Spawn nach benutzung von '/invback' deaktiviert");
+		this.getConfig().addDefault(path24, "The command '/leave' has been deactivated for this spawn after the use of '/invback'");
 		String path25 = "Config.language.error.DoubleWarp";
 		this.getConfig().addDefault(path25, "You can only warp back once");
 		String path26 = "Config.language.error.InvbackFalse";
@@ -981,13 +981,13 @@ public class WorldTp extends JavaPlugin {
 		String path41 = "Config.language.error.activateCommandLeave";
 		this.getConfig().addDefault(path41, "has a config error at activateCommandLeave");	
 		String path47 = "Config.language.error.BlockMisspelling";
-		this.getConfig().addDefault(path47, "ist als Eingabe nicht möglich");
+		this.getConfig().addDefault(path47, "is not a valid input");
 		String path51 = "Config.language.error.FoundNoInventory";
-		this.getConfig().addDefault(path51, "Kein Inventar gefunden");
+		this.getConfig().addDefault(path51, "No inventory found");
 		String path52 = "Config.language.error.NoLeavePoint";
-		this.getConfig().addDefault(path52, "Kein Leavepoint vorhanden");
+		this.getConfig().addDefault(path52, "No Leavepoint available");
 		String path53 = "Config.language.error.NoPoint";
-		this.getConfig().addDefault(path53, "existiert nicht");
+		this.getConfig().addDefault(path53, "does not exist");
 		
 		//help
 		String path5 = "Config.language.Help.Setspawnpoint";
@@ -1007,11 +1007,11 @@ public class WorldTp extends JavaPlugin {
 		String path36 = "Config.language.Help.WtFinderror";
 		this.getConfig().addDefault(path36, "Looks for config errors");
 		String path48 = "Config.language.Help.ClearInv";
-		this.getConfig().addDefault(path48, "Leert das Inventar vom Spieler");
+		this.getConfig().addDefault(path48, "Empties the players inventory");
 		String path49 = "Config.language.Help.WtReload";
-		this.getConfig().addDefault(path49, "Reloadet die Config");
+		this.getConfig().addDefault(path49, "Reloads the Config");
 		String path50 = "Config.language.Help.WtDelete";
-		this.getConfig().addDefault(path50, "Löscht den gewünschten spawn");
+		this.getConfig().addDefault(path50, "Deletes the desired spawn");
 		
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
