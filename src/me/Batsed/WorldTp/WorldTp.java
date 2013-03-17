@@ -17,13 +17,14 @@ public class WorldTp extends JavaPlugin {
 	public Config config;
 	public File dir;
 	public File folder;
+	public int WarpAnzahl;
 	PluginDescriptionFile descFile = this.getDescription();
 	
 	private static String ordner = "plugins/WorldTp/saves";
 
 	public void onEnable() {
-		createConfig();
-		System.out.println("[WorldTp] Plugin by Batsed");
+		createConfig();		
+		System.out.println("[WorldTp] Plugin by Batsed");		
 		config = new Config(new File(ordner + File.separator + "Saves.yml"));
 		dir = new File("plugins/WorldTp/saves/inventories");
 		folder = new File("plugins/WorldTp/saves/Creative Inventories");
@@ -32,6 +33,22 @@ public class WorldTp extends JavaPlugin {
         config.setDefaults();
         Config.save();
         this.reloadFolders();
+        
+        WarpAnzahl = Config.configuration.getInt(Config.warpzahl);
+		if (WarpAnzahl == 1) {
+			System.out.println("[WorldTp] Load " + WarpAnzahl + " Warp!");
+		}
+		if (WarpAnzahl > 1) {
+			System.out.println("[WorldTp] Load " + WarpAnzahl + " Warps!");
+		}		
+		
+        
+        if (WarpAnzahl == 1) {
+			System.out.println("[WorldTp] " + WarpAnzahl + " Warp loaded");		
+		}
+		if (WarpAnzahl > 1) {
+			System.out.println("[WorldTp] " + WarpAnzahl + " Warps loaded");		
+		}
 	}
 
 	public void onDisable() {

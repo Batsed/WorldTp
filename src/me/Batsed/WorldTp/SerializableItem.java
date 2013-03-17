@@ -37,6 +37,7 @@ implements Serializable
 	}
 	public ItemStack toItemStack()
 	{
+		@SuppressWarnings("deprecation")
 		ItemStack stack = new ItemStack(this.id, this.amount, this.damage, this.data);
 
 		if (!this.enchantments.isEmpty()) {
