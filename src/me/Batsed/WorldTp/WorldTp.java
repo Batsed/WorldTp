@@ -8,6 +8,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -40,8 +41,7 @@ public class WorldTp extends JavaPlugin {
 		}
 		if (WarpAnzahl > 1) {
 			System.out.println("[WorldTp] Load " + WarpAnzahl + " Warps!");
-		}		
-		
+		}				
         
         if (WarpAnzahl == 1) {
 			System.out.println("[WorldTp] " + WarpAnzahl + " Warp loaded");		
@@ -132,7 +132,7 @@ public class WorldTp extends JavaPlugin {
 			}
 			String spawnpoint = (args[0]);						    				    
 			//Anfang command "/wt info"	    
-			if(spawnpoint.equalsIgnoreCase("info")) {
+			if(spawnpoint.equalsIgnoreCase("info")) {										
 				if(p.hasPermission("worldtp.info")) {
 					//Fehlerüberprpfung "info"
 					if(args.length < 2) {
@@ -279,6 +279,7 @@ public class WorldTp extends JavaPlugin {
 			//Anfang Command "/wt"
 			else{
 				if(p.hasPermission("worldtp.wt")) { 
+					
 					String PlayerName = p.getName();
 					String TeleportMessage = this.getConfig().getString("Config.Global.TeleportMessage");
 					Config.configuration.getString(Config.WarpCachePoint + PlayerName);
@@ -365,10 +366,35 @@ public class WorldTp extends JavaPlugin {
 				    //hauptquellcode "wt"
 				    Location loc = new Location(getServer().getWorld(world), locX, locY, locZ);
 				    Config.configuration.getString(Config.TrueCachePoint + PlayerName);
+				    int BugZahl = Config.configuration.getInt(Config.BugZahlCache + "." + PlayerName);
+				    String BugZahl2 = Config.configuration.getString(Config.BugZahlCache + "." + PlayerName);
+				    
+				    
 				    String blockTp = Config.configuration.getString(Config.blockwarpPoint + PlayerName);
 				    String leaveOn = this.getConfig().getString("Config."+ spawnpoint +".SaveLeavepointAfterTp");
 				    String loadCreativeInv = this.getConfig().getString("Config."+ spawnpoint +".loadCreativeInv");
 				    
+				    if(p.isInsideVehicle() == true) {
+				    	if(BugZahl2 == null) {
+				    		Config.configuration.set(Config.BugZahlCache + "." + PlayerName, 4);
+				    		p.sendMessage(ChatColor.RED + "[WorldTp] 'Pferdeteleportieren' bugt manschmal rum. Man kann dann nicht mehr aufs Pferd oder das Pferd ist weg. Einfach relog machen! ");
+				    		p.sendMessage(ChatColor.RED + "[WorldTp] Diese Meldung wird dir noch 4 mal angezeigt!");
+				    		Config.save();
+				    	}
+				    }
+				    if(p.isInsideVehicle() == true) {
+				    		if(!(BugZahl == 0)) {
+				    			int BugZahl3 = BugZahl - 1;
+				    			Config.configuration.set(Config.BugZahlCache + "." + PlayerName, BugZahl3);					    							    
+				    			p.sendMessage(ChatColor.RED + "[WorldTp] 'Pferdeteleportieren' bugt manschmal rum. Man kann dann nicht mehr aufs Pferd oder das Pferd ist weg. Einfach relog machen!");
+				    			if(BugZahl3 == 0) {
+				    				p.sendMessage(ChatColor.RED + "[WorldTp] Diese Meldung wird dir nun nicht mehr angezeigt. Dieser bug wird aber demnächst gefixed");
+				    			}else{
+				    				p.sendMessage(ChatColor.RED + "[WorldTp] Diese Meldung wird dir noch " + BugZahl3 + " mal angezeigt!");
+				    			}
+				    			Config.save();
+				    	}
+				    }
 				    if(blockTp == null) {
 				    	if(warping.length() == 5) {
 				    		Config.configuration.set(Config.blockwarpPoint + PlayerName, "blockWarpOn");
@@ -385,7 +411,7 @@ public class WorldTp extends JavaPlugin {
 					    	p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache30);
 					    	return true;
 					    }
-				    }
+				    }				    				    
 				    
 					if(warping.length() == 5) {
 						Config.configuration.set(Config.blockwarpPoint + PlayerName, "blockWarpOn");
@@ -404,8 +430,22 @@ public class WorldTp extends JavaPlugin {
 				    if(TeleportMessage.length() == 4) {
 				    	p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache1);
 				    }
+				    
+				    if(p.isInsideVehicle() == true) {
 				    	
-				    p.teleport(loc);
+				    	LivingEntity theHorse = (LivingEntity) p.getVehicle();
+				    	theHorse.eject();
+				    	theHorse.teleport(loc);
+				    	theHorse.setHealth(15);
+				    	p.teleport(loc);
+				    	theHorse.setHealth(15);
+				    	theHorse.setPassenger(p);
+				    	theHorse.setHealth(15);
+				    }
+				    					    
+				    if(!(p.isInsideVehicle() == true)) {
+				    	p.teleport(loc);				    	
+				    }
 				    
 				    if(game.length() == 4) {
 				    	p.setGameMode(GameMode.CREATIVE);
@@ -833,8 +873,21 @@ public class WorldTp extends JavaPlugin {
 					
 					Config.TeleportToWarpLeave(p);
 					Config.DoubleWarpOff(p);								    								
-											
-					p.teleport(loc);
+					
+					if(p.isInsideVehicle() == true) {
+				    	LivingEntity theHorse = (LivingEntity) p.getVehicle();
+				    	theHorse.eject();
+				    	theHorse.teleport(loc);
+				    	theHorse.setHealth(15);
+				    	p.teleport(loc);
+				    	theHorse.setHealth(15);
+				    	theHorse.setPassenger(p);
+				    	theHorse.setHealth(15);
+				    }
+					
+					if(!(p.isInsideVehicle() == true)) {
+						p.teleport(loc);
+					}
 					
 					if(TeleportMessageBack.length() == 4) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache2);
@@ -864,6 +917,7 @@ public class WorldTp extends JavaPlugin {
 		return true;
 		
 	}
+
 	public void reloadFolders() {
 		dir = new File("plugins/WorldTp/saves/inventories");
 		folder = new File("plugins/WorldTp/saves/Creative Inventories");

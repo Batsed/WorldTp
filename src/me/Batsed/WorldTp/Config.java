@@ -20,7 +20,7 @@ public class Config {
 		this.cmd = cmd;
 		this.args = args;
 		Config.p = p;
-	}
+	} 	
     static String Saves = "Saves";
     static String rechner = Saves + ".Zahl";
     static String oldLoc = Saves + ".Oldlocation.Players.";
@@ -40,6 +40,7 @@ public class Config {
     static String blockwarpPoint = Saves + ".BlockWarp.";
     static String warpzahl = Saves + ".WarpZahl";
     static String oldPoint = Saves + ".Oldlocation.Players.";
+    static String BugZahlCache = Saves + ".BugZahlCache";
     protected static FileConfiguration configuration;
     protected static File file;
 
