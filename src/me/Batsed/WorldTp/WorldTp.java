@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class WorldTp extends JavaPlugin {
 	
+	public language Language;
 	public Config config;
 	public File dir;
 	public File folder;
@@ -22,17 +23,22 @@ public class WorldTp extends JavaPlugin {
 	PluginDescriptionFile descFile = this.getDescription();
 	
 	private static String ordner = "plugins/WorldTp/saves";
-
+	private static String Languagepfad = "plugins/WorldTp";
+	
 	public void onEnable() {
-		createConfig();		
-		System.out.println("[WorldTp] Plugin by Batsed");		
-		config = new Config(new File(ordner + File.separator + "Saves.yml"));
-		dir = new File("plugins/WorldTp/saves/inventories");
-		folder = new File("plugins/WorldTp/saves/Creative Inventories");
-		dir.mkdir();
-		folder.mkdir();
-        config.setDefaults();
-        Config.save();
+		createConfig();																					//Standart Configuration
+		System.out.println("[WorldTp] Plugin by Batsed");												//Programmierer
+		config = new Config(new File(ordner + File.separator + "Saves.yml"));							//Speicherungspfad von der "Saves Configuration"
+		dir = new File("plugins/WorldTp/saves/inventories");											//Ordner für Survival Inventare
+		folder = new File("plugins/WorldTp/saves/Creative Inventories");								//Ordner für Creative Inventare
+		dir.mkdir();																					//Befehl um ordner zu erstellen
+		folder.mkdir();																					//Befehl um ordner zu erstellen
+        config.setDefaults();																			//Ruft Defaults für den ersten start beim Plugin auf
+        Config.save();																					//Speichert die "Saves Configuration"
+        
+        Language = new language(new File(Languagepfad + File.separator + "language.yml"));			    //Speicherungspfad von der "Saves Configuration"											//Ordner für Survival Inventare																				//Befehl um ordner zu erstellen
+        Language.setDefaults();																			//Ruft Defaults für den ersten start beim Plugin auf
+        language.save();
         this.reloadFolders();
         
         WarpAnzahl = Config.configuration.getInt(Config.warpzahl);
@@ -56,57 +62,58 @@ public class WorldTp extends JavaPlugin {
 
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		
-		String sprache1 = this.getConfig().getString("Config.language.Wt");
-		String sprache2 = this.getConfig().getString("Config.language.Leave");
-		String sprache3 = this.getConfig().getString("Config.language.Setspawnpoint");
-		String sprache4 = this.getConfig().getString("Config.language.Setspawnpoint2");
-		String sprache9 = this.getConfig().getString("Config.language.error.NoArgument");
-		String sprache10 = this.getConfig().getString("Config.language.error.TooManyArgument");
-		String sprache11 = this.getConfig().getString("Config.language.error.NoWarpPoint");
-		String sprache5 = this.getConfig().getString("Config.language.Help.Setspawnpoint");
-		String sprache6 = this.getConfig().getString("Config.language.Help.Wt");
-		String sprache7 = this.getConfig().getString("Config.language.Help.Leave");
-		String sprache8 = this.getConfig().getString("Config.language.Help.WorldTp");
-		String sprache12 = this.getConfig().getString("Config.language.error.error");
-		String sprache13 = this.getConfig().getString("Config.language.error.ConfigError");
-		String sprache14 = this.getConfig().getString("Config.language.error.GamemodeCreativeError");
-		String sprache15 = this.getConfig().getString("Config.language.error.SaveInventoryError");
-		String sprache16 = this.getConfig().getString("Config.language.info");
-		String sprache17 = this.getConfig().getString("Config.language.BlockLeave");
-		String sprache18 = this.getConfig().getString("Config.language.error.ClearInventoryError");
-		String sprache19 = this.getConfig().getString("Config.language.error.activateCommandInvbackError");
-		String sprache20 = this.getConfig().getString("Config.language.error.noPremmissions");
-		String sprache21 = this.getConfig().getString("Config.language.Help.Invback");
-		String sprache22 = this.getConfig().getString("Config.language.error.TeleportToAnOtherWarp");
-		String sprache23 = this.getConfig().getString("Config.language.NoError");
-		String sprache24 = this.getConfig().getString("Config.language.error.BlockInvback");
-		String sprache25 = this.getConfig().getString("Config.language.error.DoubleWarp");
-		String sprache26 = this.getConfig().getString("Config.language.error.InvbackFalse");
-		String sprache27 = this.getConfig().getString("Config.language.error.DoubleInv");
-		String sprache28 = this.getConfig().getString("Config.language.error.BlockCommand");
-		String sprache29 = this.getConfig().getString("Config.language.error.WarpName");
-		String sprache30 = this.getConfig().getString("Config.language.error.DoubleWarpTp");
-		String sprache31 = this.getConfig().getString("Config.language.error.NoWarp");
-		String sprache32 = this.getConfig().getString("Config.language.ConfigReload");
-		String sprache33 = this.getConfig().getString("Config.language.error.ClearInvByCommanderror");
-		String sprache34 = this.getConfig().getString("Config.language.Help.WtInfo");
-		String sprache35 = this.getConfig().getString("Config.language.Help.WtList");
-		String sprache36 = this.getConfig().getString("Config.language.Help.WtFinderror");
-		String sprache37 = this.getConfig().getString("Config.language.error.WarpError");
-		String sprache38 = this.getConfig().getString("Config.language.SearchErrors");
-		String sprache39 = this.getConfig().getString("Config.language.error.loadInvByCommandLeaveerror");
-		String sprache40 = this.getConfig().getString("Config.language.error.ClearInvByCommanderror");
-		String sprache41 = this.getConfig().getString("Config.language.error.activateCommandLeave");
-		String sprache42 = this.getConfig().getString("Config.language.SpawnInfo");
-		String sprache43 = this.getConfig().getString("Config.language.WarpDeleted");
-		String sprache44 = this.getConfig().getString("Config.language.deleted");
-		String sprache45 = this.getConfig().getString("Config.language.error.BlockMisspelling");
-		String sprache46 = this.getConfig().getString("Config.language.Help.ClearInv");
-		String sprache47 = this.getConfig().getString("Config.language.Help.WtReload");
-		String sprache48 = this.getConfig().getString("Config.language.Help.WtDelete");
-		String sprache49 = this.getConfig().getString("Config.language.error.FoundNoInventory");
-		String sprache50 = this.getConfig().getString("Config.language.error.NoLeavePoint");
-		String sprache51 = this.getConfig().getString("Config.language.error.NoPoint");
+		String sprache1 = language.Lconfiguration.getString(language.normal + "Wt");
+		String sprache2 = language.Lconfiguration.getString(language.normal + "Leave");
+		String sprache3 = language.Lconfiguration.getString(language.normal + "Setspawnpoint");
+		String sprache4 = language.Lconfiguration.getString(language.normal + "Setspawnpoint2");
+		String sprache9 = language.Lconfiguration.getString(language.error + "NoArgument");
+		String sprache10 = language.Lconfiguration.getString(language.error + "TooManyArgument");
+		String sprache11 = language.Lconfiguration.getString(language.error + "NoWarpPoint");
+		String sprache5 = language.Lconfiguration.getString(language.help + "Setspawnpoint");
+		String sprache6 = language.Lconfiguration.getString(language.help + "Wt");
+		String sprache7 = language.Lconfiguration.getString(language.help + "Leave");
+		String sprache8 = language.Lconfiguration.getString(language.help + "WorldTp");
+		String sprache12 = language.Lconfiguration.getString(language.error + "error");
+		String sprache13 = language.Lconfiguration.getString(language.error + "ConfigError");
+ 		String sprache14 = language.Lconfiguration.getString(language.error + "GamemodeCreativeError");
+		String sprache15 = language.Lconfiguration.getString(language.error + "SaveInventoryError");
+		String sprache16 = language.Lconfiguration.getString(language.normal + "info");
+		String sprache17 = language.Lconfiguration.getString(language.normal + "BlockLeave");
+		String sprache18 = language.Lconfiguration.getString(language.error + "ClearInventoryError");
+		String sprache19 = language.Lconfiguration.getString(language.error + "activateCommandInvbackError");
+		String sprache20 = language.Lconfiguration.getString(language.error + "noPremmissions");
+		String sprache21 = language.Lconfiguration.getString(language.help + "Invback");
+		String sprache22 = language.Lconfiguration.getString(language.error + "TeleportToAnOtherWarp");
+		String sprache23 = language.Lconfiguration.getString(language.normal + "NoError");
+		String sprache24 = language.Lconfiguration.getString(language.error + "BlockInvback");
+		String sprache25 = language.Lconfiguration.getString(language.error + "DoubleWarp");
+		String sprache26 = language.Lconfiguration.getString(language.error + "InvbackFalse");
+		String sprache27 = language.Lconfiguration.getString(language.error + "DoubleInv");
+		String sprache28 = language.Lconfiguration.getString(language.error + "BlockCommand");
+		String sprache29 = language.Lconfiguration.getString(language.error + "WarpName");
+		String sprache30 = language.Lconfiguration.getString(language.error + "DoubleWarpTp");
+		String sprache31 = language.Lconfiguration.getString(language.error + "NoWarp");
+		String sprache32 = language.Lconfiguration.getString(language.normal + "ConfigReload");
+		String sprache33 = language.Lconfiguration.getString(language.error + "ClearInvByCommanderror");
+		String sprache34 = language.Lconfiguration.getString(language.help + "WtInfo");
+		String sprache35 = language.Lconfiguration.getString(language.help + "WtList");
+		String sprache36 = language.Lconfiguration.getString(language.help + "WarpError");
+		String sprache37 = language.Lconfiguration.getString(language.error + "WarpError");
+		String sprache38 = language.Lconfiguration.getString(language.normal + "SearchErrors");
+		String sprache39 = language.Lconfiguration.getString(language.error + "loadInvByCommandLeaveerror");
+		String sprache40 = language.Lconfiguration.getString(language.error + "ClearInvByCommanderror");
+		String sprache41 = language.Lconfiguration.getString(language.error + "activateCommandLeave");
+		String sprache42 = language.Lconfiguration.getString(language.normal + "SpawnInfo");
+		String sprache43 = language.Lconfiguration.getString(language.normal + "WarpDeleted");
+		String sprache44 = language.Lconfiguration.getString(language.normal + "deleted");
+		String sprache45 = language.Lconfiguration.getString(language.error + "BlockMisspelling");
+		String sprache46 = language.Lconfiguration.getString(language.help + "ClearInv");
+		String sprache47 = language.Lconfiguration.getString(language.help + "WtReload");
+		String sprache48 = language.Lconfiguration.getString(language.help + "WtDelete");
+		String sprache49 = language.Lconfiguration.getString(language.error + "FoundNoInventory");
+		String sprache50 = language.Lconfiguration.getString(language.error + "NoLeavePoint");
+		String sprache51 = language.Lconfiguration.getString(language.error + "NoPoint");
+		
 		
 		//Saves Config
 		Config.configuration.set(Config.Backup + "language.error.GamemodeCreativeError", sprache14);
@@ -950,8 +957,12 @@ public class WorldTp extends JavaPlugin {
 	}
 
 	public Config getConfiguration() {
-		return config;
+		return config;		
     }
+	
+	public language LgetConfiguration() {
+		return Language;
+	}
 	
 	public boolean backupConfigReload(Player p) {				
 		
@@ -999,114 +1010,6 @@ public class WorldTp extends JavaPlugin {
 		this.getConfig().addDefault(path42, true);
 		String path43 = "Config.Global.TeleportMessageBack";
 		this.getConfig().addDefault(path43, true);
-				
-		//language
-		String path1 = "Config.language.Wt";
-		this.getConfig().addDefault(path1, "You have teleported");
-		String path2 = "Config.language.Leave";
-		this.getConfig().addDefault(path2, "You have teleported back to your old position");
-		String path3 = "Config.language.Setspawnpoint";
-		this.getConfig().addDefault(path3, "You have set the spawn point");
-		String path17 = "Config.language.BlockLeave";
-		this.getConfig().addDefault(path17, "Leave is not activated for this warp");
-		String path4 = "Config.language.Setspawnpoint2";
-		this.getConfig().addDefault(path4, "Saved");
-		String path16 = "Config.language.info";
-		this.getConfig().addDefault(path16, "in gamemode");
-		String path23 = "Config.language.NoError";
-		this.getConfig().addDefault(path23, "No errors found");
-		String path32 = "Config.language.ConfigReload";
-		this.getConfig().addDefault(path32, "Config updated");
-		String path38 = "Config.language.SearchErrors";
-		this.getConfig().addDefault(path38, "searching for errors in warp:");
-		String path44 = "Config.language.SpawnInfo";
-		this.getConfig().addDefault(path44, "searching for information in warp:");
-		String path45 = "Config.language.WarpDeleted";
-		this.getConfig().addDefault(path45, "This warp has been deleted");
-		String path46 = "Config.language.deleted";
-		this.getConfig().addDefault(path46, "deleted");
-
-		//errors
-		String path9 = "Config.language.error.NoArgument";
-		this.getConfig().addDefault(path9, "Not enough arguments");
-		String path10 = "Config.language.error.TooManyArgument";
-		this.getConfig().addDefault(path10, "Too many arguments");
-		String path11 = "Config.language.error.NoWarpPoint";
-		this.getConfig().addDefault(path11, "Warp point doesn't exist");
-		String path12 = "Config.language.error.error";
-		this.getConfig().addDefault(path12, "Your input is not correct");
-		String path13 = "Config.language.error.ConfigError";
-		this.getConfig().addDefault(path13, "WorldTp config contains an error");
-		String path14 = "Config.language.error.GamemodeCreativeError";
-		this.getConfig().addDefault(path14, "has an error at GamemodeCreative");
-		String path15 = "Config.language.error.SaveInventoryError";
-		this.getConfig().addDefault(path15, "has a config error at SaveInventory");
-		String path18 = "Config.language.error.ClearInventoryError";
-		this.getConfig().addDefault(path18, "has a config error at ClearInventory");
-		String path19 = "Config.language.error.activateCommandInvbackError";
-		this.getConfig().addDefault(path19, "has a config error at activateCommandInvback");
-		String path22 = "Config.language.error.TeleportToAnOtherWarp";
-		this.getConfig().addDefault(path22, "has a config error at TeleportToAnOtherWarp");
-		String path20 = "Config.language.error.noPremmissions";
-		this.getConfig().addDefault(path20, "You don't have the rights to do that");
-		String path24 = "Config.language.error.BlockInvback";
-		this.getConfig().addDefault(path24, "The command '/leave' has been deactivated for this spawn after the use of '/invback'");
-		String path25 = "Config.language.error.DoubleWarp";
-		this.getConfig().addDefault(path25, "You can only warp back once");
-		String path26 = "Config.language.error.InvbackFalse";
-		this.getConfig().addDefault(path26, "The command 'invback' is disabled for this spawn point");
-		String path27 = "Config.language.error.DoubleInv";
-		this.getConfig().addDefault(path27, "Command '/invback' has already been used");
-		String path28 = "Config.language.error.BlockCommand";
-		this.getConfig().addDefault(path28, "This command is not allowed for this spawn");
-		String path29 = "Config.language.error.WarpName";
-		this.getConfig().addDefault(path29, "This name is not allowed as warp name");
-		String path30 = "Config.language.error.DoubleWarpTp";
-		this.getConfig().addDefault(path30, "Warping multiple times is not allowed");
-		String path31 = "Config.language.error.NoWarp";
-		this.getConfig().addDefault(path31, "No warps available");
-		String path33 = "Config.language.error.ClearInvByCommanderror";
-		this.getConfig().addDefault(path33, "has a config error at ClearInvByCommand");
-		String path37 = "Config.language.error.WarpError";
-		this.getConfig().addDefault(path37, "contains an error. Please contact an administrator");
-		String path39 = "Config.language.error.loadInvByCommandLeaveerror";
-		this.getConfig().addDefault(path39, "has a config error at loadInvByCommandLeave.");
-		String path40 = "Config.language.error.ClearInvByCommanderror";
-		this.getConfig().addDefault(path40, "has a config error at ClearInvByCommand.");
-		String path41 = "Config.language.error.activateCommandLeave";
-		this.getConfig().addDefault(path41, "has a config error at activateCommandLeave");	
-		String path47 = "Config.language.error.BlockMisspelling";
-		this.getConfig().addDefault(path47, "is not a valid input");
-		String path51 = "Config.language.error.FoundNoInventory";
-		this.getConfig().addDefault(path51, "No inventory found");
-		String path52 = "Config.language.error.NoLeavePoint";
-		this.getConfig().addDefault(path52, "No Leavepoint available");
-		String path53 = "Config.language.error.NoPoint";
-		this.getConfig().addDefault(path53, "does not exist");
-		
-		//help
-		String path5 = "Config.language.Help.Setspawnpoint";
-		this.getConfig().addDefault(path5, "Sets the spawn point that you reach with the '/wt' command");
-		String path6 = "Config.language.Help.Wt";
-		this.getConfig().addDefault(path6, "With this you port yourself to a spawn point");
-		String path7 = "Config.language.Help.Leave";
-		this.getConfig().addDefault(path7, "With this you return to your former location");
-		String path8 = "Config.language.Help.WorldTp";
-		this.getConfig().addDefault(path8, "WorldTp help");
-		String path21 = "Config.language.Help.Invback";
-		this.getConfig().addDefault(path21, "Returns your inventory");
-		String path34 = "Config.language.Help.WtInfo";
-		this.getConfig().addDefault(path34, "Shows information about your spawn");
-		String path35 = "Config.language.Help.WtList";
-		this.getConfig().addDefault(path35, "Shows available warps");
-		String path36 = "Config.language.Help.WtFinderror";
-		this.getConfig().addDefault(path36, "Looks for config errors");
-		String path48 = "Config.language.Help.ClearInv";
-		this.getConfig().addDefault(path48, "Empties the players inventory");
-		String path49 = "Config.language.Help.WtReload";
-		this.getConfig().addDefault(path49, "Reloads the Config");
-		String path50 = "Config.language.Help.WtDelete";
-		this.getConfig().addDefault(path50, "Deletes the desired spawn");
 		
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
