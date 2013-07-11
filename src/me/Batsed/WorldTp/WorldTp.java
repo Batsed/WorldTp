@@ -569,7 +569,21 @@ public class WorldTp extends JavaPlugin {
 					this.getConfig().set("Config."+ spawnName +".SaveCreativeInv", false);
 					this.getConfig().set("Config."+ spawnName +".loadCreativeInv", false);
 					this.getConfig().options().copyDefaults(true);
-					Config.WarpUp(spawnName);	
+					
+					String editWarp = this.getConfig().getString("Config."+ spawnName +".SaveInventory");
+					
+					if(!("false".equalsIgnoreCase(editWarp))) {
+						if(!("true".equalsIgnoreCase(editWarp))) {
+							Config.WarpUp(spawnName);	
+						}
+					}
+					
+					if(!("true".equalsIgnoreCase(editWarp))) {
+						if(!("false".equalsIgnoreCase(editWarp))) {
+							Config.WarpUp(spawnName);	
+						}
+					}
+					
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache3);
 					p.sendMessage(ChatColor.RED + "[WorldTp] Spawnpoint " + spawnName + ", 'nosave' " + sprache16 + " survival");
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache4);												
