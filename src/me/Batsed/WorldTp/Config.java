@@ -212,12 +212,14 @@ public class Config {
     	String world = p.getLocation().getWorld().getName();
     	double getZ = p.getLocation().getZ();
 		double getX = p.getLocation().getX();
-		double getY = p.getLocation().getY();    	
+		double getY = p.getLocation().getY();
+		double getF = p.getLocation().getYaw();
 		
 		Config.configuration.set(Config.oldPoint + PlayerName + ".world", world);
 		configuration.set(Config.oldLoc + PlayerName + ".spawn.Z", getZ);
 		configuration.set(Config.oldLoc + PlayerName + ".spawn.X", getX);
     	configuration.set(Config.oldLoc + PlayerName + ".spawn.Y", getY);
+    	configuration.set(Config.oldLoc + PlayerName + ".spawn.F", getF);
     	Config.save();
     }
     public static void DoubleWarpOff(Player p) {

@@ -288,9 +288,16 @@ public class WorldTp extends JavaPlugin {
 					String world = this.getConfig().getString("Config." + spawnpoint +".world");
 					String warping = this.getConfig().getString("Config." + spawnpoint +".TeleportToAnOtherWarp");
 					
+					String F2 = this.getConfig().getString("Config."+ spawnpoint +".spawn.F");
+					double F = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.F");
 					double locY = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.Y");
 					double locX = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.X");
 					double locZ = this.getConfig().getDouble("Config."+ spawnpoint +".spawn.Z");
+					
+					if(F2 == null) {
+						F = 0;
+					}
+					float locF = (float) F;
 					
 					if(args.length < 1) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache9);
@@ -365,11 +372,10 @@ public class WorldTp extends JavaPlugin {
 				    }			
 				    //hauptquellcode "wt"
 				    Location loc = new Location(getServer().getWorld(world), locX, locY, locZ);
+				    loc.setYaw(locF);
 				    Config.configuration.getString(Config.TrueCachePoint + PlayerName);
 				    int BugZahl = Config.configuration.getInt(Config.BugZahlCache + "." + PlayerName);
-				    String BugZahl2 = Config.configuration.getString(Config.BugZahlCache + "." + PlayerName);
-				    
-				    
+				    String BugZahl2 = Config.configuration.getString(Config.BugZahlCache + "." + PlayerName);				    
 				    String blockTp = Config.configuration.getString(Config.blockwarpPoint + PlayerName);
 				    String leaveOn = this.getConfig().getString("Config."+ spawnpoint +".SaveLeavepointAfterTp");
 				    String loadCreativeInv = this.getConfig().getString("Config."+ spawnpoint +".loadCreativeInv");
@@ -432,19 +438,15 @@ public class WorldTp extends JavaPlugin {
 				    }
 				    
 				    if(p.isInsideVehicle() == true) {
-				    	
 				    	LivingEntity theHorse = (LivingEntity) p.getVehicle();
 				    	theHorse.eject();
-				    	theHorse.teleport(loc);
-				    	theHorse.setHealth(15);
+				    	theHorse.teleport(loc);	
 				    	p.teleport(loc);
-				    	theHorse.setHealth(15);
-				    	theHorse.setPassenger(p);
-				    	theHorse.setHealth(15);
+				    	//theHorse.setPassenger(p);
 				    }
-				    					    
+				    
 				    if(!(p.isInsideVehicle() == true)) {
-				    	p.teleport(loc);				    	
+				    	p.teleport(loc);
 				    }
 				    
 				    if(game.length() == 4) {
@@ -464,6 +466,7 @@ public class WorldTp extends JavaPlugin {
 				    }				    
 				    Config.configuration.set(Config.WarpCachePoint + PlayerName, spawnpoint);
 				    Config.save();
+				    
 				}else{
 					p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache20);
 					return false;
@@ -531,6 +534,7 @@ public class WorldTp extends JavaPlugin {
 				getConfig().set("Config."+ spawnName +".spawn.X", p.getLocation().getX());
 				getConfig().set("Config."+ spawnName +".spawn.Y", p.getLocation().getY());
 				getConfig().set("Config."+ spawnName +".spawn.Z", p.getLocation().getZ());
+				getConfig().set("Config."+ spawnName +".spawn.F", p.getLocation().getYaw());
         		getConfig().get("Config."+ spawnName +".activateCommandLeave");
         		this.getConfig().set("Config."+ spawnName +".activateCommandLeave", true);
         		Config.configuration.set(Config.Backup + spawnName +".activateCommandLeave", true);
@@ -814,14 +818,23 @@ public class WorldTp extends JavaPlugin {
 						Config.configuration.set(Config.blockwarpPoint + PlayerName, "blockWarpOff");
 						Config.save();
 					}
+					String F2 = Config.configuration.getString(Config.oldLoc + PlayerName + ".spawn.F");
 					
+					double F = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.F");
 					double LocX = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.X");
 					double LocY = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.Y");
 					double LocZ = Config.configuration.getDouble(Config.oldLoc + PlayerName + ".spawn.Z");
 					
-					Location loc = new Location(getServer().getWorld(world) ,LocX, LocY, LocZ);
+					if(F2 == null) {
+						F = 0;
+					}
+					float locF = (float) F;
 					
-					//Fehlerüberprüfungen				
+					Location loc = new Location(getServer().getWorld(world) ,LocX, LocY, LocZ);
+					loc.setYaw(locF);
+					
+					//Fehlerüberprüfungen
+										
 					if(world == null) {
 						p.sendMessage(ChatColor.RED + "[WorldTp] " + sprache50);
 						return true;
@@ -877,12 +890,9 @@ public class WorldTp extends JavaPlugin {
 					if(p.isInsideVehicle() == true) {
 				    	LivingEntity theHorse = (LivingEntity) p.getVehicle();
 				    	theHorse.eject();
-				    	theHorse.teleport(loc);
-				    	theHorse.setHealth(15);
 				    	p.teleport(loc);
-				    	theHorse.setHealth(15);
-				    	theHorse.setPassenger(p);
-				    	theHorse.setHealth(15);
+				    	theHorse.teleport(loc);							    	
+				    	//theHorse.setPassenger(p);
 				    }
 					
 					if(!(p.isInsideVehicle() == true)) {
